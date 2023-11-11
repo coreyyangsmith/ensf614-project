@@ -43,7 +43,7 @@ const Landing = () => {
 					width: '100vw',
 					zIndex: '-1',
 					position: 'absolute',
-					background: 'black',
+					background: '#121212',
 				}}
 			></Paper>
 			<Paper

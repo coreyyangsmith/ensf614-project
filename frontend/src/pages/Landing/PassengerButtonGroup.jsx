@@ -19,7 +19,7 @@
 import React from 'react';
 
 // MUI Imports
-import { Button, ButtonGroup, Typography, Stack} from '@mui/material';
+import { Button, ButtonGroup, Typography, Stack } from '@mui/material';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -37,9 +37,22 @@ const PassengerButtonGroup = (props) => {
 	};
 	return (
 		<Stack direction="row">
-			<Typography sx={{alignItems:"center"}}>Number of Passengers:</Typography>
-			<ButtonGroup sx={{paddingLeft: "16px"}}>
-				<Button onClick={handleDecrement} disabled={props.passenegers == 1 ? true : false}>-</Button>
+			<Typography
+				sx={{
+					display: 'flex',
+					justifyContent: 'center',
+					flexDirection: 'column',
+				}}
+			>
+				Number of Passengers:
+			</Typography>
+			<ButtonGroup sx={{ paddingLeft: '16px' }}>
+				<Button
+					onClick={handleDecrement}
+					disabled={props.passenegers == 1 ? true : false}
+				>
+					-
+				</Button>
 				<Button disabled>{props.passenegers}</Button>
 				<Button onClick={handleIncrement}>+</Button>
 			</ButtonGroup>

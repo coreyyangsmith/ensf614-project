@@ -26,7 +26,7 @@ import DestinationArrivalForm from './DestinationArrivalForm';
 //CSS
 import './landing.css';
 import PassengerButtonGroup from './PassengerButtonGroup';
-import SeatSelectionDropdown from './SeatSelectionDropdown';
+import SeatSelectionRadio from './SeatSelectionRadio';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -37,10 +37,11 @@ const FlightSelectionForm = (props) => {
 	const [departureDate, setDepartureDate] = useState(undefined);
 	const [arrivalDate, setArrivalDate] = useState(undefined);
 
+	// TODO expand this logic to ensure flight selection is "mostly" valid
 	if (seatSelection !== "") {
-		props.setFormFilled(true)
+		props.formFilled.current = true
 	}
-
+	console.log(selectedTrip)
 	return (
 		<>
 			<Stack
@@ -77,14 +78,17 @@ const FlightSelectionForm = (props) => {
 					date={arrivalDate}
 					setDate={setArrivalDate}					
 				/>
+				<Stack direction="row" spacing={1}>
 				<PassengerButtonGroup
 					setPassengers={setPassengers}
 					passenegers={passenegers}
 				/>
-				<SeatSelectionDropdown
+				<SeatSelectionRadio
 					seatSelection={seatSelection}
 					setSeatSelection={setSeatSelection}
 				/>
+				</Stack>
+
 
 				<Stack direction="row"></Stack>
 			</Stack>

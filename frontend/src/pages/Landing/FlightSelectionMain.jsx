@@ -16,7 +16,7 @@
 //-------------------------------------------------------//
 
 // React Import
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 // MUI Import
 import { Paper, Typography, Stack } from '@mui/material';
@@ -30,18 +30,20 @@ import FlightSelectionForm from './FlightSelectionForm';
 const frostedGlassSX = {
 	background: 'rgba(255,255,255,.15)',
 	backdropFilter: 'blur(5px)',
-	width: '35vw',
+	display: 'flex',
 	padding: '16px',
-	marginLeft: '15vw',
-	zIndex: "10"
+	zIndex: "10",
+	width: "600px",
+	marginLeft: "15vw",
+	marginTop: "25vh"
 };
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
 const FlightSelectionMain = (props) => {
-	const [formFilled, setFormFilled] = useState(false);
-
+	
+	const formFilled = useRef(false)
 
 	return (
 		<Paper sx={frostedGlassSX}>
@@ -51,8 +53,9 @@ const FlightSelectionMain = (props) => {
 			>
 				<Typography>Select Flight Information</Typography>
 				<FlightSelectionForm
-					setFormFilled={setFormFilled}
+					formFilled={formFilled}
 					destinations={props.destinations}
+
 				/>
 				<FlightSelectionButton formFilled={formFilled} />
 			</Stack>

@@ -44,9 +44,9 @@ const toolbarSX = {
 const NavBar = () => {
 	return (
 		<AppBar
-			color="black"
 			position="sticky"
 			elevation={0}
+			style={{background: "black"}}
             sx={{width: "100vw"}}
 		>
 			<Toolbar

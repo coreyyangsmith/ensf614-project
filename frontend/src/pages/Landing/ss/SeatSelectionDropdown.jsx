@@ -16,7 +16,7 @@
 //-------------------------------------------------------//
 
 // React Import
-import React from 'react';
+import React, { useState } from 'react';
 
 // MUI Import
 import { Select } from '@mui/material';
@@ -26,11 +26,11 @@ import { MenuItem } from '@mui/material';
 //-------------------------------------------------------//
 
 const SeatSelectionDropdown = (props) => {
-	const options = ['Ordinary', 'Comfort Seating', 'Business Class'];
+	const [options, setOptions] = useState(['Ordinary', 'Comfort Seating', 'Business Class']);
 
 	const handleChange = (item) => {
         console.log(item);
-        props.setSeatSelection(item)
+        // props.setSeatSelection(item)
     };
 
 	return (

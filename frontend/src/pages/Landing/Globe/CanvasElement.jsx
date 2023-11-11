@@ -24,23 +24,26 @@ import { Canvas } from '@react-three/fiber';
 // My Components
 import Scene from './Scene';
 
-
+// Utilities
+import {
+	CAMERA_DISTANCE
+} from './config.js';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const CanvasElement = (props) => {
 	return (
 		<div style={{ width: '500px', height: '500px' }}>
-			<Suspense fallback={<h1>Loading profile...</h1>}>
-				<Canvas
-					camera={{ fov: 90, near: 0.1, far: 5000, position: [0, 0, 200] }}
-					style={{ position: 'absolute' }}
-					resize={{ scroll: false, debounce: 1000 }}
-				>
+			<Canvas
+				camera={{ fov: 60, near: 0.1, far: 5000, position: [0, 0, CAMERA_DISTANCE] }}
+				style={{ position: 'absolute' }}
+				resize={{ scroll: false, debounce: 200 }}
+			>
+				<Suspense fallback={<h1>Loading profile...</h1>}>
 
 					<Scene data={props.data} />
-				</Canvas>
-			</Suspense>
+				</Suspense>
+			</Canvas>
 		</div>
 	);
 };
