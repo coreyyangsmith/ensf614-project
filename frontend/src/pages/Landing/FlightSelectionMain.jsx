@@ -20,8 +20,13 @@ import React, { useState } from 'react';
 
 // MUI Import
 import { Paper, Typography, Stack } from '@mui/material';
+
+// My Component Imports
 import FlightSelectionButton from './FlightSelectionButton';
 import FlightSelectionForm from './FlightSelectionForm';
+
+// Custom Hooks
+import { useDestinations } from '../../hooks/useDestinations';
 
 //  STYLES
 //-------------------------------------------------------//
@@ -38,6 +43,7 @@ const frostedGlassSX = {
 
 const FlightSelectionMain = () => {
 	const [formFilled, setFormFilled] = useState(false);
+	const { destinations } = useDestinations();
 
 	return (
 		<Paper sx={frostedGlassSX}>
@@ -46,7 +52,10 @@ const FlightSelectionMain = () => {
 				spacing={3}
 			>
 				<Typography>Select Flight Information</Typography>
-				<FlightSelectionForm setFormFilled={setFormFilled} />
+				<FlightSelectionForm
+					setFormFilled={setFormFilled}
+					destinations={destinations}
+				/>
 				<FlightSelectionButton formFilled={formFilled} />
 			</Stack>
 		</Paper>
