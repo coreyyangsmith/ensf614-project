@@ -26,7 +26,6 @@ from django.contrib.auth.password_validation import validate_password
 
 # Django Rest Framework (DRF) Imports
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 
 
 #   SERIALIZERS
@@ -35,3 +34,9 @@ class CrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crew      
         fields = '__all__'
+        
+
+class DestinationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Destination      
+        fields = '__all__'        

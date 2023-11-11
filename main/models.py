@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 USER_TYPE = {}
 
-class Aircraft(models.Model):
+class Aircraft(models.Model): # Todo
 
     class AirplaneStatus(models.TextChoices):
         AVAILABLE = "AVL", _('Available')
@@ -30,7 +30,7 @@ class Aircraft(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
 
-class Seat(models.Model):
+class Seat(models.Model): # Todo
     class SeatType(models.TextChoices):
         ORDINARY = "ORD", _('Ordinary')
         COMFORT = "CMF", _('Comfort')
@@ -44,18 +44,21 @@ class Seat(models.Model):
     updated_at = models.DateTimeField(auto_now=True)   
 
 
-class Destination(models.Model):
+class Destination(models.Model): # Complete
     city = models.CharField(max_length=75)
     country = models.CharField(max_length=75)
     country_code = models.CharField(max_length=3)
     latitude = models.DecimalField(max_digits=7, decimal_places=4) # eg. +/- 123.4567
-    latitude = models.DecimalField(max_digits=7, decimal_places=4) # eg. +/- 123.4567
+    longitude = models.DecimalField(max_digits=7, decimal_places=4) # eg. +/- 123.4567
 
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)       
+    updated_at = models.DateTimeField(auto_now=True)      
+
+    def __str__(self):
+        return self.country_code + " | " + self.country + ", " + self.city 
 
 
-class Crew(models.Model):
+class Crew(models.Model): # Complete
     class CrewStatus(models.TextChoices):
         AVAILABLE = "AVL", _('Available')
         REGISTERED = "REG", _('Registered')
@@ -72,7 +75,7 @@ class Crew(models.Model):
         return self.first_name + " " + self.last_name
 
 
-class Flight(models.Model):
+class Flight(models.Model): # Todo
     date = models.DateField()
     depature_time = models.DateTimeField()
     arrival_time = models.DateTimeField()

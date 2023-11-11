@@ -27,4 +27,5 @@ from . import views
 urlpatterns = [
     path('', views.MainView),
     re_path(r'^api/crews/$', views.crews_list),
+    re_path(r'^api/destinations/$', views.destinations_list),
 ]

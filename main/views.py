@@ -55,3 +55,11 @@ def crews_list(request):
             return Response(status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def destinations_list(request):
+    if request.method == 'GET':
+        data = Destination.objects.all()
+        #print(data)
+        serializer = DestinationSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)
