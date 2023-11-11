@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     # Dependencies
     'django_extensions', 
+    'rest_framework',
+    'rest_framework.authtoken',    
 
     # Import Local Apps
     'main.apps.MainConfig'
