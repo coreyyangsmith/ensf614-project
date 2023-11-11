@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+//-------------------------------------------------------//
+//  File Name: LandingPriceCardDetail.jsx
+//  Description: Large Card for further description on available price options
+//
+//  Requirements:
+//      - ModalPriceCardDetail.jsx
+//
+//  Returns:
+//      - Detailed Price Card
+//
+// Created By: Corey Yang-Smith
+// Date: October 6th, 2023
+//-------------------------------------------------------//
 
+//  IMPORTS
+//-------------------------------------------------------//
+
+// Custom Hooks
+
+import { useCrews } from '../src/hooks/useCrews.js';
+
+//  MAIN FUNCTION
+//-------------------------------------------------------//
 function App() {
-  const [count, setCount] = useState(0)
+	const { crews } = useCrews();
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	const displayCrews = crews.map((value, index) => {
+		return (<li key={value.id}>
+      {value.first_name} {value.last_name} | {value.status}
+    </li>)
+	});
+
+
+	return (
+		<>
+			<p>Hello World </p>
+			<ul>{displayCrews}</ul>
+		</>
+	);
 }
 
-export default App
+//  EXPORTS
+//-------------------------------------------------------//
+export default App;

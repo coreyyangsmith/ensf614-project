@@ -44,7 +44,7 @@ def MainView(request):
 def crews_list(request):
     if request.method == 'GET':
         data = Crew.objects.all()
-        print(data)
+        #print(data)
         serializer = CrewSerializer(data, context={'request': request}, many=True)
         return Response(serializer.data)
 

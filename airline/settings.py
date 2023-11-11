@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_extensions', 
     'rest_framework',
     'rest_framework.authtoken',    
+    'corsheaders',
 
     # Import Local Apps
     'main.apps.MainConfig'
@@ -55,6 +56,16 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    # CORS
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+]
+
+CORS_ORIGIN_ALLOW_ALL = True #disables CORS as we're running in localhost for the time being
+
+CORS_ORIGIN_WHITELIST = [ #Alternatively, whitelist our ip/port that React will be hosted on to interact with the api
+     'http://localhost:3000'
 ]
 
 ROOT_URLCONF = "airline.urls"
