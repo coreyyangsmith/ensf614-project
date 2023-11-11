@@ -1,40 +1,92 @@
 //-------------------------------------------------------//
-//  File Name: LandingPriceCardDetail.jsx
-//  Description: Large Card for further description on available price options
+//  File Name: App.jsx
+//  Description: Main Component for React Frontend
 //
 //  Requirements:
-//      - ModalPriceCardDetail.jsx
+//      - None
 //
-//  Returns:
-//      - Detailed Price Card
+//  Renders:
+//      - App.jsx and all sub components
 //
 // Created By: Corey Yang-Smith
-// Date: October 6th, 2023
+// Date: November 11th, 2023
 //-------------------------------------------------------//
 
 //  IMPORTS
 //-------------------------------------------------------//
 
-// Custom Hooks
+// MUI Imports
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
-import { useCrews } from '../src/hooks/useCrews.js';
+// Component Imports
+import Landing from './pages/Landing/Landing.jsx';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
+
+// Theme Definition
+const darkTheme = createTheme({
+	palette: {
+		mode: 'dark',
+		primary: {
+			main: '#ffa000',
+		},
+		secondary: {
+			main: '#40c4ff',
+		},
+		background: {
+			default: '#FFFFFF',
+		},
+		black: {
+			default: '#000000',
+		},
+		c2a: {
+			main: '#FFFFFF',
+		},
+	},
+
+	typography: {
+		button: {
+			textTransform: 'none',
+		},
+		fontFamily: [
+			'Plus Jakarta Sans',
+			'inter',
+			'-apple-system',
+			'BlinkMacSystemFont',
+			'"Segoe UI"',
+			'Roboto',
+			'"Helvetica Neue"',
+			'Arial',
+			'sans-serif',
+			'"Apple Color Emoji"',
+			'"Segoe UI Emoji"',
+			'"Segoe UI Symbol"',
+		].join(','),
+		landing_menu: {
+			lineHeight: 1.6,
+			fontSize: 16,
+			fontWeight: 500,
+			fontFamily: 'Plus Jakarta Sans',
+			color: 'white',
+		},
+		landing_button: {
+			lineHeight: 1.6,
+			fontSize: 16,
+			fontWeight: 500,
+			fontFamily: 'Plus Jakarta Sans',
+			color: '#000000',
+		},
+	},
+});
+
 function App() {
-	const { crews } = useCrews();
-
-	const displayCrews = crews.map((value, index) => {
-		return (<li key={value.id}>
-      {value.first_name} {value.last_name} | {value.status}
-    </li>)
-	});
-
-
 	return (
 		<>
-			<p>Hello World </p>
-			<ul>{displayCrews}</ul>
+			<ThemeProvider theme={darkTheme}>
+				<CssBaseline />
+				<Landing />
+			</ThemeProvider>
 		</>
 	);
 }

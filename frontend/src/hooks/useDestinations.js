@@ -1,16 +1,15 @@
 //-------------------------------------------------------//
-//  File Name: useCrews.js
-//  Description: Data Fetching Hook to obtain "Crew" model from the local database
+//  File Name: useDestinations.js
+//  Description: Data Fetching Hook to obtain "Destination" model from the local database
 //
 //  Requirements:
 //      - /api/posts (axios)
-//      - TODO change to authenticated
 //
 //  Returns:
-//      - List of Crews
+//      - List of Destinations
 //
 // Created By: Corey Yang-Smith
-// Date: November 11th, 2023
+// Date: November 11th, 203
 //-------------------------------------------------------//
 
 //  IMPORTS
@@ -25,14 +24,14 @@ import { getRequest } from '../api/posts';
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
-export const useCrews = () => {
-	const [crews, setCrews] = useState([]);
+export const useDestinations = () => {
+	const [destinations, setDestination] = useState([]);
 
 	const fetchData = async () => {
 		try {
-			const response = await getRequest('crews/', '');
+			const response = await getRequest('destinations/', '');
 			if (response && response.data) {
-				setCrews(response.data);
+				setDestination(response.data);
 			}
 		} catch (err) {
 			if (err.response) {
@@ -50,5 +49,5 @@ export const useCrews = () => {
 		fetchData();
 	}, []);
 
-	return { crews, setCrews };
+	return { destinations, setDestination };
 };
