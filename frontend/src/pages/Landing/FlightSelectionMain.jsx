@@ -25,9 +25,6 @@ import { Paper, Typography, Stack } from '@mui/material';
 import FlightSelectionButton from './FlightSelectionButton';
 import FlightSelectionForm from './FlightSelectionForm';
 
-// Custom Hooks
-import { useDestinations } from '../../hooks/useDestinations';
-
 //  STYLES
 //-------------------------------------------------------//
 const frostedGlassSX = {
@@ -36,14 +33,15 @@ const frostedGlassSX = {
 	width: '35vw',
 	padding: '16px',
 	marginLeft: '15vw',
+	zIndex: "10"
 };
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
-const FlightSelectionMain = () => {
+const FlightSelectionMain = (props) => {
 	const [formFilled, setFormFilled] = useState(false);
-	const { destinations } = useDestinations();
+
 
 	return (
 		<Paper sx={frostedGlassSX}>
@@ -54,7 +52,7 @@ const FlightSelectionMain = () => {
 				<Typography>Select Flight Information</Typography>
 				<FlightSelectionForm
 					setFormFilled={setFormFilled}
-					destinations={destinations}
+					destinations={props.destinations}
 				/>
 				<FlightSelectionButton formFilled={formFilled} />
 			</Stack>

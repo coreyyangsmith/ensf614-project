@@ -19,22 +19,46 @@
 import React from 'react';
 
 // MUI Import
-import { Paper } from "@mui/material"
+import { Paper } from '@mui/material';
 
 // Component Imports
 import NavBar from '../../components/NavBar';
 import FlightSelectionMain from './FlightSelectionMain';
+import CanvasElement from './Globe/CanvasElement';
+
+// Custom Hooks
+import { useDestinations } from '../../hooks/useDestinations';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const Landing = () => {
+	const { destinations } = useDestinations();
+
 	return (
 		<>
 			<NavBar />
-            <Paper sx={{height: "1000px", width: "100vw", color: "black"}}>
-				<FlightSelectionMain/>
-
+			<Paper
+				sx={{
+					height: '100vh',
+					width: '100vw',
+					zIndex: '-1',
+					position: 'absolute',
+					background: 'black',
+				}}
+			></Paper>
+			<Paper
+				sx={{
+					height: '100vh',
+					width: '100vw',
+					zIndex: '1',
+					position: 'absolute',
+					background: 'transparent',
+				}}
+			>
+				<FlightSelectionMain destinations={destinations} />
 			</Paper>
+
+			<CanvasElement data={destinations} />
 		</>
 	);
 };
