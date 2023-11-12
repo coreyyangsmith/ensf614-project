@@ -72,7 +72,7 @@ const Stars = () => {
 		const colorString = "rgb(" + r + "," + g + "," + b + ")"
 
 		return (
-			<sprite position={[value.position.x,value.position.y,value.position.z]} scale={[value.obj.scale.x,value.obj.scale.y,value.obj.scale.z]} id={value.uuid}>
+			<sprite position={[value.position.x,value.position.y,value.position.z]} scale={[value.obj.scale.x,value.obj.scale.y,value.obj.scale.z]} key={value.obj.uuid}>
 				<spriteMaterial map={texture} color={colorString}/>
 			</sprite>
 		);

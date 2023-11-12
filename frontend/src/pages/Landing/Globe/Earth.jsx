@@ -54,7 +54,6 @@ import gsap from 'gsap';
 
 const Earth = (props) => {
 	const { scene } = useThree();
-	const globeRef = useRef < Mesh > null;
 	const lat = 51.0447
 	const lon = -114.0719
 
@@ -84,7 +83,7 @@ const Earth = (props) => {
 		scene.remove(scene.getObjectByName("Earth"))
 
 	scene.renderOrder = 0;
-	//console.log(scene)
+	console.log(scene)
 
 	if (props.data) {
 		const results = props.data;

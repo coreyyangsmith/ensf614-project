@@ -39,7 +39,7 @@ const CanvasElement = (props) => {
 				style={{ position: 'absolute' }}
 				resize={{ scroll: false, debounce: 200 }}
 			>
-				<Suspense fallback={<h1>Loading profile...</h1>}>
+				<Suspense>
 
 					<Scene data={props.data} toggle={props.toggle}/>
 				</Suspense>

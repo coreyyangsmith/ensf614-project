@@ -36,7 +36,7 @@ const Scene = (props) => {
 			<Earth data={props.data} toggle={props.toggle}/>
 			<Stars/>
 			
-			{/* <Plane/> */}
+			{/* <Plane toggle={props.toggle}/> */}
 			
 			{/* <Environment
 				files="src/assets/galaxy.hdr"
