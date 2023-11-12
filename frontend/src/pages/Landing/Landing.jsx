@@ -48,7 +48,7 @@ const Landing = () => {
 					background: '',
 				}}
 			/>
-			<Paper
+			{/* <Paper
 				sx={{
 					height: '100vh',
 					width: '100vw',
@@ -58,7 +58,7 @@ const Landing = () => {
 				}}
 			>
 				<FlightSelectionMain destinations={destinations} setToggle={setToggle}/>
-			</Paper>
+			</Paper> */}
 
 			<CanvasElement data={destinations} toggle={toggle}/>
 		</>

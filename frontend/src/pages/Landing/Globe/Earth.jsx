@@ -84,7 +84,7 @@ const Earth = (props) => {
 		scene.remove(scene.getObjectByName("Earth"))
 
 	scene.renderOrder = 0;
-	console.log(scene)
+	//console.log(scene)
 
 	if (props.data) {
 		const results = props.data;
@@ -95,7 +95,7 @@ const Earth = (props) => {
 		// var labelData = GetLabelData(arcsData);
 		// var ringData = GetRippleData(arcsData);
 
-		console.log('draw globe');
+		console.log('Drawing Globe');
 
 		const group = new THREE.Group();
 
@@ -173,6 +173,7 @@ const Earth = (props) => {
 			requestAnimationFrame(animate);
 		})();
 	}
+
 };
 //  EXPORTS
 //-------------------------------------------------------//
