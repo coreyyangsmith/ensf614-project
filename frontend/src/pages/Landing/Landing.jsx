@@ -52,7 +52,7 @@ const Landing = () => {
 				sx={{
 					height: '100vh',
 					width: '100vw',
-					zIndex: '1',
+					zIndex: `${toggle ? -2 : 1}`,
 					position: 'absolute',
 					background: 'transparent',
 				}}

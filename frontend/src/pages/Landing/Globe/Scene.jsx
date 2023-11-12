@@ -14,14 +14,13 @@
 
 //  IMPORTS
 //-------------------------------------------------------//
+// React Imports
 import React, { Suspense } from 'react';
 
 // My Components
 import Earth from './Earth';
 import Stars from '../Galaxy/Stars';
 import Plane from '../Plane/Plane';
-
-
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -36,7 +35,7 @@ const Scene = (props) => {
 			<Earth data={props.data} toggle={props.toggle}/>
 			<Stars/>
 			
-			{/* <Plane toggle={props.toggle}/> */}
+			<Plane toggle={props.toggle}/>
 			
 			{/* <Environment
 				files="src/assets/galaxy.hdr"

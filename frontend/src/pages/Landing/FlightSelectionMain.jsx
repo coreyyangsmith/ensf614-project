@@ -33,7 +33,7 @@ const frostedGlassSX = {
 	backdropFilter: 'blur(5px)',
 	display: 'flex',
 	padding: '16px',
-	zIndex: "10",
+	zIndex: "-100",
 	width: "600px",
 	marginLeft: "15vw",
 	marginTop: "25vh"

@@ -46,6 +46,8 @@ import {
 	GLOBE_X_POSITION,
 } from './config.js';
 
+import { CAMERA_ZOOM } from "../../../utils/SceneUtilities.js"
+
 //  Gsap
 import gsap from 'gsap';
 
@@ -74,7 +76,7 @@ const Earth = (props) => {
 
 			gsap.to(scene.getObjectByName("Earth").position, {
 				duration: 8,
-				z: 65,
+				z: CAMERA_ZOOM,
 			})
 		}
 	});
@@ -165,7 +167,6 @@ const Earth = (props) => {
 		group.position.x = GLOBE_X_POSITION;
 
 		scene.add(group);
-
 
 		(function animate() {
 			group.rotation.y += GLOBE_Y_ROTATION_SPEED * (Math.PI / 180);
