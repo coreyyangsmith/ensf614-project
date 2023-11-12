@@ -1,20 +1,45 @@
-import { useThree } from '@react-three/fiber';
+//-------------------------------------------------------//
+//  File Name: Stars.jsx
+//  Description: Galaxy Generator
+//
+//  Requirements:
+//      - CanvasElement.jsx
+//
+//  Renders:
+//      - Star Cluster
+//
+// Created By: Corey Yang-Smith
+// Date: November 11th, 2023
+//-------------------------------------------------------//
+
+//  IMPORTS
+//-------------------------------------------------------//
+
+// React Import
 import React from 'react';
+
+// Config
 import { starTypes } from './starDistributions.js';
-import { gaussianRandom } from '../../../utils/GalaxyUtilities.js';
 import {
 	CORE_X_DIST,
 	CORE_Y_DIST,
 	GALAXY_THICKNESS,
+	NUM_STARS,
 	BLOOM_LAYER,
-} from '../../../utils/GalaxyUtilities.js';
+} from './config.js'
+
+// Utility Functions
+import { gaussianRandom } from '../../../utils/GalaxyUtilities.js';
+
+
+//  MAIN FUNCTION
+//-------------------------------------------------------//
+
+// Load Textures
 const texture = new THREE.TextureLoader().load('src/assets/star.png');
 const materials = starTypes.color.map(
 	(color) => new THREE.SpriteMaterial({ map: texture, color: color })
 );
-import * as THREE from 'three';
-
-const NUM_STARS = 5000;
 
 const Stars = () => {
 	class Star {
@@ -38,6 +63,7 @@ const Stars = () => {
 		}
 	}
 
+	// Randomly Generate Stars 
 	var stars = generateObject(NUM_STARS, (pos) => new Star(pos));
 
 	function generateObject(numStars, generator) {
@@ -55,6 +81,7 @@ const Stars = () => {
 		return objects;
 	}
 
+	// Set Star Properties
 	stars.forEach((el) => {
 		let star = new THREE.Sprite(materials[el.starType]);
 		star.layers.set(BLOOM_LAYER);
@@ -65,6 +92,7 @@ const Stars = () => {
 		el.obj = star;
 	});
 
+	// Push Star Objects to Scene
 	const mapStars = stars.map((value, index) => {
 		const r = Math.floor(value.obj.material.color.r * 255)
 		const g = Math.floor(value.obj.material.color.g * 255)
@@ -81,5 +109,8 @@ const Stars = () => {
 	});
 	return <>{mapStars}</>;
 };
+
+//  EXPORTS
+//-------------------------------------------------------//
 
 export default Stars;
