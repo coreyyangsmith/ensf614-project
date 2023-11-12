@@ -64,11 +64,11 @@ const Earth = (props) => {
 		}
 	});
 
-	while (scene.children.length) {
-		scene.remove(scene.children[0]);
-	}
+	if (scene.getObjectByName("Earth"))
+		scene.remove(scene.getObjectByName("Earth"))
 
 	scene.renderOrder = 0;
+	console.log(scene)
 
 	if (props.data) {
 		const results = props.data;
@@ -140,12 +140,14 @@ const Earth = (props) => {
 
 		group.add(Globe);
 		group.add(Clouds);
+		group.add(Lights);
+		group.name = "Earth"
 
 		group.rotation.x = GLOBE_X_TILT * (Math.PI / 180);
 		group.position.x = GLOBE_X_POSITION;
 
 		scene.add(group);
-		scene.add(Lights);
+
 
 		(function animate() {
 			group.rotation.y += GLOBE_Y_ROTATION_SPEED * (Math.PI / 180);

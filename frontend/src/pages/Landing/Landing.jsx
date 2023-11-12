@@ -43,9 +43,9 @@ const Landing = () => {
 					width: '100vw',
 					zIndex: '-1',
 					position: 'absolute',
-					background: '#121212',
+					background: '',
 				}}
-			></Paper>
+			/>
 			<Paper
 				sx={{
 					height: '100vh',

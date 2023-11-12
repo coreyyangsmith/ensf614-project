@@ -18,11 +18,9 @@ import React, { Suspense } from 'react';
 
 // My Components
 import Earth from './Earth';
-//import { OrbitControls } from '@react-three/drei';
+import Stars from '../Galaxy/Stars';
 
-//  CONSTANTS
-//-------------------------------------------------------//
-const ORBIT_ROTATION = false;
+
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -34,6 +32,8 @@ const Scene = (props) => {
 	return (
 		<>
 			<Earth data={props.data} />
+			<Stars/>
+			
 			{/* <Environment
 				files="src/assets/galaxy.hdr"
 				background
