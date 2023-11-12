@@ -70,9 +70,6 @@ const Stars = () => {
 		const g = Math.floor(value.obj.material.color.g * 255)
 		const b = Math.floor(value.obj.material.color.b * 255)
 		const colorString = "rgb(" + r + "," + g + "," + b + ")"
-		console.log(value)
-		console.log(value.obj.scale.x)
-		
 
 		return (
 			<sprite position={[value.position.x,value.position.y,value.position.z]} scale={[value.obj.scale.x,value.obj.scale.y,value.obj.scale.z]} id={value.uuid}>

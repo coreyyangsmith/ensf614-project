@@ -31,7 +31,7 @@ const Scene = (props) => {
 
 	return (
 		<>
-			<Earth data={props.data} />
+			<Earth data={props.data} toggle={props.toggle}/>
 			<Stars/>
 			
 			{/* <Environment

@@ -24,11 +24,12 @@ import { Paper, Typography, Stack } from '@mui/material';
 // My Component Imports
 import FlightSelectionButton from './FlightSelectionButton';
 import FlightSelectionForm from './FlightSelectionForm';
+import TestButton from './TestButton';
 
 //  STYLES
 //-------------------------------------------------------//
 const frostedGlassSX = {
-	background: 'rgba(255,255,255,.15)',
+	background: 'rgba(255,255,255,.25)',
 	backdropFilter: 'blur(5px)',
 	display: 'flex',
 	padding: '16px',
@@ -58,6 +59,7 @@ const FlightSelectionMain = (props) => {
 
 				/>
 				<FlightSelectionButton formFilled={formFilled} />
+				<TestButton setToggle={props.setToggle} />
 			</Stack>
 		</Paper>
 	);

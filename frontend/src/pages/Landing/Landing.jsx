@@ -16,7 +16,7 @@
 //-------------------------------------------------------//
 
 // React Import
-import React from 'react';
+import React, { useState } from 'react';
 
 // MUI Import
 import { Paper } from '@mui/material';
@@ -33,6 +33,8 @@ import { useDestinations } from '../../hooks/useDestinations';
 //-------------------------------------------------------//
 const Landing = () => {
 	const { destinations } = useDestinations();
+
+	const [toggle, setToggle] = useState(false)
 
 	return (
 		<>
@@ -55,10 +57,10 @@ const Landing = () => {
 					background: 'transparent',
 				}}
 			>
-				<FlightSelectionMain destinations={destinations} />
+				<FlightSelectionMain destinations={destinations} setToggle={setToggle}/>
 			</Paper>
 
-			<CanvasElement data={destinations} />
+			<CanvasElement data={destinations} toggle={toggle}/>
 		</>
 	);
 };

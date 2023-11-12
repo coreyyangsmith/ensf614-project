@@ -33,7 +33,7 @@ import {
 } from '../../../utils/GlobeUtilities.js';
 
 // My Assets
-import map from '../../../assets/earth-light.jpg';
+import map from '../../../assets/earht-light-high-res.jpg';
 
 // Utilities
 import {
@@ -46,10 +46,8 @@ import {
 	GLOBE_X_POSITION,
 } from './config.js';
 
-//  CONSTANTS
-//-------------------------------------------------------//
-
-// Cloud
+//  Gsap
+import gsap from 'gsap';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -57,10 +55,28 @@ import {
 const Earth = (props) => {
 	const { scene } = useThree();
 	const globeRef = useRef < Mesh > null;
+	const lat = 51.0447
+	const lon = -114.0719
 
 	useFrame(() => {
-		if (!globeRef.current) {
-			return;
+		if (props.toggle) {
+
+			gsap.to(scene.getObjectByName("Earth").position, {
+				duration: 4,
+				x: 0,
+			})
+
+			gsap.to(scene.getObjectByName("Earth").rotation, {
+				duration: 6,
+				x: (Math.PI / 180 * lat),
+				y: -(Math.PI / 180 * lon),
+				z: 0
+			})
+
+			gsap.to(scene.getObjectByName("Earth").position, {
+				duration: 8,
+				z: 65,
+			})
 		}
 	});
 
@@ -134,6 +150,9 @@ const Earth = (props) => {
 			Clouds.rotation.y += (CLOUDS_Y_ROTATION_SPEED * Math.PI) / 180;
 			requestAnimationFrame(rotateClouds);
 		})();
+		
+		const axes = new THREE.AxesHelper(length=500)
+		group.add(axes)
 
 		const Lights = new THREE.AmbientLight();
 		Lights.intensity = 3;

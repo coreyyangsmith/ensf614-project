@@ -41,7 +41,7 @@ const CanvasElement = (props) => {
 			>
 				<Suspense fallback={<h1>Loading profile...</h1>}>
 
-					<Scene data={props.data} />
+					<Scene data={props.data} toggle={props.toggle}/>
 				</Suspense>
 			</Canvas>
 		</div>
