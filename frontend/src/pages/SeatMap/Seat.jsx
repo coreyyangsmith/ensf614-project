@@ -16,16 +16,34 @@
 //-------------------------------------------------------//
 
 // React Import
-import React from 'react'
+import { Button, Paper } from '@mui/material';
+import React, { useState } from 'react';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
-const Seat = () => {
-  return (
-    <div>Seat</div>
-  )
-}
+
+const Seat = (props) => {
+	if (props.available) {
+		return (
+			<Button
+				size="small"
+				sx={{ width: '60px', height: '60px', background: '#045200' }}
+			>
+				O
+			</Button>
+		);
+	} else {
+		return (
+			<Button
+				sx={{ width: '60px', height: '60px', background: '#240000' }}
+				disabled
+			>
+				X
+			</Button>
+		);
+	}
+};
 
 //  EXPORTS
 //-------------------------------------------------------//
-export default Seat
+export default Seat;

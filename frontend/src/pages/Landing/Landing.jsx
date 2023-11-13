@@ -19,7 +19,7 @@
 import React, { useState } from 'react';
 
 // MUI Import
-import { Button, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 
 // Component Imports
 import NavBar from '../../components/NavBar';
@@ -28,6 +28,7 @@ import CanvasElement from './Globe/CanvasElement';
 
 // Custom Hooks
 import { useDestinations } from '../../hooks/useDestinations';
+import FlightDeck from '../SeatMap/FlightDeck';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -57,7 +58,9 @@ const Landing = () => {
 					background: 'transparent',
 				}}
 			>
+				<FlightDeck sx={{zIndex: -100}}/>
 				<FlightSelectionMain destinations={destinations} setToggle={setToggle}/>
+				
 			</Paper>
 
 			<CanvasElement data={destinations} toggle={toggle}/>
