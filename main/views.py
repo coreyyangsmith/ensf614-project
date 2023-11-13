@@ -63,3 +63,21 @@ def destinations_list(request):
         #print(data)
         serializer = DestinationSerializer(data, context={'request': request}, many=True)
         return Response(serializer.data)
+    
+
+@api_view(['GET'])
+def flights_list(request):
+    if request.method == 'GET':
+        data = Flight.objects.all()
+        #print(data)
+        serializer = FlightSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)    
+    
+
+@api_view(['GET'])
+def seats_list(request):
+    if request.method == 'GET':
+        data = Seat.objects.all()
+        #print(data)
+        serializer = SeatSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)        

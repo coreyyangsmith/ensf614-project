@@ -23,9 +23,12 @@ class Aircraft(models.Model): # Todo
         UNAVAILABLE = "UNV", _('Unavailable')                        
 
     type = models.CharField(max_length=100)
-    capacity = models.IntegerField(default=0)
+    rows = models.PositiveSmallIntegerField()
+    seat_columns = models.PositiveSmallIntegerField()
+    seat_divisions = models.PositiveSmallIntegerField()
+
     status = models.CharField(max_length=3, choices=AirplaneStatus.choices, default=AirplaneStatus.AVAILABLE)
-    amount = models.FloatField()
+    amount = models.FloatField() # base cost of flight
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
@@ -38,7 +41,8 @@ class Seat(models.Model): # Todo
 
     type = models.CharField(max_length=3, choices=SeatType.choices, default=SeatType.ORDINARY)
     amount = models.DecimalField(max_digits=5, decimal_places=2) # eg. $999.99
-    multiplier = models.DecimalField(max_digits=3, decimal_places=2) # eg. 1.25x
+    multiplier = models.DecimalField(max_digits=3, decimal_places=2) # eg. 1x for ordinary, 1.4x for comfort, 2x for business
+    available = models.BooleanField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)   

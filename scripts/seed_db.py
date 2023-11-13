@@ -24,7 +24,10 @@ import scripts.seeding.initialize as initialize
 #   MAIN FUNCTION
 #-------------------------------------------------------#
 def run():
-    print("# -- Begin Seeding -- #")    
+    print("#######################")  
+    print("# -- Begin Seeding -- #")  
+    print("#######################")  
+
     print("\nDeleting objects...")
     # Step 1: Wipe current DB
     Flight.objects.all().delete()
@@ -42,8 +45,9 @@ def run():
     destination.run()
     print("Database successfully populated!")
 
+    print("##########################")  
     print("# -- Seeding Complete -- #")
-
+    print("##########################")  
 
 
 

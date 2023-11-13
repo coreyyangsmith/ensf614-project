@@ -24,8 +24,12 @@ from . import views
 #   MAIN FUNCTION
 #-------------------------------------------------------#
 
+# www.airline.com/
+
 urlpatterns = [
-    path('', views.MainView),
-    re_path(r'^api/crews/$', views.crews_list),
+    path('', views.MainView), # www.airline.com/
+    re_path(r'^api/crews/$', views.crews_list), # www.airline.com/api/crews/
     re_path(r'^api/destinations/$', views.destinations_list),
+    re_path(r'^api/flights/$', views.flights_list),    
+    re_path(r'^api/seats/$', views.seats_list),        
 ]

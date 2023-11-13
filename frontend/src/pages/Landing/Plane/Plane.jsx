@@ -52,19 +52,18 @@ export default function Plane(props) {
 						duration: 5,
 						ease: 'none',
 					},
-					'>+4'
+					'>2'
 				)
                 .to(
 					obj.position,
 					{
 						x: 10,
 						y: 0,
-						z: PLANE_ELEVATION,
+						z: PLANE_ELEVATION + 10,
 						duration: 3,
-                        delay: 13,
-						ease: 'expo.out',
+						ease: 'expo.in',
 					},
-					'=+2'
+					'>2'
 				)
 
 			console.log(obj);

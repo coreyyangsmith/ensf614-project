@@ -63,20 +63,21 @@ const Earth = (props) => {
 		if (props.toggle) {
 
 			gsap.to(scene.getObjectByName("Earth").position, {
-				duration: 4,
+				duration: 2,
 				x: 0,
 			})
 
 			gsap.to(scene.getObjectByName("Earth").rotation, {
-				duration: 6,
+				duration: 4,
 				x: (Math.PI / 180 * lat),
 				y: -(Math.PI / 180 * lon),
-				z: 0
+				z: 0,
 			})
 
 			gsap.to(scene.getObjectByName("Earth").position, {
-				duration: 8,
+				duration: 4,
 				z: CAMERA_ZOOM,
+				ease: "none",
 			})
 		}
 	});

@@ -31,6 +31,8 @@ import {
 // Utility Functions
 import { gaussianRandom } from '../../../utils/GalaxyUtilities.js';
 
+// Three JS
+import * as THREE from "three";
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
