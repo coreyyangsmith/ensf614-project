@@ -21,17 +21,22 @@ class Aircraft(models.Model): # Todo
         RESERVED = "RES", _('Reserved')
         MAINTENANCE = "MTN", _('Maintenance')
         UNAVAILABLE = "UNV", _('Unavailable')                        
-
+    company = models.CharField(max_length=50)
     type = models.CharField(max_length=100)
-    rows = models.PositiveSmallIntegerField()
-    seat_columns = models.PositiveSmallIntegerField()
-    seat_divisions = models.PositiveSmallIntegerField()
+
+    capacity = models.PositiveSmallIntegerField() # eg. 500
+    seat_rows = models.PositiveSmallIntegerField() # eg. 34
+    seat_columns = models.CharField(max_length=10) # eg. 3-4-3, 3-3, 2-4-2, etc
 
     status = models.CharField(max_length=3, choices=AirplaneStatus.choices, default=AirplaneStatus.AVAILABLE)
-    amount = models.FloatField() # base cost of flight
+    fuel_per_km = models.DecimalField(max_digits=4, decimal_places=2) # will dictate base cost of flight (fuel/km * km / #seats) 
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
+
+    def __str__(self):
+        return str(self.pk) + "-" + self.company + " " + self.type 
+
 
 class Seat(models.Model): # Todo
     class SeatType(models.TextChoices):
@@ -42,10 +47,17 @@ class Seat(models.Model): # Todo
     type = models.CharField(max_length=3, choices=SeatType.choices, default=SeatType.ORDINARY)
     amount = models.DecimalField(max_digits=5, decimal_places=2) # eg. $999.99
     multiplier = models.DecimalField(max_digits=3, decimal_places=2) # eg. 1x for ordinary, 1.4x for comfort, 2x for business
+    row_position = models.PositiveSmallIntegerField()
+    column_position = models.PositiveSmallIntegerField()    
     available = models.BooleanField()
+
+    aircraft_ref = models.ForeignKey(Aircraft, null=False, blank=False, on_delete=models.CASCADE)    
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)   
+
+    def __str__(self):
+        return str(self.pk) + "-" + self.aircraft_ref.type + " " + self.type + " [" + str(self.column_position) + "," + str(self.row_position) + "]"    
 
 
 class Destination(models.Model): # Complete

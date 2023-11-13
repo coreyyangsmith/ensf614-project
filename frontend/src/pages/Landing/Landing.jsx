@@ -19,7 +19,7 @@
 import React, { useState } from 'react';
 
 // MUI Import
-import { Paper } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 
 // Component Imports
 import NavBar from '../../components/NavBar';
