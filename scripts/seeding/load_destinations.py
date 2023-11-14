@@ -21,20 +21,20 @@ import pandas as pd
 #   MAIN FUNCTION
 #-------------------------------------------------------#
 
-DATA_PATH = "scripts/seeding/data/worldcities.csv"
+DATA_PATH = "scripts/seeding/data/destinations.csv"
 
 def run():
     count = 0
 
     df = pd.read_csv(DATA_PATH, header=None)
-    columns = ['Code', 'Country', 'City', 'Latitude', 'Longitude']
+    columns = ['Airport', 'Latitude', 'Longitude', 'Airport_Code', 'Country_Code']
 
     df.columns = columns
     for index, row in df.iterrows():
         destination = Destination.objects.get_or_create(
-            city=row['City'],
-            country=row['Country'],
-            country_code=row['Code'],
+            name=row['Airport'],
+            airport_code=row['Airport_Code'],
+            country_code=row['Country_Code'],
             latitude=row['Latitude'],
             longitude=row['Longitude']
         )    

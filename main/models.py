@@ -61,17 +61,17 @@ class Seat(models.Model): # Todo
 
 
 class Destination(models.Model): # Complete
-    city = models.CharField(max_length=75)
-    country = models.CharField(max_length=75)
+    name = models.CharField(max_length=100)
+    airport_code = models.CharField(max_length=3)
     country_code = models.CharField(max_length=3)
-    latitude = models.DecimalField(max_digits=7, decimal_places=4) # eg. +/- 123.4567
-    longitude = models.DecimalField(max_digits=7, decimal_places=4) # eg. +/- 123.4567
+    latitude = models.DecimalField(max_digits=10, decimal_places=7) # eg. +/- 123.4567
+    longitude = models.DecimalField(max_digits=10, decimal_places=7) # eg. +/- 123.4567
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)      
 
     def __str__(self):
-        return self.country_code + " | " + self.country + ", " + self.city 
+        return self.country_code + " | " + self.name + ", (" + self.airport_code + ")"
 
 
 class Crew(models.Model): # Complete
