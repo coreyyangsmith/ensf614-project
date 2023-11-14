@@ -58,9 +58,11 @@ const EarthAnimated = (props) => {
 	const { scene } = useThree();
 
 	console.log(scene)
-	const lat = fromObj.latitude;
-	const lon = fromObj.longitude;
-
+	const startLat = fromObj.latitude;
+	const startLon = fromObj.longitude;
+	const endLat = toObj.latitude;
+	const endLon = toObj.longitude;
+	
 	useFrame(() => {
 		if (props.toggle) {
 			gsap.to(scene.getObjectByName('Earth').position, {
@@ -70,8 +72,8 @@ const EarthAnimated = (props) => {
 
 			gsap.to(scene.getObjectByName('Earth').rotation, {
 				duration: 4,
-				x: (Math.PI / 180) * lat,
-				y: -((Math.PI / 180) * lon),
+				x: (Math.PI / 180) * startLat,
+				y: -((Math.PI / 180) * startLon),
 				z: 0,
 			});
 
@@ -80,6 +82,8 @@ const EarthAnimated = (props) => {
 				z: CAMERA_ZOOM,
 				ease: 'none',
 			});
+
+
 		}
 	});
 
@@ -89,11 +93,9 @@ const EarthAnimated = (props) => {
 	scene.renderOrder = 0;
 
 	if (props.data) { 
-		const results = props.data;
-
 		const arcsData = GetArcsData(fromObj, toObj);
 		const labelData = GetLabelData(fromObj, toObj);
-		const ringData = GetRippleData(fromObj, toObj);
+		//const ringData = GetRippleData(fromObj, toObj);
 
 		console.log('Drawing Animated Globe');
 
@@ -155,8 +157,8 @@ const EarthAnimated = (props) => {
 			requestAnimationFrame(rotateClouds);
 		})();
 
-		const axes = new THREE.AxesHelper((length = 500));
-		group.add(axes);
+		// const axes = new THREE.AxesHelper((length = 500));
+		// group.add(axes);
 
 		const Lights = new THREE.AmbientLight();
 		Lights.intensity = 3;

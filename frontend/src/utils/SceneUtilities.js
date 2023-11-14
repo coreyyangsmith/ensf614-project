@@ -1,5 +1,5 @@
 // CAMERA
-export const CAMERA_ZOOM = 70;
+export const CAMERA_ZOOM = 65;
 
 // PLANE
 export const PLANE_ELEVATION = 100 + CAMERA_ZOOM;

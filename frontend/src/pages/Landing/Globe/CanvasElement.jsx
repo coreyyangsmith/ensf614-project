@@ -26,12 +26,13 @@ import Scene from './Scene';
 
 // Utilities
 import { CAMERA_DISTANCE } from './config.js';
+import { OrbitControls } from '@react-three/drei';
+
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const CanvasElement = (props) => {
 
-	
 	return (
 		<div style={{ width: '500px', height: '500px' }}>
 			<Canvas
@@ -44,6 +45,12 @@ const CanvasElement = (props) => {
 				style={{ position: 'absolute' }}
 				resize={{ scroll: false, debounce: 200 }}
 			>
+				<OrbitControls
+					enableDamping={false}
+					enablePan={false}
+					enableZoom={false}
+					enableRotate={false}
+				/>
 				<Suspense>
 					<Scene
 						data={props.data}
@@ -52,6 +59,7 @@ const CanvasElement = (props) => {
 						froimObj={props.fromObj}
 					/>
 				</Suspense>
+
 			</Canvas>
 		</div>
 	);
