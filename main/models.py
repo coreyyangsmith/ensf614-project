@@ -63,7 +63,6 @@ class Seat(models.Model): # Todo
 class Destination(models.Model): # Complete
     name = models.CharField(max_length=100)
     airport_code = models.CharField(max_length=3)
-    country_code = models.CharField(max_length=3)
     latitude = models.DecimalField(max_digits=10, decimal_places=7) # eg. +/- 123.4567
     longitude = models.DecimalField(max_digits=10, decimal_places=7) # eg. +/- 123.4567
 

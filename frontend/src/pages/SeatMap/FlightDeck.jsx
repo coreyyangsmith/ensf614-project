@@ -19,29 +19,37 @@ import React from 'react';
 
 // My Component Import
 import Seat from './Seat';
-import { Paper } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
-const FlightDeck = () => {
+const FlightDeck = (props) => {
+	const frostedGlassSX = {
+		background: 'rgba(255,255,255,.3)',
+		display: 'flex',
+		padding: '16px',
+		zIndex: '100',
+		width: '100px',
+		height: '500px',
+		marginLeft: '50px',
+		marginTop: '50px',
+	};
 
-    const frostedGlassSX = {
-        background: 'rgba(255,255,255,.3)',
-        display: 'flex',
-        padding: '16px',
-        zIndex: '100',
-        width: '100px',
-        height: '100px',
-        marginLeft: '50px',
-        marginTop: '50px',
-    };
+    console.log(props.toObj)
+    console.log(props.fromObj)
 
 	return (
-		<Paper sx={{frostedGlassSX}}>
-			<Seat available={true}/>
-            <Seat available={false}/>
-            <Seat available={true}/>
-            <Seat available={true}/>
+		<Paper sx={{ frostedGlassSX }}>
+			<h1>Hello! Selected Airports: </h1>
+            <h1>From: </h1>
+			<p>{props.fromObj.name}</p>
+            <h1>To: </h1>
+			<p>{props.toObj.name}</p>
+
+			<Seat />
+			<Seat />
+			<Seat />
+			<Seat />
 		</Paper>
 	);
 };

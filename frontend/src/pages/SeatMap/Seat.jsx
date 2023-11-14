@@ -23,11 +23,18 @@ import React, { useState } from 'react';
 //-------------------------------------------------------//
 
 const Seat = (props) => {
-	if (props.available) {
+	const [available, setAvailable] = useState(true)
+
+	function handleChange() {
+		setAvailable(!available)
+	}
+
+	if (available) {
 		return (
 			<Button
 				size="small"
 				sx={{ width: '60px', height: '60px', background: '#045200' }}
+				onClick={(e) => handleChange(available)}
 			>
 				O
 			</Button>

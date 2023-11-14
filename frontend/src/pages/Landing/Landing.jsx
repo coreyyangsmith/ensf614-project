@@ -16,10 +16,10 @@
 //-------------------------------------------------------//
 
 // React Import
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 // MUI Import
-import { Paper } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 
 // Component Imports
 import NavBar from '../../components/NavBar';
@@ -29,16 +29,24 @@ import CanvasElement from './Globe/CanvasElement';
 // Custom Hooks
 import { useDestinations } from '../../hooks/useDestinations';
 import FlightDeck from '../SeatMap/FlightDeck';
+import { fromPixels } from '@tensorflow/tfjs-core/dist/ops/browser';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
+
+export const Context = React.createContext()
+
 const Landing = () => {
 	const { destinations } = useDestinations();
 
-	const [toggle, setToggle] = useState(false)
+	const [toggle, setToggle] = useState(false);
+
+	const [fromObj, setFromObj] = useState([]);
+	const [toObj, setToObj] = useState([]);
+
 
 	return (
-		<>
+		<Context.Provider value={[fromObj, setFromObj, toObj, setToObj]}>
 			<NavBar />
 			<Paper
 				sx={{
@@ -58,13 +66,18 @@ const Landing = () => {
 					background: 'transparent',
 				}}
 			>
-				<FlightDeck sx={{zIndex: -100}}/>
-				<FlightSelectionMain destinations={destinations} setToggle={setToggle}/>
-				
+				<FlightDeck sx={{ zIndex: -100 }} toObj={toObj} fromObj={fromObj}/>
+				<FlightSelectionMain
+					destinations={destinations}
+					setToggle={setToggle}
+				/>
 			</Paper>
 
-			<CanvasElement data={destinations} toggle={toggle}/>
-		</>
+			<CanvasElement
+				data={destinations}
+				toggle={toggle}
+			/>
+		</Context.Provider>
 	);
 };
 

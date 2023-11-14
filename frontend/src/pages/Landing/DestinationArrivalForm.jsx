@@ -33,6 +33,7 @@ const DestinationArrivalForm = (props) => {
 				selectedItem={props.selectedHome}
 				setSelectedItem={props.setSelectedHome}
 				where={props.where}
+				setObj={props.setObj}
 			/>
 			<DestinationCalendar
 				depLabel={props.depLabel}

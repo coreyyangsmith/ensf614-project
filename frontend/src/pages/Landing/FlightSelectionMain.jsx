@@ -33,18 +33,17 @@ const frostedGlassSX = {
 	backdropFilter: 'blur(5px)',
 	display: 'flex',
 	padding: '16px',
-	zIndex: "-100",
-	width: "600px",
-	marginLeft: "15vw",
-	marginTop: "25vh"
+	zIndex: '-100',
+	width: '600px',
+	marginLeft: '15vw',
+	marginTop: '25vh',
 };
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
 const FlightSelectionMain = (props) => {
-	
-	const formFilled = useRef(false)
+	const formFilled = useRef(false);
 
 	return (
 		<Paper sx={frostedGlassSX}>
@@ -56,7 +55,6 @@ const FlightSelectionMain = (props) => {
 				<FlightSelectionForm
 					formFilled={formFilled}
 					destinations={props.destinations}
-
 				/>
 				<FlightSelectionButton formFilled={formFilled} />
 				<TestButton setToggle={props.setToggle} />

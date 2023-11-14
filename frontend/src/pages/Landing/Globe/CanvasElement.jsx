@@ -25,23 +25,32 @@ import { Canvas } from '@react-three/fiber';
 import Scene from './Scene';
 
 // Utilities
-import {
-	CAMERA_DISTANCE
-} from './config.js';
+import { CAMERA_DISTANCE } from './config.js';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const CanvasElement = (props) => {
+
+	
 	return (
 		<div style={{ width: '500px', height: '500px' }}>
 			<Canvas
-				camera={{ fov: 60, near: 0.1, far: 5000, position: [0, 0, CAMERA_DISTANCE] }}
+				camera={{
+					fov: 60,
+					near: 0.1,
+					far: 5000,
+					position: [0, 0, CAMERA_DISTANCE],
+				}}
 				style={{ position: 'absolute' }}
 				resize={{ scroll: false, debounce: 200 }}
 			>
 				<Suspense>
-
-					<Scene data={props.data} toggle={props.toggle}/>
+					<Scene
+						data={props.data}
+						toggle={props.toggle}
+						toObj={props.toObj}
+						froimObj={props.fromObj}
+					/>
 				</Suspense>
 			</Canvas>
 		</div>

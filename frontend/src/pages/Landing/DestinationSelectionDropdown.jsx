@@ -25,11 +25,17 @@ import { Autocomplete, TextField, createFilterOptions } from '@mui/material';
 //-------------------------------------------------------//
 
 const DestinationSelectionDropdown = (props) => {
+
+
 	const filterOptions = createFilterOptions({
 		ignoreCase: true,
 		matchFrom: 'start',
 		limit: 55,
 	});
+
+	function handleChange(event, values) {
+		props.setObj(values)
+	}
 
 	// Display Loading if Data not loaded
 	if (props.data.length == 0) {
@@ -50,7 +56,7 @@ const DestinationSelectionDropdown = (props) => {
 	return (
 		<Autocomplete
 			options={props.data}
-			getOptionLabel={(option) => `${option['country']}, ${option['city']}`}
+			getOptionLabel={(option) => `${option['airport_code']} | ${option['name']}`}
 			filterOptions={filterOptions}
 			renderInput={(params) => (
 				<TextField
@@ -59,6 +65,7 @@ const DestinationSelectionDropdown = (props) => {
 				/>
 			)}
 			sx={{ width: '300px' }}
+			onChange={handleChange}
 		/>
 	);
 };

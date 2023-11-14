@@ -27,14 +27,13 @@ def run():
     count = 0
 
     df = pd.read_csv(DATA_PATH, header=None)
-    columns = ['Airport', 'Latitude', 'Longitude', 'Airport_Code', 'Country_Code']
+    columns = ['Airport', 'Latitude', 'Longitude', 'Airport_Code']
 
     df.columns = columns
     for index, row in df.iterrows():
         destination = Destination.objects.get_or_create(
             name=row['Airport'],
             airport_code=row['Airport_Code'],
-            country_code=row['Country_Code'],
             latitude=row['Latitude'],
             longitude=row['Longitude']
         )    

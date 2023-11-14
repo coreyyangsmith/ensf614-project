@@ -15,25 +15,10 @@
 //  IMPORTS
 //-------------------------------------------------------//
 
-// React Import
-import React, { useRef } from 'react';
-
 // Three Globe
 import ThreeGlobe from 'three-globe';
-import { useThree, useFrame } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { Mesh } from 'three';
-
-// Utilities
-import {
-	GetArcsData,
-	GetRandomElements,
-	GetLabelData,
-	GetRippleData,
-} from '../../../utils/GlobeUtilities.js';
-
-// My Assets
-import map from '../../../assets/earht-light-high-res.jpg';
 
 // Utilities
 import {
@@ -46,56 +31,21 @@ import {
 	GLOBE_X_POSITION,
 } from './config.js';
 
-import { CAMERA_ZOOM } from "../../../utils/SceneUtilities.js"
+import { EARTH_MAP } from "../../../utils/SceneUtilities.js"
 
-//  Gsap
-import gsap from 'gsap';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
 const Earth = (props) => {
 	const { scene } = useThree();
-	const lat = 51.0447
-	const lon = -114.0719
-
-	useFrame(() => {
-		if (props.toggle) {
-
-			gsap.to(scene.getObjectByName("Earth").position, {
-				duration: 2,
-				x: 0,
-			})
-
-			gsap.to(scene.getObjectByName("Earth").rotation, {
-				duration: 4,
-				x: (Math.PI / 180 * lat),
-				y: -(Math.PI / 180 * lon),
-				z: 0,
-			})
-
-			gsap.to(scene.getObjectByName("Earth").position, {
-				duration: 4,
-				z: CAMERA_ZOOM,
-				ease: "none",
-			})
-		}
-	});
 
 	if (scene.getObjectByName("Earth"))
 		scene.remove(scene.getObjectByName("Earth"))
 
-	scene.renderOrder = 0;
-	console.log(scene)
 
 	if (props.data) {
 		const results = props.data;
-
-		// var randomElements = [];
-		// randomElements = GetRandomElements(results);
-		// var arcsData = GetArcsData(results, randomElements);
-		// var labelData = GetLabelData(arcsData);
-		// var ringData = GetRippleData(arcsData);
 
 		console.log('Drawing Globe');
 
@@ -104,34 +54,7 @@ const Earth = (props) => {
 		const Globe = new ThreeGlobe({
 			waitForGlobeReady: false,
 			animateIn: false,
-		}).globeImageUrl(map);
-
-		// .arcsData()
-		// .arcColor('color')
-		// .arcDashLength(1)
-		// .arcDashGap(3)
-		// .arcDashInitialGap(() => 1)
-		// .arcDashAnimateTime(1500)
-
-		// .ringsData(ringData)
-		// //.ringColor(() => colorInterpolator)
-		// .ringColor(() => '#14ffff')
-		// .ringMaxRadius('maxR')
-		// .ringPropagationSpeed('propagationSpeed')
-		// .ringRepeatPeriod('repeatPeriod')
-
-		// .labelsData(labelData)
-		// .labelText(
-		// 	(d) =>
-		// 		`${d.countryCode} (${Math.round(d.lat * 1e2) / 1e2}, ${
-		// 			Math.round(d.lng * 1e2) / 1e2
-		// 		}) \n ${d.cityName}, ${d.countryName}`
-		// )
-		// .labelSize('size')
-		// .labelDotRadius('dot')
-		// .labelDotOrientation(() => 'right')
-		// .labelColor('color')
-		// .labelResolution(10);
+		}).globeImageUrl(EARTH_MAP);
 
 		const Clouds = new THREE.Mesh(
 			new THREE.SphereGeometry(
