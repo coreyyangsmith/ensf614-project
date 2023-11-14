@@ -24,14 +24,14 @@ import { getRequest } from '../api/posts';
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
-export const useDestinations = () => {
+export const useAircrafts = () => {
 	const [aircrafts, setAircrafts] = useState([]);
 
 	const fetchData = async () => {
 		try {
 			const response = await getRequest('aircrafts/', '');
 			if (response && response.data) {
-				setAircraft(response.data);
+				setAircrafts(response.data);
 			}
 		} catch (err) {
 			if (err.response) {

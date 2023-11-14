@@ -24,14 +24,14 @@ import { getRequest } from '../api/posts';
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
-export const useDestinations = () => {
+export const useSeats = () => {
 	const [seats, setSeats] = useState([]);
 
 	const fetchData = async () => {
 		try {
 			const response = await getRequest('seats/', '');
 			if (response && response.data) {
-				setAircraft(response.data);
+				setSeats(response.data);
 			}
 		} catch (err) {
 			if (err.response) {

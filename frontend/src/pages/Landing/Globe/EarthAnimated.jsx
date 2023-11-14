@@ -58,24 +58,9 @@ import { useScroll } from '@react-three/drei';
 //-------------------------------------------------------//
 
 const EarthAnimated = (props) => {
-
-
 	const { scene } = useThree();
-	const ref = useRef(scene.getObjectByName('Earth'));
-	const tl = useRef();
-	const scroll = useScroll();
 
 	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
-
-	const startLat = fromObj.latitude;
-	const startLon = fromObj.longitude;
-
-	const endLat = toObj.latitude;
-	const endLon = toObj.longitude;
-
-	const midpoint = midPoint(startLat, startLon, endLat, endLon);
-	const midLat = midpoint[0];
-	const midLon = midpoint[1];
 
 	const arcsData = GetArcsData(fromObj, toObj);
 	const labelData = GetLabelData(fromObj, toObj);
