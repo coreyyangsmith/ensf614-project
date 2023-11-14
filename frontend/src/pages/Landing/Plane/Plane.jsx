@@ -11,7 +11,12 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 
 // Utilities/Constants
-import { PLANE_ELEVATION, PLANE_SCALE } from '../../../utils/SceneUtilities.js';
+import {
+	PLANE_ELEVATION,
+	PLANE_SCALE,
+	angleBetweenPoints,
+	angleBetweenPoints2
+} from '../../../utils/SceneUtilities.js';
 
 // My Context
 import { Context } from '../Landing.jsx';
@@ -25,10 +30,15 @@ export default function Plane(props) {
 
 	const scroll = useScroll();
 
-	// Import Object
-	const { nodes, materials } = useGLTF('./models//airplane.gltf');
+	const angleBetwewen = angleBetweenPoints2(
+		fromObj.latitude,
+		fromObj.longitude,
+		toObj.latitude,
+		toObj.longitude
+	);
 
-	// initial state
+	// Import Object
+	const { nodes, materials } = useGLTF('./models//scene.gltf');
 
 	// Axes Helper
 	// const axes = new THREE.AxesHelper(500);
@@ -39,7 +49,6 @@ export default function Plane(props) {
 
 		// Animation
 		// Initial State
-	
 
 		// Transition to Parked
 		tl.current.to(
@@ -48,7 +57,7 @@ export default function Plane(props) {
 				x: 0,
 				y: 0,
 				z: PLANE_ELEVATION + 5,
-				duration: 1,
+				duration: 2,
 				ease: 'none',
 			},
 			0
@@ -59,14 +68,24 @@ export default function Plane(props) {
 				x: PLANE_SCALE,
 				y: PLANE_SCALE,
 				z: PLANE_SCALE,
-				duration: 1,
+				duration: 2,
 				ease: 'none',
 			},
 			0
 		);
 
-		// Delay 1 second pause
-		// +1
+		// Rotating While Parked
+		tl.current.to(
+			ref.current.rotation,
+			{
+				x: (Math.PI / 180) * 90,
+				y: -((Math.PI / 180) * (angleBetwewen - 45)) % Math.PI,
+				z: (Math.PI / 180) * 0,
+				duration: 1,
+				ease: 'none',
+			},
+			2
+		);
 
 		// Transition to Flying
 		tl.current.to(
@@ -74,11 +93,11 @@ export default function Plane(props) {
 			{
 				x: 0,
 				y: 0,
-				z: PLANE_ELEVATION + 7,
+				z: PLANE_ELEVATION + 5,
 				duration: 1,
 				ease: 'none',
 			},
-			2
+			3
 		);
 		tl.current.to(
 			ref.current.scale,
@@ -87,9 +106,9 @@ export default function Plane(props) {
 				y: PLANE_SCALE * 4,
 				z: PLANE_SCALE * 4,
 				ease: 'none',
-				duration: 1
+				duration: 1,
 			},
-			2
+			3
 		);
 
 		// Delay 1 second pause
@@ -105,7 +124,7 @@ export default function Plane(props) {
 				duration: 1,
 				ease: 'none',
 			},
-			4
+			5
 		);
 		tl.current.to(
 			ref.current.scale,
@@ -116,10 +135,23 @@ export default function Plane(props) {
 				duration: 1,
 				ease: 'none',
 			},
-			4
+			5
 		);
 
-		// Fly Away
+		// Rotating While Parked (back to default)
+		tl.current.to(
+			ref.current.rotation,
+			{
+				x: (Math.PI / 180) * 90,
+				y: (Math.PI / 180) * 90,
+				z: (Math.PI / 180) * 0,
+				duration: 1,
+				ease: 'none',
+			},
+			6
+		);
+
+		// Parked to Fly Away
 		tl.current.to(
 			ref.current.position,
 			{
@@ -129,7 +161,7 @@ export default function Plane(props) {
 				duration: 1,
 				ease: 'none',
 			},
-			6
+			7
 		);
 		tl.current.to(
 			ref.current.scale,
@@ -140,19 +172,14 @@ export default function Plane(props) {
 				duration: 1,
 				ease: 'none',
 			},
-			6
-		);		
-
-
+			7
+		);
 	}, []);
 
 	useFrame(() => {
-		console.log(scene);
 		tl.current.seek(scroll.offset * tl.current.duration());
 	});
 
-	console.log(nodes);
-	console.log(materials);
 	return (
 		//initial condition
 		<group
@@ -191,4 +218,4 @@ export default function Plane(props) {
 	);
 }
 
-useGLTF.preload('./models/airplane.gltf');
+useGLTF.preload('./models/scene.gltf');

@@ -16,7 +16,7 @@
 //-------------------------------------------------------//
 
 // React Import
-import React, { useRef, useContext } from 'react';
+import React, { useRef, useContext, useLayoutEffect, useEffect } from 'react';
 
 // Three Globe
 import ThreeGlobe from 'three-globe';
@@ -43,68 +43,56 @@ import {
 	GLOBE_X_POSITION,
 } from './config.js';
 
-import { CAMERA_ZOOM, EARTH_MAP } from '../../../utils/SceneUtilities.js';
+import {
+	CAMERA_ZOOM,
+	EARTH_MAP,
+	midPoint,
+} from '../../../utils/SceneUtilities.js';
 
 //  Gsap
 import gsap from 'gsap';
 import { Context } from '../Landing.jsx';
+import { useScroll } from '@react-three/drei';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
 const EarthAnimated = (props) => {
-	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
+
 
 	const { scene } = useThree();
+	const ref = useRef(scene.getObjectByName('Earth'));
+	const tl = useRef();
+	const scroll = useScroll();
 
-	console.log(scene)
+	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
+
 	const startLat = fromObj.latitude;
 	const startLon = fromObj.longitude;
+
 	const endLat = toObj.latitude;
 	const endLon = toObj.longitude;
-	
-	useFrame(() => {
-		if (props.toggle) {
-			gsap.to(scene.getObjectByName('Earth').position, {
-				duration: 2,
-				x: 0,
-			});
 
-			gsap.to(scene.getObjectByName('Earth').rotation, {
-				duration: 4,
-				x: (Math.PI / 180) * startLat,
-				y: -((Math.PI / 180) * startLon),
-				z: 0,
-			});
+	const midpoint = midPoint(startLat, startLon, endLat, endLon);
+	const midLat = midpoint[0];
+	const midLon = midpoint[1];
 
-			gsap.to(scene.getObjectByName('Earth').position, {
-				duration: 4,
-				z: CAMERA_ZOOM,
-				ease: 'none',
-			});
+	const arcsData = GetArcsData(fromObj, toObj);
+	const labelData = GetLabelData(fromObj, toObj);
+	//const ringData = GetRippleData(fromObj, toObj);
 
-
-		}
-	});
-
+	// Delete Previous Earth
 	if (scene.getObjectByName('Earth'))
 		scene.remove(scene.getObjectByName('Earth'));
 
-	scene.renderOrder = 0;
 
-	if (props.data) { 
-		const arcsData = GetArcsData(fromObj, toObj);
-		const labelData = GetLabelData(fromObj, toObj);
-		//const ringData = GetRippleData(fromObj, toObj);
+	const group = new THREE.Group();
 
-		console.log('Drawing Animated Globe');
-
-		const group = new THREE.Group();
-
-		const Globe = new ThreeGlobe({
-			waitForGlobeReady: false,
-			animateIn: false,
-		}).globeImageUrl(EARTH_MAP)
+	const Globe = new ThreeGlobe({
+		waitForGlobeReady: false,
+		animateIn: false,
+	})
+		.globeImageUrl(EARTH_MAP)
 
 		.arcsData(arcsData)
 		.arcColor('color')
@@ -112,7 +100,6 @@ const EarthAnimated = (props) => {
 		.arcDashGap(3)
 		.arcDashInitialGap(() => 1)
 		.arcDashAnimateTime(1500)
-
 
 		.labelsData(labelData)
 		.labelText(
@@ -125,59 +112,46 @@ const EarthAnimated = (props) => {
 		.labelDotRadius('dot')
 		.labelDotOrientation(() => 'right')
 		.labelColor('color')
-		.labelResolution(10)
+		.labelResolution(10);
 
-		// TODO RINGS need to rotate
-		// .ringsData(ringData)
-		// //.ringColor(() => colorInterpolator)
-		// .ringColor(() => '#14ffff')
-		// .ringMaxRadius('maxR')
-		// .ringPropagationSpeed('propagationSpeed')
-		// .ringAltitude(.01)
-		// .ringRepeatPeriod('repeatPeriod');
+	// TODO RINGS need to rotate
+	// .ringsData(ringData)
+	// //.ringColor(() => colorInterpolator)
+	// .ringColor(() => '#14ffff')
+	// .ringMaxRadius('maxR')
+	// .ringPropagationSpeed('propagationSpeed')
+	// .ringAltitude(.01)
+	// .ringRepeatPeriod('repeatPeriod');
 
-
-		const Clouds = new THREE.Mesh(
-			new THREE.SphereGeometry(
-				Globe.getGlobeRadius() * (1 + CLOUDS_ALT),
-				100,
-				100
-			)
-		);
-		new THREE.TextureLoader().load(CLOUDS_IMG_URL, (cloudsTexture) => {
-			Clouds.material = new THREE.MeshPhongMaterial({
-				map: cloudsTexture,
-				transparent: true,
-			});
+	const Clouds = new THREE.Mesh(
+		new THREE.SphereGeometry(
+			Globe.getGlobeRadius() * (1 + CLOUDS_ALT),
+			100,
+			100
+		)
+	);
+	new THREE.TextureLoader().load(CLOUDS_IMG_URL, (cloudsTexture) => {
+		Clouds.material = new THREE.MeshPhongMaterial({
+			map: cloudsTexture,
+			transparent: true,
 		});
+	});
 
-		(function rotateClouds() {
-			Clouds.rotation.x += (CLOUDS_X_ROTATION_SPEED * Math.PI) / 180;
-			Clouds.rotation.y += (CLOUDS_Y_ROTATION_SPEED * Math.PI) / 180;
-			requestAnimationFrame(rotateClouds);
-		})();
+	(function rotateClouds() {
+		Clouds.rotation.x += (CLOUDS_X_ROTATION_SPEED * Math.PI) / 180;
+		Clouds.rotation.y += (CLOUDS_Y_ROTATION_SPEED * Math.PI) / 180;
+		requestAnimationFrame(rotateClouds);
+	})();
 
-		// const axes = new THREE.AxesHelper((length = 500));
-		// group.add(axes);
+	const Lights = new THREE.AmbientLight();
+	Lights.intensity = 3;
 
-		const Lights = new THREE.AmbientLight();
-		Lights.intensity = 3;
+	group.add(Globe);
+	group.add(Clouds);
+	group.add(Lights);
+	group.name = 'Earth';
 
-		group.add(Globe);
-		group.add(Clouds);
-		group.add(Lights);
-		group.name = 'Earth';
-
-		group.rotation.x = GLOBE_X_TILT * (Math.PI / 180);
-		group.position.x = GLOBE_X_POSITION;
-
-		scene.add(group);
-
-		(function animate() {
-			group.rotation.y += GLOBE_Y_ROTATION_SPEED * (Math.PI / 180);
-			requestAnimationFrame(animate);
-		})();
-	}
+	scene.add(group);
 };
 //  EXPORTS
 //-------------------------------------------------------//

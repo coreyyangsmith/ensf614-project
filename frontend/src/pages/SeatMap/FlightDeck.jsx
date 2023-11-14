@@ -35,23 +35,27 @@ const FlightDeck = (props) => {
 		marginTop: '50px',
 	};
 
-    console.log(props.toObj)
-    console.log(props.fromObj)
+	console.log(props.toObj);
+	console.log(props.fromObj);
 
-	return (
-		<Paper sx={{ frostedGlassSX }}>
-			<h1>Hello! Selected Airports: </h1>
-            <h1>From: </h1>
-			<p>{props.fromObj.name}</p>
-            <h1>To: </h1>
-			<p>{props.toObj.name}</p>
+	if (props.toObj !== null && props.fromObj !== null) {
+		return (
+			<Paper sx={{ frostedGlassSX }}>
+				<h1>Hello! Selected Airports: </h1>
+				<h1>From: </h1>
+				<p>{props.fromObj.name}</p>
+				<h1>To: </h1>
+				<p>{props.toObj.name}</p>
 
-			<Seat />
-			<Seat />
-			<Seat />
-			<Seat />
-		</Paper>
-	);
+				<Seat />
+				<Seat />
+				<Seat />
+				<Seat />
+			</Paper>
+		);
+	}
+
+	return <></>;
 };
 
 //  EXPORTS

@@ -23,6 +23,7 @@ import EarthAnimated from './EarthAnimated';
 import Stars from '../Galaxy/Stars';
 import Plane from '../Plane/Plane';
 import { ScrollControls } from '@react-three/drei';
+import EarthAnimatedController from './EarthAnimatedController';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -35,12 +36,12 @@ const Scene = (props) => {
 	if (props.toggle)
 		return (
 			<>
-				<ScrollControls pages={3} damping={0.25}>
-					<EarthAnimated
-						data={props.data}
-						toggle={props.toggle}
-					/>
-					<Plane toggle={props.toggle} />
+				<ScrollControls
+					pages={3}
+					damping={0.25}
+				>
+					<EarthAnimatedController />
+					<Plane />
 				</ScrollControls>
 			</>
 		);
