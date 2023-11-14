@@ -13,20 +13,18 @@ const MAX_R = 4;
 const PROPAGATION_SPEED = 0.65;
 const REPEAT_PERIOD = 2200;
 
-export function GetLabelData(arcsData) {
-	const N = arcsData.length;
+export function GetLabelData(origin, destination) {
 	var labels = [];
 
 	// For each coordiante, will have two labels
-	function getStartLabel(i) {
-		const lat = arcsData[i].startLat;
-		const lng = arcsData[i].startLng;
+	function getStartLabel() {
+		const lat = origin.latitude;
+		const lng = origin.longitude;
 		const size = LABEL_TEXT_SIZE;
 		const dot = LABEL_DOT_SIZE;
 		const color = LABEL_COLOR;
-		const countryCode = arcsData[i].startCountryCode;
-		const countryName = arcsData[i].startCountryName;
-		const cityName = arcsData[i].startCityName;
+		const airportCode = origin.airport_code;
+		const name = origin.name;
 
 		const obj = {
 			lat: lat,
@@ -34,23 +32,21 @@ export function GetLabelData(arcsData) {
 			size: size,
 			color: color,
 			dot: dot,
-			countryCode: countryCode,
-			countryName: countryName,
-			cityName: cityName,
+			airportCode: airportCode,
+			name: name,
 		};
 
 		return obj;
 	}
 
-	function getEndLabel(i) {
-		const lat = arcsData[i].endLat;
-		const lng = arcsData[i].endLng;
+	function getEndLabel() {
+		const lat = destination.latitude;
+		const lng = destination.longitude;
 		const size = LABEL_TEXT_SIZE;
 		const dot = LABEL_DOT_SIZE;
 		const color = LABEL_COLOR;
-		const countryCode = arcsData[i].endCountryCode;
-		const countryName = arcsData[i].endCountryName;
-		const cityName = arcsData[i].endCityName;
+		const airportCode = destination.airport_code;
+		const name = destination.name;
 
 		const obj = {
 			lat: lat,
@@ -58,23 +54,20 @@ export function GetLabelData(arcsData) {
 			size: size,
 			color: color,
 			dot: dot,
-			countryCode: countryCode,
-			countryName: countryName,
-			cityName: cityName,
+			airportCode: airportCode,
+			name: name,
 		};
 
 		return obj;
 	}
-	for (var i = 0; i < N; i++) {
-		labels.push(getStartLabel(i));
-		labels.push(getEndLabel(i));
-	}
+
+	labels.push(getStartLabel());
+	labels.push(getEndLabel());
 
 	return labels;
 }
 
-export function GetRippleData(arcsData) {
-	const N = arcsData.length;
+export function GetRippleData(origin, destination) {
 	var ripples = [];
 
 	function getRipple(latitude, longitude) {
@@ -95,39 +88,33 @@ export function GetRippleData(arcsData) {
 		return obj;
 	}
 
-	for (var i = 0; i < N; i++) {
-		ripples.push(getRipple(arcsData[i].startLat, arcsData[i].startLng));
-		ripples.push(getRipple(arcsData[i].endLat, arcsData[i].endLng));
-	}
+	ripples.push(getRipple(origin.latitude, origin.longitude));
+	ripples.push(getRipple(destination.latitude, destination.longitude));
+	
 	return ripples;
 }
 
-export function GetArcsData(results, randomElements) {
-	const N = N_ELEMENTS;
+export function GetArcsData(origin, destination) {
 	var coordinates = [];
 
 	function getCoordinates() {
-		const startCountryCode = results[randomElements[0]][0];
-		const startCountryName = results[randomElements[0]][1];
-		const startCityName = results[randomElements[0]][2];
-		const startLat = results[randomElements[0]][3];
-		const startLng = results[randomElements[0]][4];
-		const endCountryCode = results[randomElements[1]][0];
-		const endCountryName = results[randomElements[1]][1];
-		const endCityName = results[randomElements[1]][2];
-		const endLat = results[randomElements[1]][3];
-		const endLng = results[randomElements[1]][4];
+		const startCode = origin.airport_code
+		const startName = origin.name
+		const startLat = origin.latitude
+		const startLng = origin.longitude
+		const endCode = destination.airport_code
+		const endName = destination.name
+		const endLat = destination.latitude
+		const endLng = destination.longitude
 		const color = 'white';
 
 		const obj = {
-			startCountryCode: startCountryCode,
-			startCountryName: startCountryName,
-			startCityName: startCityName,
+			startCode: startCode,
+			startName: startName,
 			startLat: startLat,
 			startLng: startLng,
-			endCountryCode: endCountryCode,
-			endCountryName: endCountryName,
-			endCityName: endCityName,
+			endCode: endCode,
+			endName: endName,
 			endLat: endLat,
 			endLng: endLng,
 			color: color,
@@ -136,7 +123,7 @@ export function GetArcsData(results, randomElements) {
 		return obj;
 	}
 
-	for (var i = 0; i < N; i++) coordinates.push(getCoordinates());
+	coordinates.push(getCoordinates());
 
 	return coordinates;
 }

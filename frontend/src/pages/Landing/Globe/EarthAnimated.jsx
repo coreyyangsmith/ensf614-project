@@ -56,7 +56,8 @@ const EarthAnimated = (props) => {
 	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
 
 	const { scene } = useThree();
-	console.log(fromObj);
+
+	console.log(scene)
 	const lat = fromObj.latitude;
 	const lon = fromObj.longitude;
 
@@ -86,16 +87,13 @@ const EarthAnimated = (props) => {
 		scene.remove(scene.getObjectByName('Earth'));
 
 	scene.renderOrder = 0;
-	console.log(scene);
 
-	if (props.data) {
+	if (props.data) { 
 		const results = props.data;
 
-		// var randomElements = [];
-		// randomElements = GetRandomElements(results);
-		// var arcsData = GetArcsData(results, randomElements);
-		// var labelData = GetLabelData(arcsData);
-		// var ringData = GetRippleData(arcsData);
+		const arcsData = GetArcsData(fromObj, toObj);
+		const labelData = GetLabelData(fromObj, toObj);
+		const ringData = GetRippleData(fromObj, toObj);
 
 		console.log('Drawing Animated Globe');
 
@@ -104,34 +102,38 @@ const EarthAnimated = (props) => {
 		const Globe = new ThreeGlobe({
 			waitForGlobeReady: false,
 			animateIn: false,
-		}).globeImageUrl(EARTH_MAP);
+		}).globeImageUrl(EARTH_MAP)
 
-		// .arcsData()
-		// .arcColor('color')
-		// .arcDashLength(1)
-		// .arcDashGap(3)
-		// .arcDashInitialGap(() => 1)
-		// .arcDashAnimateTime(1500)
+		.arcsData(arcsData)
+		.arcColor('color')
+		.arcDashLength(1)
+		.arcDashGap(3)
+		.arcDashInitialGap(() => 1)
+		.arcDashAnimateTime(1500)
 
+
+		.labelsData(labelData)
+		.labelText(
+			(d) =>
+				`${d.airportCode} (${Math.round(d.lat * 1e2) / 1e2}, ${
+					Math.round(d.lng * 1e2) / 1e2
+				}) \n ${d.name}`
+		)
+		.labelSize('size')
+		.labelDotRadius('dot')
+		.labelDotOrientation(() => 'right')
+		.labelColor('color')
+		.labelResolution(10)
+
+		// TODO RINGS need to rotate
 		// .ringsData(ringData)
 		// //.ringColor(() => colorInterpolator)
 		// .ringColor(() => '#14ffff')
 		// .ringMaxRadius('maxR')
 		// .ringPropagationSpeed('propagationSpeed')
-		// .ringRepeatPeriod('repeatPeriod')
+		// .ringAltitude(.01)
+		// .ringRepeatPeriod('repeatPeriod');
 
-		// .labelsData(labelData)
-		// .labelText(
-		// 	(d) =>
-		// 		`${d.countryCode} (${Math.round(d.lat * 1e2) / 1e2}, ${
-		// 			Math.round(d.lng * 1e2) / 1e2
-		// 		}) \n ${d.cityName}, ${d.countryName}`
-		// )
-		// .labelSize('size')
-		// .labelDotRadius('dot')
-		// .labelDotOrientation(() => 'right')
-		// .labelColor('color')
-		// .labelResolution(10);
 
 		const Clouds = new THREE.Mesh(
 			new THREE.SphereGeometry(
