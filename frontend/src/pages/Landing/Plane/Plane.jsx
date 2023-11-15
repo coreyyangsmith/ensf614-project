@@ -1,111 +1,221 @@
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Suspense } from 'react';
-import { Stars } from '@react-three/drei';
+import { Suspense, useContext, useLayoutEffect } from 'react';
+import { Stars, useGLTF, useScroll } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+
+import { useRef } from 'react';
+// GSAP Import
 import gsap from 'gsap';
 
-import { PLANE_ELEVATION, PLANE_SCALE } from '../../../utils/SceneUtilities.js';
+// Utilities/Constants
+import {
+	PLANE_ELEVATION,
+	PLANE_SCALE,
+	angleBetweenPoints,
+	angleBetweenPoints2
+} from '../../../utils/SceneUtilities.js';
+
+// My Context
+import { Context } from '../Landing.jsx';
+import { tensor1d } from '@tensorflow/tfjs-core';
 
 export default function Plane(props) {
 	const { scene } = useThree();
+	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
+	const ref = useRef();
+	const tl = useRef();
 
-	const gltf = useLoader(GLTFLoader, '/airplane.gltf');
+	const scroll = useScroll();
 
-	gltf.scene.visible = false;
-	gltf.scene.scale.set(PLANE_SCALE, PLANE_SCALE, PLANE_SCALE);
-	gltf.scene.position.set(-100, 0, PLANE_ELEVATION * 2);
-	gltf.scene.rotation.set(
-		(Math.PI / 180) * 90,
-		(Math.PI / 180) * 90,
-		(Math.PI / 180) * 0
+	const angleBetwewen = angleBetweenPoints2(
+		fromObj.latitude,
+		fromObj.longitude,
+		toObj.latitude,
+		toObj.longitude
 	);
+
+	// Import Object
+	const { nodes, materials } = useGLTF('./models//scene.gltf');
 
 	// Axes Helper
 	// const axes = new THREE.AxesHelper(500);
 	// gltf.scene.add(axes);
 
-	useFrame(() => {
-		if (props.toggle) {
-			const obj = scene.getObjectByName('Sketchfab_Scene');
-			gltf.scene.visible = true;
+	useLayoutEffect(() => {
+		tl.current = gsap.timeline();
 
-			let tl = gsap.timeline();
-			gsap.ticker.fps(120);
-			tl.to(obj.position, {
-				x: -3,
+		// Animation
+		// Initial State
+
+		// Transition to Parked
+		tl.current.to(
+			ref.current.position,
+			{
+				x: 0,
 				y: 0,
-				z: PLANE_ELEVATION,
+				z: PLANE_ELEVATION + 5,
 				duration: 2,
-				ease: 'expo.in',
-			})
+				ease: 'none',
+			},
+			0
+		);
+		tl.current.to(
+			ref.current.scale,
+			{
+				x: PLANE_SCALE,
+				y: PLANE_SCALE,
+				z: PLANE_SCALE,
+				duration: 2,
+				ease: 'none',
+			},
+			0
+		);
 
-				// Landing
-				.to(
-					obj.position,
-					{
-						x: 0,
-						y: 0,
-						z: PLANE_ELEVATION,
-						duration: 5,
-						ease: 'none',
-					},
-					'>2'
-				)
-                .to(
-					obj.position,
-					{
-						x: 10,
-						y: 0,
-						z: PLANE_ELEVATION + 10,
-						duration: 3,
-						ease: 'expo.in',
-					},
-					'>2'
-				)
+		// Rotating While Parked
+		tl.current.to(
+			ref.current.rotation,
+			{
+				x: (Math.PI / 180) * 90,
+				y: -((Math.PI / 180) * (angleBetwewen - 45)) % Math.PI,
+				z: (Math.PI / 180) * 0,
+				duration: 1,
+				ease: 'none',
+			},
+			2
+		);
 
-			console.log(obj);
-			// Landing
+		// Transition to Flying
+		tl.current.to(
+			ref.current.position,
+			{
+				x: 0,
+				y: 0,
+				z: PLANE_ELEVATION + 5,
+				duration: 1,
+				ease: 'none',
+			},
+			3
+		);
+		tl.current.to(
+			ref.current.scale,
+			{
+				x: PLANE_SCALE * 4,
+				y: PLANE_SCALE * 4,
+				z: PLANE_SCALE * 4,
+				ease: 'none',
+				duration: 1,
+			},
+			3
+		);
 
-			// gsap.to(obj.rotation, {
-			// 	x: (Math.PI / 180) * 90,
-			// 	y: (Math.PI / 180) * 90,
-			// 	z: (Math.PI / 180) * 0,
-			//     delay: 0
-			// });
+		// Delay 1 second pause
+		// +1
 
-			// gsap.to(obj.position, {
-			// 	x: 0,
-			// 	y: 0,
-			// 	z: PLANE_ELEVATION,
-			//     delay: 0
-			// });
+		// Transition to Parked
+		tl.current.to(
+			ref.current.position,
+			{
+				x: 0,
+				y: 0,
+				z: PLANE_ELEVATION + 5,
+				duration: 1,
+				ease: 'none',
+			},
+			5
+		);
+		tl.current.to(
+			ref.current.scale,
+			{
+				x: PLANE_SCALE,
+				y: PLANE_SCALE,
+				z: PLANE_SCALE,
+				duration: 1,
+				ease: 'none',
+			},
+			5
+		);
 
-			// gsap.to(obj.position, {
-			// 	x: 50,
-			// 	y: 0,
-			// 	z: PLANE_ELEVATION,
-			//     duration: 3,
-			//     ease: "power1.out"
-			// }, "+=1");
+		// Rotating While Parked (back to default)
+		tl.current.to(
+			ref.current.rotation,
+			{
+				x: (Math.PI / 180) * 90,
+				y: (Math.PI / 180) * 90,
+				z: (Math.PI / 180) * 0,
+				duration: 1,
+				ease: 'none',
+			},
+			6
+		);
 
-			// var tl = gsap.timeline({ repeat: 0 });
+		// Parked to Fly Away
+		tl.current.to(
+			ref.current.position,
+			{
+				x: 20,
+				y: 0,
+				z: PLANE_ELEVATION + 5,
+				duration: 1,
+				ease: 'none',
+			},
+			7
+		);
+		tl.current.to(
+			ref.current.scale,
+			{
+				x: PLANE_SCALE * 2,
+				y: PLANE_SCALE * 2,
+				z: PLANE_SCALE * 2,
+				duration: 1,
+				ease: 'none',
+			},
+			7
+		);
+	}, []);
 
-			// tl.to(obj.rotation, {
-			// 	x: (Math.PI / 180) * 90,
-			// 	y: (Math.PI / 180) * 90,
-			// 	z: (Math.PI / 180) * 0,
-			// 	duration: 1,
-			// });
-
-			// tl.to(obj.position, { x: 0, y: 0, z: PLANE_ELEVATION, duration: 5 }, ">");
-			// tl.to(obj.position, { x: 3, y: 0, z: PLANE_ELEVATION, duration: 1 }, ">");
-		}
+	useFrame(() => {
+		tl.current.seek(scroll.offset * tl.current.duration());
 	});
 
-	if (!gltf) return;
-
-	return <primitive object={gltf.scene}></primitive>;
+	return (
+		//initial condition
+		<group
+			{...props}
+			dispose={null}
+			ref={ref}
+			position={[-20, 0, PLANE_ELEVATION]}
+			scale={[PLANE_SCALE * 2, PLANE_SCALE * 2, PLANE_SCALE * 2]}
+			rotation={[
+				(Math.PI / 180) * 90,
+				(Math.PI / 180) * 90,
+				(Math.PI / 180) * 0,
+			]}
+		>
+			<mesh
+				geometry={nodes.polySurface3_lambert2_0.geometry}
+				material={materials.lambert2}
+			/>
+			<mesh
+				geometry={nodes.polySurface3_lambert3_0.geometry}
+				material={materials.lambert3}
+			/>
+			<mesh
+				geometry={nodes.polySurface3_lam_balck_engine_0.geometry}
+				material={materials.lam_balck_engine}
+			/>
+			<mesh
+				geometry={nodes.polySurface2_T_lam_plane_windows_0.geometry}
+				material={materials.T_lam_plane_windows}
+			/>
+			<mesh
+				geometry={nodes.polySurface2_lambert3_0.geometry}
+				material={materials.lambert3}
+			/>
+		</group>
+	);
 }
+
+useGLTF.preload('./models/scene.gltf');

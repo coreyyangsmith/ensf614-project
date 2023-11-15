@@ -17,7 +17,7 @@
 
 // React Imports
 import React from 'react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 // MUI Imports
 import { Button, ButtonGroup, Stack } from '@mui/material';
@@ -27,6 +27,10 @@ import DestinationArrivalForm from './DestinationArrivalForm';
 import './landing.css';
 import PassengerButtonGroup from './PassengerButtonGroup';
 import SeatSelectionRadio from './SeatSelectionRadio';
+import { Context } from './Landing';
+
+// Context
+
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -36,6 +40,10 @@ const FlightSelectionForm = (props) => {
 	const [seatSelection, setSeatSelection] = useState('');
 	const [departureDate, setDepartureDate] = useState(undefined);
 	const [arrivalDate, setArrivalDate] = useState(undefined);
+
+
+	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context)
+
 
 	// TODO expand this logic to ensure flight selection is "mostly" valid
 	if (seatSelection !== "") {
@@ -69,6 +77,7 @@ const FlightSelectionForm = (props) => {
 					selectedTrip={selectedTrip}
 					date={departureDate}
 					setDate={setDepartureDate}
+					setObj={setFromObj}	
 				/>
 				<DestinationArrivalForm
 					data={props.destinations}
@@ -76,7 +85,8 @@ const FlightSelectionForm = (props) => {
 					depLabel="Arrival Date"
 					selectedTrip={selectedTrip}
 					date={arrivalDate}
-					setDate={setArrivalDate}					
+					setDate={setArrivalDate}
+					setObj={setToObj}					
 				/>
 				<Stack direction="row" spacing={1}>
 				<PassengerButtonGroup

@@ -17,6 +17,7 @@
 #-------------------------------------------------------#
 from main.models import Seat, Aircraft
 import pandas as pd
+import random
 
 #   MAIN FUNCTION
 #-------------------------------------------------------#
@@ -49,6 +50,19 @@ def process_string(input_str):
 
     return result
 
+def random_availability():
+    '''
+    random_availability
+    
+    Args:
+        None
+
+    Returns:
+        result (boolean): Randomly selected boolean value
+    '''
+    AVAILABILITY_CHANCE = 0.75
+    return random.random() < AVAILABILITY_CHANCE
+
 def run():
     count = 0
 
@@ -64,10 +78,10 @@ def run():
                 type = "ORD"
                 multiplier = 1
 
-                if rows <= COMFORT_ROW: 
+                if i <= COMFORT_ROW: 
                     type = "CMF" 
                     multiplier = 1.4
-                if rows <= BUSINESS_ROW: 
+                if i <= BUSINESS_ROW: 
                     type = "BUS"
                     multiplier = 2
 
@@ -79,7 +93,7 @@ def run():
                     multiplier = multiplier,
                     row_position = i,
                     column_position = j,
-                    available = True,
+                    available = random_availability(),
                     aircraft_ref = Aircraft.objects.get(pk = aircraft.pk)
                 )    
                 count += 1    

@@ -17,6 +17,8 @@
     "@mui/x-date-pickers": "^6.18.1",
     "@react-three/drei": "^9.88.13",
     "@react-three/fiber": "^8.15.10",
+    "@stripe/react-stripe-js": "^2.3.2",
+    "all": "^0.0.0",
     "axios": "^1.6.1",
     "dayjs": "^1.11.10",
     "gsap": "^3.12.2",
