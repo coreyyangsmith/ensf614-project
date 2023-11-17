@@ -19,7 +19,8 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
 // Component Imports
-import Landing from './pages/Landing/Landing.jsx';
+// import Landing from './pages/Landing/Landing.jsx';
+import Login from './pages/Login/Login.jsx';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -85,7 +86,8 @@ function App() {
 		<>
 			<ThemeProvider theme={darkTheme}>
 				<CssBaseline />
-				<Landing />
+				<Login/>
+				{/* <Landing /> */}
 			</ThemeProvider>
 		</>
 	);
