@@ -54,10 +54,12 @@ class FlightSerializer(serializers.ModelSerializer):
         model = Flight      
         fields = '__all__'          
 
-    qs = Flight.objects.all()
-
-        
 class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat      
-        fields = '__all__'              
+        fields = '__all__'          
+
+class FlightCrew(serializers.ModelSerializer):
+    class Meta:
+        model = FlightCrew
+        fields = '__all__'    

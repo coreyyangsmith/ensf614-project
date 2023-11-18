@@ -123,16 +123,13 @@ class Flight(models.Model): # Todo
 
 
 # Junction Tables
-class FlightAircraft(models.Model):
-    flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
-    aircraft_id = models.ForeignKey(Aircraft, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)   
-
 class FlightCrew(models.Model):
     flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
     crew_id = models.ForeignKey(Crew, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)   
+
+    def __str__(self):
+        return str(self.flight_id.id) + "-" + str(self.crew_id.id)
     
         
