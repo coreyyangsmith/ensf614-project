@@ -28,7 +28,7 @@ import Aisle from './Aisle.jsx';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
-const FlightDeck = (props) => {
+const FlightDeck = () => {
 	const frostedGlassSX = {
 		background: 'rgba(255,255,255,.3)',
 		display: 'flex',
@@ -191,12 +191,6 @@ const FlightDeck = (props) => {
 	if (seatMap.length > 0) {
 		return (
 			<Paper sx={{ frostedGlassSX }}>
-				<h1>Hello! Selected Airports: </h1>
-				<h1>From: </h1>
-				<p>{props.fromObj.name}</p>
-				<h1>To: </h1>
-				<p>{props.toObj.name}</p>
-
                 {populateSeats}
 			</Paper>
 		);

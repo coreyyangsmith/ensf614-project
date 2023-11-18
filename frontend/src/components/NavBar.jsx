@@ -29,6 +29,7 @@ import { Link } from 'react-router-dom';
 // MUI Import
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Grid } from '@mui/material/';
+import NavigationButton from './NavigationButton';
 
 //  STYLES
 //-------------------------------------------------------//
@@ -61,7 +62,7 @@ const NavBar = () => {
 					<Grid
 						container
 						item
-						xs={3}
+						xs={5}
 						direction="row"
 						justifyContent="flex-start"
 						alignItems="center"
@@ -72,7 +73,7 @@ const NavBar = () => {
 					<Grid
 						container
 						item
-						xs={6}
+						xs={2}
 						direction="row"
 						justifyContent="center"
 						alignItems="center"
@@ -81,24 +82,15 @@ const NavBar = () => {
 					<Grid
 						container
 						item
-						xs={3}
+						xs={5}
 						direction="row"
 						justifyContent="flex-end"
 						alignItems="center"
 					>
-						{/* <StyledLink to="/login">
-							<Typography variant="landing_menu">Login</Typography>
-						</StyledLink> */}
-						<Typography variant="landing_menu" sx={{paddingRight: "12px"}}>Login</Typography>
-						<Button
-							variant="contained"
-							color="c2a"
-						>
-							<Typography variant="landing_button">Sign Up</Typography>
-							{/* <Link to="/register">
-								<Typography variant="landing_button">Sign Up</Typography>
-							</Link> */}
-						</Button>
+						<NavigationButton label="Seat Map Test" path="/seatmap" color="primary"/>
+						<NavigationButton label="Login" path="/login" color="primary"/>
+						<NavigationButton label="Signup" path="/register" color="c2a"/>
+
 					</Grid>
 				</Grid>
 			</Toolbar>

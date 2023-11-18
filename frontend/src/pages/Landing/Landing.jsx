@@ -16,10 +16,10 @@
 //-------------------------------------------------------//
 
 // React Import
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 // MUI Import
-import { Paper, Typography } from '@mui/material';
+import { Paper } from '@mui/material';
 
 // Component Imports
 import NavBar from '../../components/NavBar';
@@ -28,7 +28,6 @@ import CanvasElement from './Globe/CanvasElement';
 
 // Custom Hooks
 import { useDestinations } from '../../hooks/useDestinations';
-import FlightDeck from '../SeatMap/FlightDeck';
 import { fromPixels } from '@tensorflow/tfjs-core/dist/ops/browser';
 
 //  MAIN FUNCTION
@@ -66,7 +65,7 @@ const Landing = () => {
 					background: 'transparent',
 				}}
 			>
-				<FlightDeck sx={{ zIndex: -100 }} toObj={toObj} fromObj={fromObj}/>
+
 				<FlightSelectionMain
 					destinations={destinations}
 					setToggle={setToggle}
