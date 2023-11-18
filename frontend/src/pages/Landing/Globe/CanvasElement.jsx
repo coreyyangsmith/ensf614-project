@@ -28,6 +28,8 @@ import Scene from './Scene';
 import { CAMERA_DISTANCE } from './config.js';
 import { OrbitControls } from '@react-three/drei';
 
+import "./styles.css"
+
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -53,14 +55,14 @@ const CanvasElement = (props) => {
 				/>
 				<Suspense>
 					<Scene
-						data={props.data}
 						toggle={props.toggle}
 						toObj={props.toObj}
-						froimObj={props.fromObj}
+						fromObj={props.fromObj}
 					/>
 				</Suspense>
 
 			</Canvas>
+			<div class="spinner scroll-down" style={{zIndex: `${props.toggle ? 1 : -2}`}}> <a class="animate"></a> </div>
 		</div>
 	);
 };

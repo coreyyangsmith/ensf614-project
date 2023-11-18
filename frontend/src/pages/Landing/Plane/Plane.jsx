@@ -20,13 +20,13 @@ import {
 
 // My Context
 import { Context } from '../Landing.jsx';
-import { tensor1d } from '@tensorflow/tfjs-core';
 
 export default function Plane(props) {
+	console.log("new plane");
 	const { scene } = useThree();
 	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
 	const ref = useRef();
-	const tl = useRef();
+	//const tl = useRef();
 
 	const scroll = useScroll();
 
@@ -45,13 +45,12 @@ export default function Plane(props) {
 	// gltf.scene.add(axes);
 
 	useLayoutEffect(() => {
-		tl.current = gsap.timeline();
 
 		// Animation
 		// Initial State
 
 		// Transition to Parked
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.position,
 			{
 				x: 0,
@@ -62,7 +61,7 @@ export default function Plane(props) {
 			},
 			0
 		);
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.scale,
 			{
 				x: PLANE_SCALE,
@@ -75,7 +74,7 @@ export default function Plane(props) {
 		);
 
 		// Rotating While Parked
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.rotation,
 			{
 				x: (Math.PI / 180) * 90,
@@ -88,7 +87,7 @@ export default function Plane(props) {
 		);
 
 		// Transition to Flying
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.position,
 			{
 				x: 0,
@@ -99,7 +98,7 @@ export default function Plane(props) {
 			},
 			3
 		);
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.scale,
 			{
 				x: PLANE_SCALE * 4,
@@ -115,7 +114,7 @@ export default function Plane(props) {
 		// +1
 
 		// Transition to Parked
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.position,
 			{
 				x: 0,
@@ -126,7 +125,7 @@ export default function Plane(props) {
 			},
 			5
 		);
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.scale,
 			{
 				x: PLANE_SCALE,
@@ -139,7 +138,7 @@ export default function Plane(props) {
 		);
 
 		// Rotating While Parked (back to default)
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.rotation,
 			{
 				x: (Math.PI / 180) * 90,
@@ -152,7 +151,7 @@ export default function Plane(props) {
 		);
 
 		// Parked to Fly Away
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.position,
 			{
 				x: 20,
@@ -163,7 +162,7 @@ export default function Plane(props) {
 			},
 			7
 		);
-		tl.current.to(
+		props.tl.current.to(
 			ref.current.scale,
 			{
 				x: PLANE_SCALE * 2,
@@ -177,7 +176,7 @@ export default function Plane(props) {
 	}, []);
 
 	useFrame(() => {
-		tl.current.seek(scroll.offset * tl.current.duration());
+		props.tl.current.seek(scroll.offset * props.tl.current.duration());
 	});
 
 	return (

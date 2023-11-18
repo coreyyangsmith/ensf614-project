@@ -30,7 +30,7 @@ import {
 	GetRandomElements,
 	GetLabelData,
 	GetRippleData,
-} from '../../../utils/GlobeUtilities.js';
+} from '../../../../utils/GlobeUtilities.js';
 
 // Utilities
 import {
@@ -41,23 +41,24 @@ import {
 	CLOUDS_Y_ROTATION_SPEED,
 	GLOBE_Y_ROTATION_SPEED,
 	GLOBE_X_POSITION,
-} from './config.js';
+} from '../config.js';
 
 import {
 	CAMERA_ZOOM,
 	EARTH_MAP,
 	midPoint,
-} from '../../../utils/SceneUtilities.js';
+} from '../../../../utils/SceneUtilities.js';
 
 //  Gsap
 import gsap from 'gsap';
-import { Context } from '../Landing.jsx';
+import { Context } from '../../Landing.jsx';
 import { useScroll } from '@react-three/drei';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
 const EarthAnimated = (props) => {
+	console.log("new earth animated");
 	const { scene } = useThree();
 
 	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
@@ -65,10 +66,6 @@ const EarthAnimated = (props) => {
 	const arcsData = GetArcsData(fromObj, toObj);
 	const labelData = GetLabelData(fromObj, toObj);
 	//const ringData = GetRippleData(fromObj, toObj);
-
-	// Delete Previous Earth
-	if (scene.getObjectByName('Earth'))
-		scene.remove(scene.getObjectByName('Earth'));
 
 
 	const group = new THREE.Group();
@@ -134,7 +131,7 @@ const EarthAnimated = (props) => {
 	group.add(Globe);
 	group.add(Clouds);
 	group.add(Lights);
-	group.name = 'Earth';
+	group.name = 'EarthAnimated';
 
 	scene.add(group);
 };

@@ -1,6 +1,6 @@
 //-------------------------------------------------------//
-//  File Name: Earth.jsx
-//  Description: Three-Globe scene of Earth
+//  File Name: EarthAnimatedController.jsx
+//  Description: Animation Controller for Earth Animated
 //
 //  Requirements:
 //      - CanvasElement.jsx
@@ -31,7 +31,7 @@ import {
 import gsap from 'gsap';
 import { Context } from '../Landing.jsx';
 import { useScroll } from '@react-three/drei';
-import EarthAnimated from './EarthAnimated.jsx';
+import EarthAnimated from './ss/EarthAnimated.jsx';
 // TODO - fix render animation not firing on first pass - maybe use state?
 
 //  MAIN FUNCTION
@@ -58,9 +58,9 @@ const EarthAnimatedController = (props) => {
 
 	useLayoutEffect(() => {
 		const obj = scene.getObjectByName('Earth');
-		tl.current = gsap.timeline();
+		console.log(scene);
 
-		tl.current.to(
+		props.tl.current.to(
 			obj.position,
 			{
 				x: 0,
@@ -69,7 +69,7 @@ const EarthAnimatedController = (props) => {
 			0
 		);
 
-		tl.current.to(
+		props.tl.current.to(
 			obj.rotation,
 			{
 				x: (Math.PI / 180) * startLat,
@@ -80,7 +80,7 @@ const EarthAnimatedController = (props) => {
 			0
 		);
 
-		tl.current.to(
+		props.tl.current.to(
 			obj.position,
 			{
 				z: CAMERA_ZOOM,
@@ -93,7 +93,7 @@ const EarthAnimatedController = (props) => {
 		// Delay 2.5s
 
 		// Start to Midpoint (1.25)
-		tl.current.to(
+		props.tl.current.to(
 			obj.rotation,
 			{
 				x: (Math.PI / 180) * midLat,
@@ -104,7 +104,7 @@ const EarthAnimatedController = (props) => {
 			3.5
 		);
 
-		tl.current.to(
+		props.tl.current.to(
 			obj.position,
 			{
 				z: 0,
@@ -116,7 +116,7 @@ const EarthAnimatedController = (props) => {
 
 		// Mipoint to End(1.25)
 		// TODO,sometimes spins too far, need logic to better handle breakpoints
-		tl.current.to(
+		props.tl.current.to(
 			obj.rotation,
 			{
 				x: (Math.PI / 180) * endLat,
@@ -127,7 +127,7 @@ const EarthAnimatedController = (props) => {
 			4.75
 		);
 
-		tl.current.to(
+		props.tl.current.to(
 			obj.position,
 			{
 				z: CAMERA_ZOOM,
@@ -138,7 +138,7 @@ const EarthAnimatedController = (props) => {
 		);
 
 		// Stay in Final Position
-		tl.current.to(
+		props.tl.current.to(
 			obj.rotation,
 			{
 				x: (Math.PI / 180) * endLat,
@@ -149,7 +149,7 @@ const EarthAnimatedController = (props) => {
 			6
 		);
 
-		tl.current.to(
+		props.tl.current.to(
 			obj.position,
 			{
 				z: CAMERA_ZOOM,
@@ -161,12 +161,12 @@ const EarthAnimatedController = (props) => {
 	}, []);
 
 	useFrame(() => {
-		tl.current.seek(scroll.offset * tl.current.duration());
+		props.tl.current.seek(scroll.offset * props.tl.current.duration());
 	});
 
 	return (
 		<group ref={ref}>
-			<EarthAnimated />
+
 		</group>
 	);
 };

@@ -33,7 +33,7 @@ import { fromPixels } from '@tensorflow/tfjs-core/dist/ops/browser';
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
-export const Context = React.createContext()
+export const Context = React.createContext();
 
 const Landing = () => {
 	const { destinations } = useDestinations();
@@ -42,7 +42,6 @@ const Landing = () => {
 
 	const [fromObj, setFromObj] = useState([]);
 	const [toObj, setToObj] = useState([]);
-
 
 	return (
 		<Context.Provider value={[fromObj, setFromObj, toObj, setToObj]}>
@@ -65,7 +64,6 @@ const Landing = () => {
 					background: 'transparent',
 				}}
 			>
-
 				<FlightSelectionMain
 					destinations={destinations}
 					setToggle={setToggle}
@@ -76,6 +74,7 @@ const Landing = () => {
 				data={destinations}
 				toggle={toggle}
 			/>
+
 		</Context.Provider>
 	);
 };

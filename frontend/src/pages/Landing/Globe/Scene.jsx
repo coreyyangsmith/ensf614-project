@@ -15,42 +15,43 @@
 //  IMPORTS
 //-------------------------------------------------------//
 // React Imports
-import React, { Suspense } from 'react';
+import React, { Suspense, useRef } from 'react';
 
 // My Components
 import Earth from './Earth';
-import EarthAnimated from './EarthAnimated';
+import EarthAnimated from './ss/EarthAnimated';
 import Stars from '../Galaxy/Stars';
 import Plane from '../Plane/Plane';
 import { ScrollControls } from '@react-three/drei';
+import gsap from 'gsap';
 import EarthAnimatedController from './EarthAnimatedController';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const Scene = (props) => {
-	if (props.data.length == 0) {
-		return <Suspense></Suspense>;
-	}
+	const tl = useRef();
 
 	// Once Active!
-	if (props.toggle)
+	if (props.toggle) {
+		tl.current = gsap.timeline();
+
 		return (
 			<>
 				<ScrollControls
 					pages={3}
 					damping={0.25}
 				>
-					<EarthAnimatedController />
-					<Plane />
+					<Plane tl={tl} />
+					<EarthAnimatedController tl={tl} />
 				</ScrollControls>
 			</>
 		);
+	}
 
 	// Waiting for Input
 	return (
 		<>
 			<Earth
-				data={props.data}
 				toggle={props.toggle}
 			/>
 			<Stars />
