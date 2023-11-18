@@ -1,12 +1,12 @@
 //-------------------------------------------------------//
-//  File Name: useFlights.js
-//  Description: Data Fetching Hook to obtain "Flight" model from the local database
+//  File Name: useCrewsByFlight.js
+//  Description: Data Fetching Hook to obtain "Crew" model for selected "Flight" model from the local database
 //
 //  Requirements:
 //      - /api/posts (axios)
 //
 //  Returns:
-//      - List of Aircrafts
+//      - List of Crew Members by Selectedd Flight
 //
 // Created By: Corey Yang-Smith
 // Date: November 18th, 2023
@@ -24,14 +24,15 @@ import { getRequest } from '../api/posts';
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
-export const useFlights = () => {
-	const [flights, setFlights] = useState([]);
+export const useCrewsByFlight = () => {
+	const [crewsByFlight, setCrewsByFlight] = useState([]);
 
 	const fetchData = async () => {
 		try {
-			const response = await getRequest('flights/', '');
+			const response = await getRequest('flightcrews/', '');
 			if (response && response.data) {
-				setFlights(response.data);
+				console.log(response.data)
+				setFlightCrews(response.data);
 			}
 		} catch (err) {
 			if (err.response) {
@@ -49,5 +50,5 @@ export const useFlights = () => {
 		fetchData();
 	}, []);
 
-	return { flights, setFlights };
+	return { flightCrews, setFlightCrews };
 };

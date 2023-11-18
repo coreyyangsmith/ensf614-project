@@ -59,7 +59,9 @@ class SeatSerializer(serializers.ModelSerializer):
         model = Seat      
         fields = '__all__'          
 
-class FlightCrew(serializers.ModelSerializer):
+class FlightCrewSerializer(serializers.ModelSerializer):
+    crew_id = CrewSerializer()
+    flight_id = FlightSerializer()
     class Meta:
         model = FlightCrew
         fields = '__all__'    

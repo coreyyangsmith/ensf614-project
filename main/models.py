@@ -16,7 +16,7 @@ USER_TYPE = {}
 
 class Aircraft(models.Model): # Todo
 
-    class AirplaneStatus(models.TextChoices):
+    class AircraftStatus(models.TextChoices):
         AVAILABLE = "AVL", _('Available')
         RESERVED = "RES", _('Reserved')
         MAINTENANCE = "MTN", _('Maintenance')
@@ -28,7 +28,7 @@ class Aircraft(models.Model): # Todo
     seat_rows = models.PositiveSmallIntegerField() # eg. 34
     seat_columns = models.CharField(max_length=10) # eg. 3-4-3, 3-3, 2-4-2, etc
 
-    status = models.CharField(max_length=3, choices=AirplaneStatus.choices, default=AirplaneStatus.AVAILABLE)
+    status = models.CharField(max_length=3, choices=AircraftStatus.choices, default=AircraftStatus.AVAILABLE)
     fuel_per_km = models.DecimalField(max_digits=4, decimal_places=2) # will dictate base cost of flight (fuel/km * km / #seats) 
 
     created_at = models.DateTimeField(auto_now_add=True)

@@ -89,3 +89,20 @@ def aircrafts_list(request):
         #print(data)
         serializer = AircraftSerializer(data, context={'request': request}, many=True)
         return Response(serializer.data)             
+    
+@api_view(['GET'])
+def flightcrews_list(request):
+    if request.method == 'GET':
+        data = FlightCrew.objects.all()
+        #print(data)
+        serializer = FlightCrewSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)                 
+    
+@api_view(['GET'])
+def crews_by_flight(request):
+    if request.method == 'GET':
+        flight_id = request.GET.get('flight_id','')
+        data = FlightCrew.objects.filter(flight_id=flight_id)
+        #print(data)
+        serializer = FlightCrewSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)                     
