@@ -28,15 +28,13 @@ import Scene from './Scene';
 import { CAMERA_DISTANCE } from './config.js';
 import { OrbitControls } from '@react-three/drei';
 
-import "./styles.css"
-
+import './styles.css';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const CanvasElement = (props) => {
-
 	return (
-		<div style={{ width: '500px', height: '500px' }}>
+		<>
 			<Canvas
 				camera={{
 					fov: 60,
@@ -60,10 +58,15 @@ const CanvasElement = (props) => {
 						fromObj={props.fromObj}
 					/>
 				</Suspense>
-
 			</Canvas>
-			<div class="spinner scroll-down" style={{zIndex: `${props.toggle ? 1 : -2}`}}> <a class="animate"></a> </div>
-		</div>
+			<div
+				className="spinner scroll-down"
+				style={{ zIndex: `${props.toggle ? 1 : -2}` }}
+			>
+				{' '}
+				<a className="animate"></a>{' '}
+			</div>
+		</>
 	);
 };
 

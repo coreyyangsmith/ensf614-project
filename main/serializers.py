@@ -40,17 +40,24 @@ class DestinationSerializer(serializers.ModelSerializer):
         model = Destination      
         fields = '__all__'        
 
+class AircraftSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Aircraft  
+        fields = '__all__'             
+
 class FlightSerializer(serializers.ModelSerializer):
+    start_point = DestinationSerializer()
+    end_point = DestinationSerializer()
+    aircraft_ref = AircraftSerializer()
+
     class Meta:
         model = Flight      
         fields = '__all__'          
+
+    qs = Flight.objects.all()
+
         
 class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat      
         fields = '__all__'              
-
-class AircraftSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Aircraft  
-        fields = '__all__'                    

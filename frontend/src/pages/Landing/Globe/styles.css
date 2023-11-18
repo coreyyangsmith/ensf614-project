@@ -3,7 +3,7 @@
     display: block;
     margin: 5% auto;
     position: absolute;
-    top: calc(100vh - 150px);
+    top: calc(100vh - 200px);
     left: calc(50% - 14px);
     width: 159px;
     height: 59px;
@@ -152,7 +152,6 @@
   -moz-animation: pulse 1.5s 0s infinite normal ease forwards;
   -o-animation: pulse 1.5s 0s infinite normal ease forwards;
   animation: pulse 1.5s 0s infinite normal ease forwards;
-  background-image: url(images/arrow-down.svg);
   background-repeat: no-repeat;
 }
 .scroll-down a:before, .scroll-down a:after {

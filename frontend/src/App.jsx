@@ -21,8 +21,9 @@ import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 // Component Imports
 import Landing from './pages/Landing/Landing.jsx';
 import Login from './pages/Login/Login.jsx';
-import FlightDeck from './pages/SeatMap/FlightDeck.jsx'
+import FlightDeck from './pages/SeatMap/FlightDeck.jsx';
 import { Route, Routes } from 'react-router-dom';
+import BrowseFlights from './pages/BrowseFlights/BrowseFlights.jsx';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -100,6 +101,10 @@ function App() {
 					<Route
 						path="/login"
 						element={<Login />}
+					/>
+					<Route
+						path="/flightlist"
+						element={<BrowseFlights />}
 					/>
 				</Routes>
 			</ThemeProvider>

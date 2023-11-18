@@ -1,1 +1,13 @@
+
+# Crews
 CREW_NUMBER = 100
+
+# Airplane 
+NUM_AIRPLANES = 100
+
+# Flights
+YEAR = 2023
+MONTH = 1
+DAY = 1
+NUM_DAYS = 365
+NUM_FLIGHTS_PER_DAY = 5

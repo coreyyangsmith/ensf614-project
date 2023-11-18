@@ -21,6 +21,7 @@ import scripts.seeding.load_crew as crew
 import scripts.seeding.load_destinations as destination
 import scripts.seeding.load_aircrafts as aircraft
 import scripts.seeding.load_seats as seat
+import scripts.seeding.load_flights as flight
 import scripts.seeding.initialize as initialize
 
 #   MAIN FUNCTION
@@ -47,6 +48,7 @@ def run():
     aircraft.run()
     seat.run()
     destination.run()
+    flight.run()
     print("Database successfully populated!")
 
     print("\n##########################")  

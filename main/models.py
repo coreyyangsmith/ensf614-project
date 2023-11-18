@@ -70,7 +70,7 @@ class Destination(models.Model): # Complete
     updated_at = models.DateTimeField(auto_now=True)      
 
     def __str__(self):
-        return self.country_code + " | " + self.name + ", (" + self.airport_code + ")"
+        return self.name + ", (" + self.airport_code + ")"
 
 
 class Crew(models.Model): # Complete
@@ -92,19 +92,23 @@ class Crew(models.Model): # Complete
 
 class Flight(models.Model): # Todo
     date = models.DateField()
-    depature_time = models.DateTimeField()
-    arrival_time = models.DateTimeField()
+    # depature_time = models.DateTimeField()
+    # arrival_time = models.DateTimeField()
     start_point = models.ForeignKey(Destination, null=True, blank= True, on_delete=models.DO_NOTHING, related_name="origin")
     end_point = models.ForeignKey(Destination, null=True, blank= True, on_delete=models.DO_NOTHING, related_name="destination")
     distance = models.FloatField()
 
-    # aircraft_ref = models.ForeignKey(Aircraft, null=True, blank=False, on_delete=models.DO_NOTHING)
-    # crews_ref = models.ForeignKey(Aircraft, null=True, blank=False, on_delete=models.DO_NOTHING)
+    aircraft_ref = models.ForeignKey(Aircraft, null=True, blank= True, on_delete=models.DO_NOTHING)
+    
+    crews_ref = models.ManyToManyField('Crew', through='FlightCrew')
     # seats_ref = models.ForeignKey(Aircraft, null=True, blank=False, on_delete=models.DO_NOTHING)
     # passengers_ref = models.ForeignKey(Aircraft, null=True, blank=False, on_delete=models.DO_NOTHING)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)   
+
+    def __str__(self):
+        return str(self.date) + "-" + self.start_point.name + "-" + self.end_point.name;
 
 
 
@@ -118,4 +122,17 @@ class Flight(models.Model): # Todo
 #     updated_at = models.DateTimeField(auto_now=True)       
 
 
+# Junction Tables
+class FlightAircraft(models.Model):
+    flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
+    aircraft_id = models.ForeignKey(Aircraft, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)   
+
+class FlightCrew(models.Model):
+    flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
+    crew_id = models.ForeignKey(Crew, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)   
     
+        
