@@ -24,6 +24,7 @@ import Login from './pages/Login/Login.jsx';
 import FlightDeck from './pages/SeatMap/FlightDeck.jsx';
 import { Route, Routes } from 'react-router-dom';
 import BrowseFlights from './pages/BrowseFlights/BrowseFlights.jsx';
+import PaymentPage from './pages/PaymentComponent/PaymentPage.jsx';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -105,6 +106,10 @@ function App() {
 					<Route
 						path="/flightlist"
 						element={<BrowseFlights />}
+					/>
+					<Route
+						path="/payment"
+						element={<PaymentPage />}
 					/>
 				</Routes>
 			</ThemeProvider>
