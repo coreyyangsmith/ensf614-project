@@ -28,9 +28,10 @@ const NavigationButton = (props) => {
 			<Button
 				variant="contained"
 				color={props.color}
-                sx={{marginRight: "16px"}}
+				size={props.size || "small"}
+				sx={{ marginRight: "16px" }}
 			>
-				<Link to={props.path} style={{textDecoration: "none"}}>
+				<Link to={props.path} style={{ textDecoration: "none" }}>
 					<Typography variant="landing_button">{props.label}</Typography>
 				</Link>
 			</Button>

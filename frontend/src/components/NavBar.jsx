@@ -47,8 +47,8 @@ const NavBar = () => {
 		<AppBar
 			position="sticky"
 			elevation={0}
-			style={{background: "black"}}
-            sx={{width: "100vw"}}
+			style={{ background: "black" }}
+			sx={{ width: "100vw" }}
 		>
 			<Toolbar
 				variant="regular"
@@ -87,10 +87,11 @@ const NavBar = () => {
 						justifyContent="flex-end"
 						alignItems="center"
 					>
-						<NavigationButton label="Master Flight List" path="/flightlist" color="primary"/>
-						<NavigationButton label="Seat Map Test" path="/seatmap" color="primary"/>
-						<NavigationButton label="Login" path="/login" color="primary"/>
-						<NavigationButton label="Signup" path="/register" color="c2a"/>
+						<NavigationButton label="Master Flight List" path="/flightlist" color="primary" />
+						<NavigationButton label="Seat Map Test" path="/seatmap" color="primary" />
+						<NavigationButton label="Login" path="/login" color="primary" />
+						<NavigationButton label="Signup" path="/register" color="c2a" />
+						<NavigationButton label="Passenger List" path="/passenger-list" color="primary" />
 
 					</Grid>
 				</Grid>
