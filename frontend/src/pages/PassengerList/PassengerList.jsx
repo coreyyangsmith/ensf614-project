@@ -1,5 +1,7 @@
+import { useFlights } from '../../hooks/useFlights.js';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getPassengersByFlight } from '../../api/posts';
+
 import {
     Container,
     Typography,
@@ -15,44 +17,49 @@ import {
 } from '@mui/material';
 
 const PassengerListPage = () => {
-    const [flights, setFlights] = useState([]);
+    const { flights } = useFlights(); // use the useFlights hook
     const [selectedFlight, setSelectedFlight] = useState('');
     const [passengers, setPassengers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // Fetch the list of flights
-    useEffect(() => {
-        setLoading(true);
-        axios.get('/api/flights')
-            .then(response => {
-                setFlights(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching flights:', error);
-                setError('Error fetching flights');
-                setLoading(false);
-            });
-    }, []);
-
-    // Fetch the passengers for the selected flight
     useEffect(() => {
         if (selectedFlight) {
-            axios.get(`${process.env.REACT_APP_API_URL}/api/flights/${selectedFlight}/passengers/`)
-                .then(response => setPassengers(response.data))
-                .catch(error => console.error('Error fetching passengers:', error));
+            setLoading(true);
+            getPassengersByFlight(selectedFlight)
+                .then(data => {
+                    setPassengers(data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    setError('Error fetching passengers');
+                    setLoading(false);
+                });
         } else {
             setPassengers([]);
         }
     }, [selectedFlight]);
+
+    // // Fetch the passengers for the selected flight
+    // useEffect(() => {
+    //     if (selectedFlight) {
+    //         axios.get(`${process.env.REACT_APP_API_URL}/api/flights/${selectedFlight}/passengers/`)
+    //             .then(response => setPassengers(response.data))
+    //             .catch(error => console.error('Error fetching passengers:', error));
+    //     } else {
+    //         setPassengers([]);
+    //     }
+    // }, [selectedFlight]);
+
+    console.log(flights)
 
     const handleFlightChange = (event) => {
         setSelectedFlight(event.target.value);
     };
 
     return (
-        <Container>
+        <Container style={{ background: "#000000" }}>
             <Typography variant="h4" gutterBottom>Passenger List</Typography>
             <FormControl fullWidth margin="normal">
                 <InputLabel id="select-flight-label">Select Flight</InputLabel>
@@ -87,7 +94,7 @@ const PassengerListPage = () => {
                     ))}
                 </List>
             </Paper>
-        </Container>
+        </Container >
     );
 };
 

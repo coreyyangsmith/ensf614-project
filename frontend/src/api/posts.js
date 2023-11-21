@@ -24,7 +24,7 @@ import axios from 'axios'
 //-------------------------------------------------------//
 
 const axiosClient = axios.create({
-    baseURL : `http://127.0.0.1:8000/api/`
+    baseURL: `http://127.0.0.1:8000/api/`
 });
 
 
@@ -42,4 +42,13 @@ export function putRequest(URL, payload) {
 
 export function deleteRequest(URL, payload) {
     return axiosClient.delete(`/${URL}`, payload).then(response => response);
+}
+
+export function getPassengersByFlight(flightId) {
+    return axiosClient.get(`/flights/${flightId}/passengers/`)
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error fetching passengers:', error);
+            throw error;
+        });
 }
