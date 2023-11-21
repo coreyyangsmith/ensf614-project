@@ -132,4 +132,10 @@ class FlightCrew(models.Model):
     def __str__(self):
         return str(self.flight_id.id) + "-" + str(self.crew_id.id)
     
+class Passenger(models.Model):
+    # Define your fields here
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
+    
         

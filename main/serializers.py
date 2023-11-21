@@ -65,3 +65,8 @@ class FlightCrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlightCrew
         fields = '__all__'    
+
+class PassengerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Passenger
+        fields = ['first_name', 'last_name', 'flight']
