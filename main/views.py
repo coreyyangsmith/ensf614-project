@@ -110,7 +110,11 @@ def crews_by_flight(request):
 @api_view(['GET'])
 def passengers_by_flight(request, flight_id):
     if request.method == 'GET':
-        data = Passenger.objects.filter(flight_id=flight_id)
-        serializer = PassengerSerializer(data, context={'request': request}, many=True)
+        try:
+            data = Passenger.objects.filter(flight_id=flight_id)
+            serializer = PassengerSerializer(data, context={'request': request}, many=True)
+        except Passenger.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
         return Response(serializer.data)
                  
