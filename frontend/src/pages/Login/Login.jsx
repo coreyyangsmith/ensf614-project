@@ -120,11 +120,11 @@ export default function Login() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 2, mb: 2 }}
+              sx={{ mt: 3, mb: 2, fontSize: '16.5px'}}
             >
               Sign In
             </Button>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2" color="background.default">
                   Forgot password?
@@ -135,7 +135,7 @@ export default function Login() {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Box>
         {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
