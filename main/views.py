@@ -110,7 +110,7 @@ def crews_by_flight(request):
 @api_view(['GET'])
 def passengers_by_flight(request, flight_id):
     if request.method == 'GET':
-        data = Passenger.objects.filter(flight_id=flight_id)  # Adjust the filter to match your model's related field
+        data = Passenger.objects.filter(flight_id=flight_id)
         serializer = PassengerSerializer(data, context={'request': request}, many=True)
         return Response(serializer.data)
                  

@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { Container, Typography, Button, Grid, Box } from '@mui/material';
+import { Container, Typography, Button, Grid, Box, TextField } from '@mui/material';
 import { styled, useTheme } from '@mui/system';
 
 const StyledCardElementContainer = styled(Box)(({ theme }) => ({
@@ -8,10 +8,10 @@ const StyledCardElementContainer = styled(Box)(({ theme }) => ({
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.background.paper,
-    marginBottom: theme.spacing(2), // Add space below the card element
+    marginBottom: theme.spacing(2),
     '& .StripeElement': {
         width: '100%',
-        padding: '16px',
+        padding: '30px',
     },
 }));
 

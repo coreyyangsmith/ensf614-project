@@ -123,6 +123,7 @@ class Flight(models.Model): # Todo
 
 
 # Junction Tables
+
 class FlightCrew(models.Model):
     flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
     crew_id = models.ForeignKey(Crew, on_delete=models.CASCADE)
@@ -133,9 +134,10 @@ class FlightCrew(models.Model):
         return str(self.flight_id.id) + "-" + str(self.crew_id.id)
     
 class Passenger(models.Model):
-    # Define your fields here
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
-    
+    flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.flight_id.id) + "-" + str(self.first_name) + str(self.last_name)
         
