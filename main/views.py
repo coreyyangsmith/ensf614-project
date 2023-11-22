@@ -126,20 +126,10 @@ def passengers_by_flight(request, flight_id):
 def query_flights(request):
     print("Initial Query")
     if request.method == 'GET':
-        print("GET Request Start")
-        print("Request\n")
-        print(request)
-
-        print("\nDump\n")
+        # Process Request o Object
         dump = json.dumps(request.GET)
-        print(dump)
-        print(type(dump))
-
-        print("\nHTTP Body\n")
-
         body = json.loads(dump)    
-        print(body)    
-        print(type(body))
+
 
         # Initialize Values from JSON, to filter
         start_point_id = body['info[start_point][id]']
@@ -148,10 +138,6 @@ def query_flights(request):
         try:
             start_point = Destination.objects.get(id=start_point_id)
             end_point = Destination.objects.get(id=end_point_id)
-
-            print("\n# ---------------- #")
-            print("Start Point\n")
-            print(start_point)
             data = Flight.objects.filter(start_point=start_point, end_point=end_point)
             serializer = FlightSerializer(data, context={'request': request}, many=True)
         except Flight.DoesNotExist:

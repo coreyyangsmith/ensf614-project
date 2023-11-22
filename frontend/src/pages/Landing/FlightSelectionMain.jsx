@@ -16,14 +16,13 @@
 //-------------------------------------------------------//
 
 // React Import
-import React, { useRef } from 'react';
+import React from 'react';
 
 // MUI Import
 import { Paper, Typography, Stack } from '@mui/material';
 
 // My Component Imports
 import FlightSelectionForm from './FlightSelectionForm';
-import TestButton from './TestButton';
 
 //  STYLES
 //-------------------------------------------------------//
@@ -53,9 +52,9 @@ const FlightSelectionMain = (props) => {
 				<Typography>Select Flight Information</Typography>
 				<FlightSelectionForm
 					destinations={props.destinations}
+					setToggle={props.setToggle}
 				/>
 
-				<TestButton setToggle={props.setToggle} />
 			</Stack>
 		</Paper>
 	);

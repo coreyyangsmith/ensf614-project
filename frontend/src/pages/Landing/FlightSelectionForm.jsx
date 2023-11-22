@@ -61,7 +61,7 @@ const FlightSelectionForm = (props) => {
 	const [departureDate, setDepartureDate] = useState(undefined);
 	const [arrivalDate, setArrivalDate] = useState(undefined);
 
-	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
+	const [fromObj, setFromObj, toObj, setToObj, flightList, setFlightList] = useContext(Context);
 	const formFilled = useRef(false);
 
 	const {
@@ -76,8 +76,8 @@ const FlightSelectionForm = (props) => {
 	const onSubmit = async (FieldValues) => {
 		try {
 			const displayedFlights = await queryFlights(FieldValues);
-			console.log("Displayed Flights");
-			console.log(displayedFlights);
+			setFlightList(displayedFlights);
+			props.setToggle(true)
 		}
 		catch (err) {
 
@@ -130,6 +130,7 @@ const FlightSelectionForm = (props) => {
 						render={({ field: { onChange, value } }) => (
 							<Autocomplete
 								onChange={(event, item) => {
+									setFromObj(item);
 									onChange(item);
 								}}
 								value={value || null}
@@ -156,6 +157,7 @@ const FlightSelectionForm = (props) => {
 						render={({ field: { onChange, value } }) => (
 							<Autocomplete
 								onChange={(event, item) => {
+									setToObj(item);
 									onChange(item);
 								}}
 								value={value || null}
