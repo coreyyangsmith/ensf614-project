@@ -45,10 +45,19 @@ export function deleteRequest(URL, payload) {
 }
 
 export function getPassengersByFlight(flightId) {
-    return axiosClient.get(`/flights/${flightId}/passengers/`)
+    return axiosClient.get(`/flights/${flightId}`)
         .then(response => response.data)
         .catch(error => {
             console.error('Error fetching passengers:', error);
             throw error;
         });
 }
+
+// export function getPassengersByFlight(flightId) {
+//     return axiosClient.get(`/flights/${flightId}/`)
+//         .then(response => response.data)
+//         .catch(error => {
+//             console.error('Error fetching passengers:', error);
+//             throw error;
+//         });
+// }
