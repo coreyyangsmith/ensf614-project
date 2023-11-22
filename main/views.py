@@ -33,7 +33,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework import viewsets
-
+from rest_framework_simplejwt.tokens import RefreshToken
 
 #   VIEWS
 #-------------------------------------------------------#
@@ -119,3 +119,39 @@ def passengers_by_flight(request, flight_id):
         
         return Response(serializer.data)
                  
+
+# Add these views for user registration, login, and logout
+@api_view(['POST'])
+def register(request):
+    serializer = RegisterSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+        res = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+        return Response(res, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def login(request):
+    serializer = LoginSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = serializer.validated_data
+    refresh = RefreshToken.for_user(user)
+    res = {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+    return Response(res, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def logout(request):
+    try:
+        refresh_token = request.data['refresh']
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response(status=status.HTTP_205_RESET_CONTENT)
+    except Exception as e:
+        return Response(status=status.HTTP_400_BAD_REQUEST)

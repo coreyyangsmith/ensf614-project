@@ -24,6 +24,7 @@ import datetime
 
 # Django Authentication
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
 
 # Django Rest Framework (DRF) Imports
 from rest_framework import serializers
@@ -80,6 +81,20 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "username", "email")
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError("Incorrect username or password.")
+        if not user.is_active:
+            raise serializers.ValidationError("User is deactivated.")
+        return {'user': user}
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(

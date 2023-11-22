@@ -36,4 +36,8 @@ urlpatterns = [
     re_path(r'^api/flightcrews/$', views.flightcrews_list),       
     re_path(r'^api/crewsbyflight/$', views.crews_by_flight),
     re_path(r'^api/flights/(\d+)$', views.passengers_by_flight),
+    # Add these URLs for user registration, login, and logout
+    re_path(r'^api/register/$', views.register, name='register'),
+    re_path(r'^api/login/$', views.login, name='login'),
+    re_path(r'^api/logout/$', views.logout, name='logout'),
 ]
