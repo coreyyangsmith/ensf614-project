@@ -16,21 +16,41 @@
 //-------------------------------------------------------//
 
 // React Imports
-import React from 'react';
+import React, { useRef } from 'react';
 import { useState, useContext } from 'react';
 
 // MUI Imports
-import { Button, ButtonGroup, Stack } from '@mui/material';
+import {
+	Autocomplete,
+	Button,
+	ButtonGroup,
+	Divider,
+	Stack,
+	TextField,
+	createFilterOptions,
+} from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 import DestinationArrivalForm from './DestinationArrivalForm';
 
 //CSS
 import './landing.css';
-import PassengerButtonGroup from './PassengerButtonGroup';
-import SeatSelectionRadio from './SeatSelectionRadio';
+
+// My Context
 import { Context } from './Landing';
 
-// Context
+// RHF
+import { useForm, Controller } from 'react-hook-form';
 
+// My Components
+import PassengerButtonGroup from './PassengerButtonGroup';
+import FlightSelectionButton from './FlightSelectionButton';
+import SeatSelectionRadio from './SeatSelectionRadio';
+
+// Day JS
+import dayjs from 'dayjs';
+import { queryFlights } from '../../api/posts';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -41,21 +61,52 @@ const FlightSelectionForm = (props) => {
 	const [departureDate, setDepartureDate] = useState(undefined);
 	const [arrivalDate, setArrivalDate] = useState(undefined);
 
+	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
+	const formFilled = useRef(false);
 
-	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context)
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isSubmitting },
+		reset,
+		control,
+	} = useForm();
 
+	// Utility
+	const onSubmit = async (FieldValues) => {
+		try {
+			const displayedFlights = await queryFlights(FieldValues);
+			console.log("Displayed Flights");
+			console.log(displayedFlights);
+		}
+		catch (err) {
+
+		}
+		console.log(FieldValues);
+	};
+
+	const filterOptions = createFilterOptions({
+		ignoreCase: true,
+		matchFrom: 'start',
+		limit: 55,
+	});
 
 	// TODO expand this logic to ensure flight selection is "mostly" valid
-	if (seatSelection !== "") {
-		props.formFilled.current = true
+	if (seatSelection !== '') {
+		formFilled.current = true;
 	}
-	console.log(selectedTrip)
+
 	return (
-		<>
+		<form
+			onSubmit={handleSubmit((data) => {
+				onSubmit(data);
+			})}
+		>
 			<Stack
 				direction="column"
 				spacing={1}
 			>
+				{/* Return or One Way Button Selection */}
 				<ButtonGroup variant="outlined">
 					<Button
 						className={`flight-button ${selectedTrip === 'Return' && 'active'}`}
@@ -70,14 +121,91 @@ const FlightSelectionForm = (props) => {
 						One-Way
 					</Button>
 				</ButtonGroup>
-				<DestinationArrivalForm
+
+				{/* Destination & Arrival Selection*/}
+				<Stack direciton="row">
+					<Controller
+						control={control}
+						name="start_point"
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								onChange={(event, item) => {
+									onChange(item);
+								}}
+								value={value || null}
+								options={props.destinations}
+								label="Departure Location"
+								getOptionLabel={(option) =>
+									`${option['airport_code']} | ${option['name']}`
+								}
+								filterOptions={filterOptions}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										label="Destination"
+										placeholder="Select a Destination Location"
+									/>
+								)}
+							/>
+						)}
+					/>
+
+					<Controller
+						control={control}
+						name="end_point"
+						render={({ field: { onChange, value } }) => (
+							<Autocomplete
+								onChange={(event, item) => {
+									onChange(item);
+								}}
+								value={value || null}
+								options={props.destinations}
+								label="Departure Location"
+								getOptionLabel={(option) =>
+									`${option['airport_code']} | ${option['name']}`
+								}
+								filterOptions={filterOptions}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										label="Arrival"
+										placeholder="Select an Arrival Location"
+									/>
+								)}
+							/>
+						)}
+					/>
+				</Stack>
+
+				<Divider></Divider>
+				{/* Departure & Return Dates*/}
+				<Controller
+					control={control}
+					name="date"
+					defaultValue=""
+					render={({ field }) => (
+						<LocalizationProvider dateAdapter={AdapterDayjs}>
+							<DatePicker
+								label="Departure Date"
+								required
+								placeholderText="Select date"
+								onChange={(date) =>
+									field.onChange(dayjs(date.$d).format('YYYY-MM-DD'))
+								}
+								selected={field.value}
+							/>
+						</LocalizationProvider>
+					)}
+				/>
+
+				{/* <DestinationArrivalForm
 					data={props.destinations}
 					where="From"
 					depLabel="Departure Date"
 					selectedTrip={selectedTrip}
 					date={departureDate}
 					setDate={setDepartureDate}
-					setObj={setFromObj}	
+					setObj={setFromObj}
 				/>
 				<DestinationArrivalForm
 					data={props.destinations}
@@ -86,23 +214,33 @@ const FlightSelectionForm = (props) => {
 					selectedTrip={selectedTrip}
 					date={arrivalDate}
 					setDate={setArrivalDate}
-					setObj={setToObj}					
-				/>
-				<Stack direction="row" spacing={1}>
-				<PassengerButtonGroup
-					setPassengers={setPassengers}
-					passenegers={passenegers}
-				/>
-				<SeatSelectionRadio
-					seatSelection={seatSelection}
-					setSeatSelection={setSeatSelection}
-				/>
+					setObj={setToObj}
+				/> */}
+				<Stack
+					direction="row"
+					spacing={1}
+				>
+					<PassengerButtonGroup
+						setPassengers={setPassengers}
+						passenegers={passenegers}
+					/>
+					<SeatSelectionRadio
+						seatSelection={seatSelection}
+						setSeatSelection={setSeatSelection}
+					/>
 				</Stack>
-
-
 				<Stack direction="row"></Stack>
+				<Button
+					type="submit"
+					variant="outlined"
+					color="primary"
+					disabled={formFilled.current ? false : true}
+					fullWidth
+				>
+					Find Flights
+				</Button>
 			</Stack>
-		</>
+		</form>
 	);
 };
 

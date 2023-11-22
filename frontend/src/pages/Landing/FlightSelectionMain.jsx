@@ -22,7 +22,6 @@ import React, { useRef } from 'react';
 import { Paper, Typography, Stack } from '@mui/material';
 
 // My Component Imports
-import FlightSelectionButton from './FlightSelectionButton';
 import FlightSelectionForm from './FlightSelectionForm';
 import TestButton from './TestButton';
 
@@ -43,7 +42,7 @@ const frostedGlassSX = {
 //-------------------------------------------------------//
 
 const FlightSelectionMain = (props) => {
-	const formFilled = useRef(false);
+	
 
 	return (
 		<Paper sx={frostedGlassSX}>
@@ -53,10 +52,9 @@ const FlightSelectionMain = (props) => {
 			>
 				<Typography>Select Flight Information</Typography>
 				<FlightSelectionForm
-					formFilled={formFilled}
 					destinations={props.destinations}
 				/>
-				<FlightSelectionButton formFilled={formFilled} />
+
 				<TestButton setToggle={props.setToggle} />
 			</Stack>
 		</Paper>

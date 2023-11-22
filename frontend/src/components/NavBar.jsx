@@ -68,6 +68,9 @@ const NavBar = () => {
 						alignItems="center"
 					>
 						<Typography variant="landing_title">FLIGHT.LY</Typography>
+						
+						
+						
 					</Grid>
 
 					<Grid
