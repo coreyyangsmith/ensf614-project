@@ -51,6 +51,20 @@ def run():
     for single_date in (date(YEAR, MONTH, DAY) + timedelta(n) for n in range(NUM_DAYS)):
         # print("Generating Flights for: ", single_date)
 
+        # Generate Test Flights | YYC --> LAX
+        start = Destination.objects.get(airport_code = "YYC")
+        end = Destination.objects.get(airport_code = "LAX")
+        distance = 10000 # fake
+
+        flight = Flight.objects.get_or_create(
+            date = single_date,
+            start_point = start,
+            end_point = end,
+            distance = distance,
+            aircraft_ref = Aircraft.objects.order_by('?').first(),
+        )
+        count += 1
+
         for i in range(NUM_FLIGHTS_PER_DAY):
             start = Destination.objects.order_by('?').first()
             end = Destination.objects.order_by('?').first()

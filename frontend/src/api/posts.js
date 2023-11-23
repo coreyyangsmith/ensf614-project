@@ -12,52 +12,57 @@
 // Date: November 11th, 2023
 //-------------------------------------------------------//
 
-
 //  IMPORTS
 //-------------------------------------------------------//
 
 // Import Axios
-import axios from 'axios'
-
+import axios from 'axios';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
 const axiosClient = axios.create({
-    baseURL: `http://127.0.0.1:8000/api/`
+	baseURL: `http://127.0.0.1:8000/api/`,
 });
 
-
 export function getRequest(URL, payload) {
-    return axiosClient.get(`/${URL}`, payload).then(response => response);
+	return axiosClient.get(`/${URL}`, payload).then((response) => response);
 }
 
 export function postRequest(URL, payload) {
-    return axiosClient.post(`/${URL}`, payload).then(response => response);
+	return axiosClient.post(`/${URL}`, payload).then((response) => response);
 }
 
 export function putRequest(URL, payload) {
-    return axiosClient.put(`/${URL}`, payload).then(response => response);
+	return axiosClient.put(`/${URL}`, payload).then((response) => response);
 }
 
 export function deleteRequest(URL, payload) {
-    return axiosClient.delete(`/${URL}`, payload).then(response => response);
+	return axiosClient.delete(`/${URL}`, payload).then((response) => response);
 }
 
 export function getPassengersByFlight(flightId) {
-    return axiosClient.get(`/flights/${flightId}`)
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error fetching passengers:', error);
-            throw error;
-        });
+	return axiosClient
+		.get(`/flights/${flightId}`)
+		.then((response) => response.data)
+		.catch((error) => {
+			console.error('Error fetching passengers:', error);
+			throw error;
+		});
 }
 
-// export function getPassengersByFlight(flightId) {
-//     return axiosClient.get(`/flights/${flightId}/`)
-//         .then(response => response.data)
-//         .catch(error => {
-//             console.error('Error fetching passengers:', error);
-//             throw error;
-//         });
-// }
+export function queryFlights(info) {
+	console.log('Info Within Axios');
+	console.log(info);
+
+	return axiosClient
+		.get(`/queryflights`, {
+			params: {info: info},
+            data: {},
+		})
+		.then((response) => response.data)
+		.catch((error) => {
+			console.error('Error fetching flights:', error);
+			throw error;
+		});
+}

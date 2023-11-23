@@ -29,6 +29,7 @@ import CanvasElement from './Globe/CanvasElement';
 // Custom Hooks
 import { useDestinations } from '../../hooks/useDestinations';
 import { fromPixels } from '@tensorflow/tfjs-core/dist/ops/browser';
+import FlightList from '../BrowseFlights/FlightList';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -42,9 +43,12 @@ const Landing = () => {
 
 	const [fromObj, setFromObj] = useState([]);
 	const [toObj, setToObj] = useState([]);
+	const [flightList, setFlightList] = useState([]);
 
 	return (
-		<Context.Provider value={[fromObj, setFromObj, toObj, setToObj]}>
+		<Context.Provider
+			value={[fromObj, setFromObj, toObj, setToObj, flightList, setFlightList]}
+		>
 			<NavBar />
 			<Paper
 				sx={{
@@ -55,26 +59,30 @@ const Landing = () => {
 					background: '',
 				}}
 			/>
-			<Paper
-				sx={{
-					height: '100vh',
-					width: '100vw',
-					zIndex: `${toggle ? -2 : 1}`,
-					position: 'absolute',
-					background: 'transparent',
-				}}
-			>
-				<FlightSelectionMain
-					destinations={destinations}
-					setToggle={setToggle}
-				/>
-			</Paper>
+				<Paper
+					sx={{
+						height: '100vh',
+						width: '100vw',
+						zIndex: `${toggle ? -2 : 1}`,
+						position: 'absolute',
+						background: 'transparent',
+					}}
+				>
+					<FlightSelectionMain
+						destinations={destinations}
+						setToggle={setToggle}
+					/>
+				</Paper>
 
-			<CanvasElement
-				data={destinations}
-				toggle={toggle}
-			/>
+				<Paper>
+					<CanvasElement
+						data={destinations}
+						toggle={toggle}
+					/>
+				</Paper>
 
+
+			<FlightList toggle={toggle} />
 		</Context.Provider>
 	);
 };

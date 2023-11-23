@@ -35,6 +35,9 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework import viewsets
 from rest_framework_simplejwt.tokens import RefreshToken
 
+# Json
+import json
+
 #   VIEWS
 #-------------------------------------------------------#
 def MainView(request):
@@ -118,7 +121,30 @@ def passengers_by_flight(request, flight_id):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         return Response(serializer.data)
-                 
+    
+@api_view(['GET'])
+def query_flights(request):
+    print("Initial Query")
+    if request.method == 'GET':
+        # Process Request o Object
+        dump = json.dumps(request.GET)
+        body = json.loads(dump)    
+
+
+        # Initialize Values from JSON, to filter
+        start_point_id = body['info[start_point][id]']
+        end_point_id = body['info[end_point][id]']
+
+        try:
+            start_point = Destination.objects.get(id=start_point_id)
+            end_point = Destination.objects.get(id=end_point_id)
+            data = Flight.objects.filter(start_point=start_point, end_point=end_point)
+            serializer = FlightSerializer(data, context={'request': request}, many=True)
+        except Flight.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        return Response(serializer.data)    
+
 
 # Add these views for user registration, login, and logout
 @api_view(['POST'])
