@@ -1,39 +1,11 @@
 import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-const FlightCard = (props) => {
-	const convertDateTimeTo24H = (dateTimeString) => {
-		let date = new Date(dateTimeString);
-		let formattedTime = date.toLocaleTimeString('en-US', {
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: false,
-		});
+// get seats from flight
 
-		return formattedTime;
-	};
-
-	const convertDateTimeToDuration = (dateTimeString) => {
-		let date = new Date(dateTimeString);
-		let formattedTime = date.toLocaleTimeString('en-US', {
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: false,
-		});
-
-		let hoursString = formattedTime.slice(0, 2);
-		let minutesString = formattedTime.slice(3, 5);
-
-		if (hoursString[0] == '0') hoursString = hoursString[1];
-
-		let finalString = hoursString + 'h ' + minutesString + 'm';
-
-		return finalString;
-	};
-
-	console.log(props.flight);
+const SeatCard = (props) => {
 	return (
-		<Card sx={{width: "100%" }}>
+		<Card sx={{ width: '100%' }}>
 			<CardContent>
 				{/* Top Info Bar */}
 				<Grid
@@ -59,7 +31,7 @@ const FlightCard = (props) => {
 								alignItems: 'center',
 							}}
 						>
-							{convertDateTimeTo24H(props.flight.departure_time)}
+							Empty
 						</Typography>
 					</Grid>
 					<Grid
@@ -69,7 +41,7 @@ const FlightCard = (props) => {
 						sx={{ display: 'flex', justifyContent: 'center' }}
 					>
 						<Typography sx={{ display: 'flex', alignItems: 'center' }}>
-							{convertDateTimeToDuration(props.flight.departure_time)}
+							Empty
 						</Typography>
 					</Grid>
 					<Grid
@@ -85,7 +57,7 @@ const FlightCard = (props) => {
 								alignItems: 'center',
 							}}
 						>
-							{convertDateTimeTo24H(props.flight.arrival_time)}
+							Empty
 						</Typography>
 					</Grid>
 				</Grid>
@@ -215,4 +187,4 @@ const FlightCard = (props) => {
 	);
 };
 
-export default FlightCard;
+export default SeatCard;
