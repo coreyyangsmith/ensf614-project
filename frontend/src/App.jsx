@@ -19,6 +19,7 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
 // Component Imports
+import React, { useState } from 'react';
 import Landing from './pages/Landing/Landing.jsx';
 import Login from './pages/Login/Login.jsx';
 import FlightDeck from './pages/SeatMap/FlightDeck.jsx';
@@ -26,6 +27,8 @@ import { Route, Routes } from 'react-router-dom';
 import BrowseFlights from './pages/BrowseFlights/BrowseFlights.jsx';
 import PaymentPage from './pages/PaymentComponent/PaymentPage.jsx';
 import PassengerListPage from './pages/PassengerList/PassengerList.jsx';
+
+export const AuthContext = React.createContext();
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -87,8 +90,11 @@ const darkTheme = createTheme({
 });
 
 function App() {
+	const [user, setUser] = useState(null);
+
 	return (
 		<>
+		<AuthContext.Provider value={{ user, setUser }}>
 			<ThemeProvider theme={darkTheme}>
 				<CssBaseline />
 				<Routes>
@@ -122,6 +128,7 @@ function App() {
 					/>					
 				</Routes>
 			</ThemeProvider>
+		</AuthContext.Provider>
 		</>
 	);
 }
