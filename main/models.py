@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib import admin
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -92,14 +94,14 @@ class Crew(models.Model): # Complete
 
 class Flight(models.Model): # Todo
     date = models.DateField()
-    # depature_time = models.DateTimeField()
-    # arrival_time = models.DateTimeField()
+    departure_time = models.DateTimeField(auto_now_add=False, blank=False)
+    arrival_time = models.DateTimeField(auto_now_add=False, blank=False)
     start_point = models.ForeignKey(Destination, null=True, blank= True, on_delete=models.DO_NOTHING, related_name="origin")
     end_point = models.ForeignKey(Destination, null=True, blank= True, on_delete=models.DO_NOTHING, related_name="destination")
     distance = models.FloatField()
-
-    aircraft_ref = models.ForeignKey(Aircraft, null=True, blank= True, on_delete=models.DO_NOTHING)
+    est_duration = models.TimeField(auto_now_add=False)
     
+    aircraft_ref = models.ForeignKey(Aircraft, null=True, blank= True, on_delete=models.DO_NOTHING)
     crews_ref = models.ManyToManyField('Crew', through='FlightCrew')
     # seats_ref = models.ForeignKey(Aircraft, null=True, blank=False, on_delete=models.DO_NOTHING)
     # passengers_ref = models.ForeignKey(Aircraft, null=True, blank=False, on_delete=models.DO_NOTHING)
@@ -108,7 +110,11 @@ class Flight(models.Model): # Todo
     updated_at = models.DateTimeField(auto_now=True)   
 
     def __str__(self):
-        return str(self.date) + "-" + self.start_point.name + "-" + self.end_point.name;
+        return str(self.date) + "-" + self.start_point.name + "-" + self.end_point.name + " " + str(self.departure_time);
+
+class FlightAdmin(admin.ModelAdmin):
+    readonly_fields = ('date','departure_time','est_duration','arrival_time', 'created_at','updated_at',)
+
 
 
 

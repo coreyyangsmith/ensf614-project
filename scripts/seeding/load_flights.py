@@ -18,7 +18,7 @@
 from main.models import Flight, Aircraft, Destination, Crew, FlightCrew
 from scripts.seeding.config import YEAR, MONTH, DAY, NUM_FLIGHTS_PER_DAY, NUM_DAYS
 import pandas as pd
-from datetime import date, timedelta
+from datetime import date, timedelta, time, datetime
 import random;
 import math
 
@@ -45,6 +45,35 @@ def getDistance(start, end):
 
     return d
 
+def getTime(distance):
+    PLANE_SPEED = 900 #km/h
+
+    hours_full = distance / PLANE_SPEED
+    hours = math.floor(hours_full)
+    minutes_remaining = math.floor((hours_full-hours) * 60)
+
+    duration = time(hours, minutes_remaining)
+
+    return duration
+
+def getRandomStartTime(date):
+    randomHour = random.randint(0, 23);
+    randomMinute = random.randint(0, 59);
+
+    timestamp = datetime(year=date.year,
+                        month=date.month,
+                        day=date.day,
+                        hour=randomHour,
+                        minute=randomMinute)
+
+    return timestamp
+
+def getArrivalTime(datetime, duration):
+    starting_datetime = datetime
+    time_change = timedelta(hours=duration.hour, minutes=duration.minute) 
+    ending_datetime = starting_datetime + time_change
+    return ending_datetime
+
 def run():
     count = 0
 
@@ -55,12 +84,20 @@ def run():
         start = Destination.objects.get(airport_code = "YYC")
         end = Destination.objects.get(airport_code = "LAX")
         distance = 10000 # fake
+        est_duration = getTime(distance)
+
+        departure_time = getRandomStartTime(single_date)
+        arrival_time = getArrivalTime(departure_time, est_duration)
 
         flight = Flight.objects.get_or_create(
             date = single_date,
+            departure_time = departure_time,
+            arrival_time = arrival_time,
             start_point = start,
             end_point = end,
             distance = distance,
+            est_duration = est_duration,
+
             aircraft_ref = Aircraft.objects.order_by('?').first(),
         )
         count += 1
@@ -69,13 +106,20 @@ def run():
             start = Destination.objects.order_by('?').first()
             end = Destination.objects.order_by('?').first()
             distance = getDistance(start, end)
+            est_duration = getTime(distance)
+
+            departure_time = getRandomStartTime(single_date)
+            arrival_time = getArrivalTime(departure_time, est_duration)
                     
 
             flight = Flight.objects.get_or_create(
                 date = single_date,
+                departure_time = departure_time,
+                arrival_time = arrival_time,
                 start_point = start,
                 end_point = end,
                 distance = distance,
+                est_duration = est_duration,
                 aircraft_ref = Aircraft.objects.order_by('?').first(),
             )    
             count += 1    
