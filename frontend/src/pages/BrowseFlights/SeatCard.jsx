@@ -2,6 +2,7 @@ import { Button, Card, CardContent, Grid, Stack, Typography } from '@mui/materia
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useSeatsByAircraft } from '../../hooks/useSeatsByFlight';
+import NavigatinButtonFlight from '../../components/NavigationButtonFlight.jsx'
 
 // get seats from flight
 
@@ -25,7 +26,7 @@ const SeatCard = (props) => {
 		setSeatsTaken(sTaken);
 	}, [seatsTaken]);
 
-	console.log(seatsAvailable);
+
 
 	return (
 		<Card sx={{ width: '100%', background: '#121212', borderRadius: "15px" }}>
@@ -35,7 +36,8 @@ const SeatCard = (props) => {
 					<Typography variant="h4">
 						{seatsAvailable.current}/{seatsTaken + seatsAvailable.current}
 					</Typography>
-					<Button variant="contained">Find Seat</Button>
+					<NavigatinButtonFlight label="Find Seat" path={`/flights/${props.flight.id}`} flight={props.flight}></NavigatinButtonFlight>
+
 				</Stack>
 			</CardContent>
 		</Card>

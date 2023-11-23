@@ -25,30 +25,36 @@ import { useSeats } from '../../hooks/useSeats.js';
 // MUI Imports
 import { Grid, Paper, Typography } from '@mui/material';
 import Aisle from './Aisle.jsx';
+import { useLocation } from 'react-router-dom';
+
+// Styles
+const frostedGlassSX = {
+	background: 'rgba(255,255,255,.3)',
+	display: 'flex',
+	padding: '16px',
+	zIndex: '100',
+	width: '100px',
+	height: '500px',
+	marginLeft: '50px',
+	marginTop: '50px',
+};
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
-const FlightDeck = () => {
-	const frostedGlassSX = {
-		background: 'rgba(255,255,255,.3)',
-		display: 'flex',
-		padding: '16px',
-		zIndex: '100',
-		width: '100px',
-		height: '500px',
-		marginLeft: '50px',
-		marginTop: '50px',
-	};
+const FlightDeck = (props) => {
+	let { state } = useLocation();
 
 	// Given Plane, get needed properties
 	// Data Preprocessing
-	const { aircrafts } = useAircrafts();
-	const myAircraft = aircrafts[1];
+
+	const myAircraft = state.flight.aircraft_ref
 	console.log('Selected Aircraft');
 	console.log(myAircraft);
 
 	const { seats } = useSeats();
 	const mySeats = [];
+
+
 
 	seats.filter((el) => {
 		if (el.aircraft_ref == myAircraft.id) mySeats.push(el);
@@ -56,6 +62,9 @@ const FlightDeck = () => {
 
 	var maxCols = 0;
 	var maxRows = 0;
+	console.log("MY AIRCRAFT");
+	console.log(props.flight)
+	console.log(state.flight)
 
 	mySeats.forEach((seat) => {
 		if (seat.row_position + 1 > maxRows) maxRows = seat.row_position + 1;

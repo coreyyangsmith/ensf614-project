@@ -116,6 +116,10 @@ function App() {
 						path="/passenger-list"
 						element={<PassengerListPage />}
 					/>
+					<Route
+						path="/flights/:id"
+						element={<FlightDeck/>}
+					/>					
 				</Routes>
 			</ThemeProvider>
 		</>
@@ -125,3 +129,4 @@ function App() {
 //  EXPORTS
 //-------------------------------------------------------//
 export default App;
+

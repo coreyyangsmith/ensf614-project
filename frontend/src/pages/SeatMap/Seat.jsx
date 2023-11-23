@@ -41,7 +41,6 @@ const Seat = (props) => {
 
 		seatName = (row + 1).toString()
 		seatName += String.fromCharCode(97 + col).toUpperCase()
-		console.log(seatName)
 
 		return seatName
 	}
