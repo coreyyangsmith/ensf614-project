@@ -41,6 +41,11 @@ const frostedGlassSX = {
 //-------------------------------------------------------//
 
 const FlightSelectionMain = (props) => {
+
+	// Once Active
+	if(props.toggle) {
+		return(<></>)
+	}
 	
 
 	return (
