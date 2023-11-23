@@ -131,8 +131,19 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
+# # Time Format for All Apps
+# TIME_INPUT_FORMATS = [
+#     #'%I:%M:%S %p',  # 6:22:44 PM
+#     #'%I:%M %p',  # 6:22 PM
+#     #'%I %p',  # 6 PM
+#     #'%H:%M:%S',     # '14:30:59'
+#     #'%H:%M:%S.%f',  # '14:30:59.000200'
+#     '%H:%M',        # '14:30'
+# ]
+
+TIME_INPUT_FORMATS = ('%H:%i ',)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
