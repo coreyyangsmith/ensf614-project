@@ -22,7 +22,6 @@ import {
 import { Context } from '../Landing.jsx';
 
 export default function Plane(props) {
-	console.log("new plane");
 	const { scene } = useThree();
 	const [fromObj, setFromObj, toObj, setToObj] = useContext(Context);
 	const ref = useRef();

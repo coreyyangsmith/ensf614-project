@@ -24,6 +24,7 @@ import scripts.seeding.load_seats as seat
 import scripts.seeding.load_flights as flight
 import scripts.seeding.load_flightcrews as flight_crew
 import scripts.seeding.load_passengers as passenger
+import scripts.seeding.load_users as user
 import scripts.seeding.initialize as initialize
 
 #   MAIN FUNCTION
@@ -35,6 +36,7 @@ def run():
 
     print("\nDeleting objects...")
     # Step 1: Wipe current DB
+    
     Flight.objects.all().delete()
     Crew.objects.all().delete()
     Aircraft.objects.all().delete()
@@ -42,6 +44,7 @@ def run():
     Destination.objects.all().delete()
     #Transaction.objects.all().delete()
     Passenger.objects.all().delete()
+    User.objects.all().delete()
     print("All objects successfully deleted!")
 
     # Step 2: Populate
@@ -54,6 +57,7 @@ def run():
     flight.run()
     flight_crew.run()
     passenger.run()
+    user.run()
     print("Database successfully populated!")
 
     print("\n##########################")  

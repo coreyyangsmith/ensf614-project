@@ -75,6 +75,7 @@ const Landing = () => {
 					<FlightSelectionMain
 						destinations={destinations}
 						setToggle={setToggle}
+						toggle={toggle}
 					/>
 				</Paper>
 
