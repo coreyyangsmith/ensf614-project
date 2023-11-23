@@ -17,12 +17,13 @@
 
 // React Import
 import React from 'react';
+import { useContext } from 'react';
 
 // Routing
 // import StyledLink from '../../components/StyledLink';
 // import StyledHashLink from '../../components/StyledHashLink';
 // import StyledHomeHashLink from '../../components/StyledHomeHashLink';
-
+import { AuthContext } from '../App';
 // React Router Import
 import { Link } from 'react-router-dom';
 
@@ -30,6 +31,7 @@ import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Grid } from '@mui/material/';
 import NavigationButton from './NavigationButton';
+
 
 //  STYLES
 //-------------------------------------------------------//
@@ -43,6 +45,7 @@ const toolbarSX = {
 //-------------------------------------------------------//
 
 const NavBar = () => {
+	const { user } = useContext(AuthContext);
 	return (
 		<AppBar
 			position="sticky"
@@ -80,8 +83,8 @@ const NavBar = () => {
 						direction="row"
 						justifyContent="center"
 						alignItems="center"
-					></Grid>
-
+					>{user && <div>Hi, {user.username}</div>}</Grid>
+					
 					<Grid
 						container
 						item

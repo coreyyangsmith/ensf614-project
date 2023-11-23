@@ -16,7 +16,8 @@
 //-------------------------------------------------------//
 
 // React Import
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; // Add useContext here
+
 
 // MUI Import
 import { Paper } from '@mui/material';
@@ -25,6 +26,7 @@ import { Paper } from '@mui/material';
 import NavBar from '../../components/NavBar';
 import FlightSelectionMain from './FlightSelectionMain';
 import CanvasElement from './Globe/CanvasElement';
+import { AuthContext } from '../../App'; // Adjust the path as needed
 
 // Custom Hooks
 import { useDestinations } from '../../hooks/useDestinations';
@@ -38,12 +40,14 @@ export const Context = React.createContext();
 
 const Landing = () => {
 	const { destinations } = useDestinations();
+	const { user } = useContext(AuthContext); // Access user from AuthContext
 
 	const [toggle, setToggle] = useState(false);
 
 	const [fromObj, setFromObj] = useState([]);
 	const [toObj, setToObj] = useState([]);
 	const [flightList, setFlightList] = useState([]);
+	console.log(user)
 
 	return (
 		<Context.Provider

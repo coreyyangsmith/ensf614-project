@@ -66,3 +66,23 @@ export function queryFlights(info) {
 			throw error;
 		});
 }
+
+  export function loginUser(credentials) {
+	return axiosClient
+	  .post('/login/', credentials)
+	  .then((response) => {
+		// store the tokens in local storage
+		localStorage.setItem('access_token', response.data.access);
+		localStorage.setItem('refresh_token', response.data.refresh);
+  
+		// set the default Authorization header
+		axiosClient.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+  
+		return response.data;
+	  })
+	  .catch((error) => {
+		console.error('Error during login:', error);
+		throw error;
+	  });
+  }
+  

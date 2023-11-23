@@ -18,6 +18,12 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { loginUser } from '../../api/posts';
+import { useState, useContext } from 'react'; // Add useContext here
+import { AuthContext } from '../../App';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function Copyright(props) {
   return (
@@ -33,6 +39,9 @@ function Copyright(props) {
 }
 
 export default function Login() {
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -41,11 +50,22 @@ export default function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const data = new FormData(event.currentTarget);    
+    const username = data.get('username');
+    const password = data.get('password');
+  
+    loginUser({ username: username, password: password })
+      .then((data) => {
+        console.log('Login successful:', data);
+        setUser({ username: username, ...data }); // Set user state to username
+        navigate('/'); // Navigate to Landing page
+      })
+      .catch((error) => {
+        console.error('Error during login:', error);
+        console.error('Server response:', error.response.data);
+        setErrorMessage('Invalid credentials');
+        throw error;
+      });
   };
 
   return (
@@ -80,10 +100,10 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -116,6 +136,11 @@ export default function Login() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {errorMessage && (
+              <Typography color="error">
+                {errorMessage}
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth
