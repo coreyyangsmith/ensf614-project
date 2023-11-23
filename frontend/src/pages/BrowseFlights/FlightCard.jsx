@@ -31,10 +31,10 @@ const FlightCard = (props) => {
 		return finalString;
 	};
 
-	console.log(props.flight);
+
 	return (
-		<Card sx={{width: "100%" }}>
-			<CardContent>
+		<Card sx={{ width: "100%"}}>
+			<CardContent sx={{height: "100%", width: "100%"}}>
 				{/* Top Info Bar */}
 				<Grid
 					container
@@ -47,7 +47,7 @@ const FlightCard = (props) => {
 					direction="row"
 				>
 					<Grid
-						containter
+						container
 						item
 						xs={3}
 						sx={{ display: 'flex', justifyContent: 'flex-start' }}
@@ -63,7 +63,7 @@ const FlightCard = (props) => {
 						</Typography>
 					</Grid>
 					<Grid
-						containter
+						container
 						item
 						xs={6}
 						sx={{ display: 'flex', justifyContent: 'center' }}
@@ -73,7 +73,7 @@ const FlightCard = (props) => {
 						</Typography>
 					</Grid>
 					<Grid
-						containter
+						container
 						item
 						xs={3}
 						sx={{ display: 'flex', justifyContent: 'flex-end' }}

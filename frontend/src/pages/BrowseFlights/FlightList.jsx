@@ -14,22 +14,44 @@ const FlightList = (props) => {
 	const displayFlights = flightList.map((flight, index) => {
 		return (
 			<>
-				<Grid container sx={{width: "100%"}} direction="row">
-          {/* Flight Card */}
-          <Grid container item xs={8}>
-					<FlightCard
-						flight={flight}
-						key={flight.id}
+				<Grid
+					container
+					sx={{ width: '100%' }}
+					direction="row"
+				>
+					<Grid
+						container
+						item
+						xs={1}
 					/>
-          </Grid>
+					{/* Flight Card */}
+					<Grid
+						container
+						item
+						xs={7}
+					>
+						<FlightCard
+							flight={flight}
+							key={flight.id}
+						/>
+					</Grid>
 
-          {/* Seat Selection */}
-          <Grid container item xs={4}>
-            <SeatCard 
-            flight={flight}
-            key={flight.id}/>
-
-          </Grid>
+					{/* Seat Selection */}
+					<Grid
+						container
+						item
+						xs={3}
+					>
+						<SeatCard
+							flight={flight}
+							key={flight.id}
+						/>
+					</Grid>
+					<Grid
+						container
+						item
+						xs={1}
+					/>
 				</Grid>
 			</>
 		);
@@ -38,23 +60,21 @@ const FlightList = (props) => {
 	// Once Active!
 	if (props.toggle) {
 		return (
-
-				<Paper
-					sx={{
+			<Paper
+				sx={{
 					top: '100vh',
-            
-						position: 'relative',
-						width: '100%',
-					}}
+					position: 'relative',
+					width: '100%',
+				}}
+			>
+				<Typography>Flight List</Typography>
+				<Stack
+					direction="column"
+					spacing={0.5}
 				>
-					<Typography>Flight List</Typography>
-					<Stack
-						direction="column"
-						spacing={0.5}
-					>
-						{displayFlights}
-					</Stack>
-				</Paper>
+					{displayFlights}
+				</Stack>
+			</Paper>
 		);
 	}
 

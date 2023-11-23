@@ -52,9 +52,6 @@ export function getPassengersByFlight(flightId) {
 }
 
 export function queryFlights(info) {
-	console.log('Info Within Axios');
-	console.log(info);
-
 	return axiosClient
 		.get(`/queryflights`, {
 			params: {info: info},
