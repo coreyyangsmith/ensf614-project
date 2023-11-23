@@ -28,11 +28,11 @@ import FlightSelectionForm from './FlightSelectionForm';
 //-------------------------------------------------------//
 const frostedGlassSX = {
 	background: 'rgba(255,255,255,.25)',
-	backdropFilter: 'blur(5px)',
+	backdropFilter: 'blur(10px)',
 	display: 'flex',
 	padding: '16px',
 	zIndex: '-100',
-	width: '600px',
+	maxWidth: "500px",
 	marginLeft: '15vw',
 	marginTop: '25vh',
 };

@@ -56,10 +56,8 @@ import { queryFlights } from '../../api/posts';
 //-------------------------------------------------------//
 const FlightSelectionForm = (props) => {
 	const [selectedTrip, setSelectedTrip] = useState('Return');
-	const [passenegers, setPassengers] = useState(1);
-	const [seatSelection, setSeatSelection] = useState('');
-	const [departureDate, setDepartureDate] = useState(undefined);
-	const [arrivalDate, setArrivalDate] = useState(undefined);
+	const [date, setDate] = useState('');
+
 
 	const [fromObj, setFromObj, toObj, setToObj, flightList, setFlightList] = useContext(Context);
 	const formFilled = useRef(false);
@@ -92,7 +90,7 @@ const FlightSelectionForm = (props) => {
 	});
 
 	// TODO expand this logic to ensure flight selection is "mostly" valid
-	if (seatSelection !== '') {
+	if (fromObj.id !== undefined && toObj.id !== undefined && date !== '') {
 		formFilled.current = true;
 	}
 
@@ -161,6 +159,7 @@ const FlightSelectionForm = (props) => {
 									onChange(item);
 								}}
 								value={value || null}
+								sx={{width: "450px"}}
 								options={props.destinations}
 								label="Departure Location"
 								getOptionLabel={(option) =>
@@ -191,34 +190,17 @@ const FlightSelectionForm = (props) => {
 								label="Departure Date"
 								required
 								placeholderText="Select date"
-								onChange={(date) =>
-									field.onChange(dayjs(date.$d).format('YYYY-MM-DD'))
-								}
+								onChange={(event, item) => {
+									field.onChange(dayjs(event.$d).format('YYYY-MM-DD'))
+									setDate(dayjs(event.$d).format('YYYY-MM-DD'))
+								}}
 								selected={field.value}
 							/>
 						</LocalizationProvider>
 					)}
 				/>
 
-				{/* <DestinationArrivalForm
-					data={props.destinations}
-					where="From"
-					depLabel="Departure Date"
-					selectedTrip={selectedTrip}
-					date={departureDate}
-					setDate={setDepartureDate}
-					setObj={setFromObj}
-				/>
-				<DestinationArrivalForm
-					data={props.destinations}
-					where="To"
-					depLabel="Arrival Date"
-					selectedTrip={selectedTrip}
-					date={arrivalDate}
-					setDate={setArrivalDate}
-					setObj={setToObj}
-				/> */}
-				<Stack
+				{/* <Stack
 					direction="row"
 					spacing={1}
 				>
@@ -230,8 +212,8 @@ const FlightSelectionForm = (props) => {
 						seatSelection={seatSelection}
 						setSeatSelection={setSeatSelection}
 					/>
-				</Stack>
-				<Stack direction="row"></Stack>
+				</Stack> */}
+
 				<Button
 					type="submit"
 					variant="outlined"
