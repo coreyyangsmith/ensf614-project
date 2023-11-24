@@ -21,6 +21,12 @@ import React from 'react';
 // MUI Imports
 import { Box, Button, Stack, Typography } from '@mui/material';
 
+// My Component
+import SummaryFlightDetails from "./SummaryFlightDetails"
+import SummarySeatDetails from "./SummarySeatDetails"
+import InsuranceSelection from "./InsuranceSelection"
+import SummarySubtotal from "./SummarySubtotal"
+
 //  STYLES
 //-------------------------------------------------------//
 const SeatSelectionForm = (props) => {
@@ -80,11 +86,19 @@ const SeatSelectionForm = (props) => {
 	if (props.selectedSeat !== undefined) {
 		return <Box sx={BoxSX}>
       <Stack direction="column" spacing={1} sx={{paddingTop: "16px"}}>
+		<SummaryFlightDetails/>
+		<SummarySeatDetails/>
+		<InsuranceSelection/>
+		<SummarySubtotal/>
+
+
         <Typography>Selected Seat</Typography>
         <Typography>id: {props.selectedSeat.id}</Typography>
         <Typography>location: {getSeatName(props.selectedSeat)}</Typography>
         <Typography>type: {getSeatType(props.selectedSeat)}</Typography>
 		<Typography>cost: {getSeatCost(props.selectedSeat)}</Typography>
+		<Typography>Select Insurance</Typography>
+		<Typography>Summarize Flight Details</Typography>
 		<Button variant="outlined">Purchase Seat</Button>
 	  </Stack>
     </Box>;
@@ -105,3 +119,33 @@ const SeatSelectionForm = (props) => {
 //  EXPORTS
 //-------------------------------------------------------//
 export default SeatSelectionForm;
+
+
+// Form Should be Broken Out into Multiple Sections
+// --> Summarize Flight Details
+//		Flight ID
+//		Departure Date & Time
+//		Duration
+//		Arrival Date & Time
+
+// --> Summarize Seat Details
+//		Seat Type
+//		Row & Column
+//		
+
+// --> Seat Insurance Selection
+//		Select Insurance
+
+// --> Subtotal
+//		Subtotal
+//		Insurance
+//		Tax
+//		Confirmation Button
+
+// ONCE CLICKED, Redirect to Payment Form (to collect more info for ticket)
+// Pass as prop the subtotal to payment for processing
+
+
+
+// Should TICKETS have a refeerence to both a seat and a flight? Seat map should really populate available SEATS from TICKETS
+// TICKETS can be 

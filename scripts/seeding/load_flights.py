@@ -127,3 +127,14 @@ def run():
     print("'Flight' model successfully loaded (",count,")")
 
         
+
+'''
+Alternative Logic for Generating Flights
+... Flight could be a function of Aircrafts
+
+For Each Aircraft:
+    Initial aircraft selects random start destination and random end destination
+    Afterwards, end destination is the next start destination
+    Add random amount of 'layover time' at each location, then create new flight and select another end destination
+    Repeat until the departure time exceeds the maximum planned flight
+'''

@@ -17,13 +17,10 @@
 #-------------------------------------------------------#
 from main.models import Destination
 import pandas as pd
-import pycountry_convert as pc
+
 
 #   MAIN FUNCTION
 #-------------------------------------------------------#
-
-Destination.objects.all().delete()
-
 DATA_PATH = "scripts/seeding/data/destinations.csv"
 
 def run():

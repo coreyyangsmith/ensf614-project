@@ -2,12 +2,14 @@ from django.contrib import admin
 
 from .models import *
 
-# Register your models here.
-
-admin.site.register(Aircraft)
-admin.site.register(Seat)
-admin.site.register(Destination)
-admin.site.register(Crew)
+# Main Tables
+admin.site.register(Aircraft, AircraftAdmin)
+admin.site.register(Seat, SeatAdmin)
+admin.site.register(Destination, DestinationAdmin)
+admin.site.register(Crew, CrewAdmin)
 admin.site.register(Flight, FlightAdmin)
+admin.site.register(Passenger, PassengerAdmin)
+admin.site.register(Ticket, TicketAdmin)
+
+# Junction Tables
 admin.site.register(FlightCrew)
-admin.site.register(Passenger)

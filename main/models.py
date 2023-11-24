@@ -39,6 +39,8 @@ class Aircraft(models.Model): # Todo
     def __str__(self):
         return str(self.pk) + "-" + self.company + " " + self.type 
 
+class AircraftAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_at','updated_at',)
 
 class Seat(models.Model): # Todo
     class SeatType(models.TextChoices):
@@ -61,6 +63,8 @@ class Seat(models.Model): # Todo
     def __str__(self):
         return str(self.pk) + "-" + self.aircraft_ref.type + " " + self.type + " [" + str(self.column_position) + "," + str(self.row_position) + "]"    
 
+class SeatAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_at','updated_at',)
 
 class Destination(models.Model): # Complete
     name = models.CharField(max_length=100)
@@ -74,6 +78,8 @@ class Destination(models.Model): # Complete
     def __str__(self):
         return self.name + ", (" + self.airport_code + ")"
 
+class DestinationAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_at','updated_at',)
 
 class Crew(models.Model): # Complete
     class CrewStatus(models.TextChoices):
@@ -90,6 +96,9 @@ class Crew(models.Model): # Complete
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+class CrewAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_at','updated_at',)
 
 
 class Flight(models.Model): # Todo
@@ -126,6 +135,35 @@ class FlightAdmin(admin.ModelAdmin):
 
 #     created_at = models.DateTimeField(auto_now_add=True)
 #     updated_at = models.DateTimeField(auto_now=True)       
+    
+class Passenger(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)   
+
+    def __str__(self):
+        return str(self.flight_id.id) + "-" + str(self.first_name) + str(self.last_name)
+        
+class PassengerAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_at','updated_at',)
+
+class Ticket(models.Model):
+    # TODO
+    # Ref to Flight ID
+    # Ref to User ID
+    # Ref to Seat ID
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)   
+
+    def __str__(self):
+        return str(self.id)
+    
+class TicketAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_at','updated_at',)            
 
 
 # Junction Tables
@@ -133,17 +171,9 @@ class FlightAdmin(admin.ModelAdmin):
 class FlightCrew(models.Model):
     flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
     crew_id = models.ForeignKey(Crew, on_delete=models.CASCADE)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)   
 
     def __str__(self):
-        return str(self.flight_id.id) + "-" + str(self.crew_id.id)
-    
-class Passenger(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.flight_id.id) + "-" + str(self.first_name) + str(self.last_name)
-        
+        return str(self.flight_id.id) + "-" + str(self.crew_id.id)    
