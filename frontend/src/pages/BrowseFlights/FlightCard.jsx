@@ -20,20 +20,31 @@ const FlightCard = (props) => {
 	};
 
 	/**
+	 * convertDateTimeToMonthDay: Takes in Django's DateTime String and Converts to Short Month (Jan) and 2-Digit Day
+	 * @param {*} dateTimeString 
+	 * @returns Short Month + 2 Digit Day Format (str)
+	 */
+	const convertDateTimeToMonthDay = (dateTimeString) => {
+		let date = new Date(dateTimeString)
+		let formattedTime = date.toLocaleDateString('en-US', {
+			month: 'short',
+			day: '2-digit',
+
+		});
+
+		return formattedTime
+	}
+
+	/**
 	 * convertDateTimeToDuration: Takes in Django's DateTime String and Converts to Duration XXh XXm Format
 	 * @param {str} dateTimeString 
 	 * @returns Duration Format (str)
 	 */
-	const convertDateTimeToDuration = (dateTimeString) => {
-		let date = new Date(dateTimeString);
-		let formattedTime = date.toLocaleTimeString('en-US', {
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: false,
-		});
+	const convertDateTimeToDuration = (TimeString) => {
 
-		let hoursString = formattedTime.slice(0, 2);
-		let minutesString = formattedTime.slice(3, 5);
+
+		let hoursString = TimeString.slice(0, 2);
+		let minutesString = TimeString.slice(3, 5);
 
 		if (hoursString[0] == '0') hoursString = hoursString[1];
 
@@ -69,7 +80,7 @@ const FlightCard = (props) => {
 								alignItems: 'center',
 							}}
 						>
-							{convertDateTimeTo24H(props.flight.departure_time)}
+							{convertDateTimeToMonthDay(props.flight.departure_time)} | {convertDateTimeTo24H(props.flight.departure_time)}
 						</Typography>
 					</Grid>
 					<Grid
@@ -79,7 +90,7 @@ const FlightCard = (props) => {
 						sx={{ display: 'flex', justifyContent: 'center' }}
 					>
 						<Typography sx={{ display: 'flex', alignItems: 'center' }}>
-							{convertDateTimeToDuration(props.flight.departure_time)}
+							{convertDateTimeToDuration(props.flight.est_duration)}
 						</Typography>
 					</Grid>
 					<Grid
@@ -95,7 +106,7 @@ const FlightCard = (props) => {
 								alignItems: 'center',
 							}}
 						>
-							{convertDateTimeTo24H(props.flight.arrival_time)}
+							{convertDateTimeToMonthDay(props.flight.arrival_time)} | {convertDateTimeTo24H(props.flight.arrival_time)}
 						</Typography>
 					</Grid>
 				</Grid>

@@ -52,15 +52,17 @@ import SeatSelectionRadio from './SeatSelectionRadio';
 import dayjs from 'dayjs';
 import { queryFlights } from '../../api/posts';
 
+import { NUM_DAYS } from "../../utils/config.js"
+
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const FlightSelectionForm = (props) => {
 	const [selectedTrip, setSelectedTrip] = useState('OneWay');
 	const [date, setDate] = useState('');
-
-
 	const [fromObj, setFromObj, toObj, setToObj, flightList, setFlightList] = useContext(Context);
 	const formFilled = useRef(false);
+	const startDate = dayjs(new Date())
+	const endDate = dayjs(new Date()).add(NUM_DAYS, 'days');
 
 	const {
 		register,
@@ -78,9 +80,16 @@ const FlightSelectionForm = (props) => {
 			props.setToggle(true)
 		}
 		catch (err) {
+			if (err.response) {
+				//Not in 200 Response Range
+				console.log(err.response.data);
+				console.log(err.response.status);
+				console.log(err.response.headers);
+			} else {
+				console.log(`Error: ${err.message}`);
+			}
 
 		}
-		console.log(FieldValues);
 	};
 
 	const filterOptions = createFilterOptions({
@@ -192,6 +201,8 @@ const FlightSelectionForm = (props) => {
 								label="Departure Date"
 								required
 								placeholderText="Select date"
+								minDate={startDate}
+								maxDate={endDate}
 								onChange={(event, item) => {
 									field.onChange(dayjs(event.$d).format('YYYY-MM-DD'))
 									setDate(dayjs(event.$d).format('YYYY-MM-DD'))

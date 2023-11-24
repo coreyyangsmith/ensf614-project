@@ -3,7 +3,7 @@ django.setup()
 
 from django.contrib.auth.models import User
 from faker import Faker
-from config import USERS_TO_GENERATE
+from scripts.seeding.config import USERS_TO_GENERATE
 
 '''
 load_users.py
@@ -17,6 +17,7 @@ Return:
 '''
 
 def run():
+    count = 0
 
     # Generate Default Admin User
     # Already Generated with Initialization
@@ -46,4 +47,5 @@ def run():
                                           first_name = fake_first_name,
                                             last_name = fake_last_name,
                                             email = fake_email)[0]
-    print("'User' loaded successfully.")
+        count += 1
+    print("'User' model successfully generated (", count, ")")

@@ -130,15 +130,15 @@ def query_flights(request):
         dump = json.dumps(request.GET)
         body = json.loads(dump)    
 
-
         # Initialize Values from JSON, to filter
         start_point_id = body['info[start_point][id]']
         end_point_id = body['info[end_point][id]']
+        date = body['info[date]']
 
         try:
             start_point = Destination.objects.get(id=start_point_id)
             end_point = Destination.objects.get(id=end_point_id)
-            data = Flight.objects.filter(start_point=start_point, end_point=end_point)
+            data = Flight.objects.filter(start_point=start_point, end_point=end_point, date=date)
             serializer = FlightSerializer(data, context={'request': request}, many=True)
         except Flight.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)

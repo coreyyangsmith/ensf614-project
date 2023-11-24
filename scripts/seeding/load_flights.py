@@ -16,7 +16,7 @@
 #   IMPORTS
 #-------------------------------------------------------#
 from main.models import Flight, Aircraft, Destination, Crew, FlightCrew
-from scripts.seeding.config import YEAR, MONTH, DAY, NUM_FLIGHTS_PER_DAY, NUM_DAYS
+from scripts.seeding.config import NUM_FLIGHTS_PER_DAY, NUM_DAYS
 import pandas as pd
 from datetime import date, timedelta, time, datetime
 import random;
@@ -57,8 +57,8 @@ def getTime(distance):
     return duration
 
 def getRandomStartTime(date):
-    randomHour = random.randint(0, 23);
-    randomMinute = random.randint(0, 59);
+    randomHour = random.randint(0, 23)
+    randomMinute = random.randint(0, 59)
 
     timestamp = datetime(year=date.year,
                         month=date.month,
@@ -77,13 +77,13 @@ def getArrivalTime(datetime, duration):
 def run():
     count = 0
 
-    for single_date in (date(YEAR, MONTH, DAY) + timedelta(n) for n in range(NUM_DAYS)):
+    for single_date in (date.today() + timedelta(n) for n in range(NUM_DAYS)):
         # print("Generating Flights for: ", single_date)
 
         # Generate Test Flights | YYC --> LAX
         start = Destination.objects.get(airport_code = "YYC")
         end = Destination.objects.get(airport_code = "LAX")
-        distance = 10000 # fake
+        distance = 1942
         est_duration = getTime(distance)
 
         departure_time = getRandomStartTime(single_date)

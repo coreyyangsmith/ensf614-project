@@ -73,6 +73,7 @@ const FlightList = (props) => {
 				<Stack
 					direction="column"
 					spacing={0.5}
+					sx={{paddingBottom: "5%"}}
 				>
 					{displayFlights}
 				</Stack>
