@@ -55,7 +55,7 @@ import { queryFlights } from '../../api/posts';
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const FlightSelectionForm = (props) => {
-	const [selectedTrip, setSelectedTrip] = useState('Return');
+	const [selectedTrip, setSelectedTrip] = useState('OneWay');
 	const [date, setDate] = useState('');
 
 
@@ -106,22 +106,24 @@ const FlightSelectionForm = (props) => {
 			>
 				{/* Return or One Way Button Selection */}
 				<ButtonGroup variant="outlined">
-					<Button
-						className={`flight-button ${selectedTrip === 'Return' && 'active'}`}
-						onClick={() => setSelectedTrip('Return')}
-					>
-						Return Trip
-					</Button>
-					<Button
+				<Button
 						className={`flight-button ${selectedTrip === 'OneWay' && 'active'}`}
 						onClick={() => setSelectedTrip('OneWay')}
 					>
 						One-Way
 					</Button>
+					<Button
+						className={`flight-button ${selectedTrip === 'Return' && 'active'}`}
+						onClick={() => setSelectedTrip('Return')}
+						disabled
+					>
+						Return Trip
+					</Button>
+
 				</ButtonGroup>
 
 				{/* Destination & Arrival Selection*/}
-				<Stack direciton="row">
+				<Stack direciton="row" spacing={1.25}>
 					<Controller
 						control={control}
 						name="start_point"
@@ -178,7 +180,7 @@ const FlightSelectionForm = (props) => {
 					/>
 				</Stack>
 
-				<Divider></Divider>
+				<Divider/>
 				{/* Departure & Return Dates*/}
 				<Controller
 					control={control}
@@ -199,20 +201,6 @@ const FlightSelectionForm = (props) => {
 						</LocalizationProvider>
 					)}
 				/>
-
-				{/* <Stack
-					direction="row"
-					spacing={1}
-				>
-					<PassengerButtonGroup
-						setPassengers={setPassengers}
-						passenegers={passenegers}
-					/>
-					<SeatSelectionRadio
-						seatSelection={seatSelection}
-						setSeatSelection={setSeatSelection}
-					/>
-				</Stack> */}
 
 				<Button
 					type="submit"
