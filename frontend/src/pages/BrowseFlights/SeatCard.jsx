@@ -24,13 +24,13 @@ const SeatCard = (props) => {
 		const sTaken = seatsTakenList.length;
 		seatsAvailable.current = sAvailable;
 		setSeatsTaken(sTaken);
-	}, [seatsTaken]);
+	}, [seatsByAircraft]);
 
 
 
 	return (
 		<Card sx={{ width: '100%', background: '#121212', borderRadius: "15px" }}>
-			<CardContent sx={{height: "100%"}}>
+
 				<Stack direction="column" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center',  height: "100%"}} spacing={2}>
 					<Typography>Seats Available</Typography>
 					<Typography variant="h4">
@@ -39,7 +39,7 @@ const SeatCard = (props) => {
 					<NavigatinButtonFlight label="Find Seat" path={`/flights/${props.flight.id}`} flight={props.flight}></NavigatinButtonFlight>
 
 				</Stack>
-			</CardContent>
+
 		</Card>
 	);
 };

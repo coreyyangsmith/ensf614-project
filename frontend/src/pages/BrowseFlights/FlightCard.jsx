@@ -2,6 +2,12 @@ import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 const FlightCard = (props) => {
+
+	/**
+	 * convertDateTimeTo24H: Takes in Django's DateTime String and Converts to 24H Format
+	 * @param {str} dateTimeString
+	 * @returns 24H Format (str)
+	 */
 	const convertDateTimeTo24H = (dateTimeString) => {
 		let date = new Date(dateTimeString);
 		let formattedTime = date.toLocaleTimeString('en-US', {
@@ -13,6 +19,11 @@ const FlightCard = (props) => {
 		return formattedTime;
 	};
 
+	/**
+	 * convertDateTimeToDuration: Takes in Django's DateTime String and Converts to Duration XXh XXm Format
+	 * @param {str} dateTimeString 
+	 * @returns Duration Format (str)
+	 */
 	const convertDateTimeToDuration = (dateTimeString) => {
 		let date = new Date(dateTimeString);
 		let formattedTime = date.toLocaleTimeString('en-US', {
@@ -31,10 +42,9 @@ const FlightCard = (props) => {
 		return finalString;
 	};
 
-
 	return (
-		<Card sx={{ width: "100%"}}>
-			<CardContent sx={{height: "100%", width: "100%"}}>
+		<Card sx={{ width: "100%", height: "100%", background: "transparent"}} elevation={0}>
+
 				{/* Top Info Bar */}
 				<Grid
 					container
@@ -210,7 +220,7 @@ const FlightCard = (props) => {
 						</Stack>
 					</Grid>
 				</Grid>
-			</CardContent>
+
 		</Card>
 	);
 };

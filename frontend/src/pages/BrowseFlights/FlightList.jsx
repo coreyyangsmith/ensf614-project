@@ -16,8 +16,9 @@ const FlightList = (props) => {
 			<>
 				<Grid
 					container
-					sx={{ width: '100%' }}
+					sx={{ width: '100%', }}
 					direction="row"
+					spacing={1}
 				>
 					<Grid
 						container
@@ -62,12 +63,13 @@ const FlightList = (props) => {
 		return (
 			<Paper
 				sx={{
-					top: '100vh',
+					top: '99vh',
 					position: 'relative',
 					width: '100%',
+
 				}}
 			>
-				<Typography>Flight List</Typography>
+				<Typography sx={{paddingTop: "2%", paddingBottom: "1%",display: "flex", justifyContent: "center"}} variant='h3'>Select Flight</Typography>
 				<Stack
 					direction="column"
 					spacing={0.5}
