@@ -17,9 +17,12 @@
 #-------------------------------------------------------#
 from main.models import Destination
 import pandas as pd
+import pycountry_convert as pc
 
 #   MAIN FUNCTION
 #-------------------------------------------------------#
+
+Destination.objects.all().delete()
 
 DATA_PATH = "scripts/seeding/data/destinations.csv"
 
@@ -30,6 +33,19 @@ def run():
     columns = ['Airport', 'Latitude', 'Longitude', 'Airport_Code']
 
     df.columns = columns
+
+    # North America Lat and Long values
+    NORTH = 71
+    SOUTH = 12
+    WEST = -168
+    EAST = -50
+
+    df['Latitude'] = df['Latitude'].astype(float)
+    df['Longitude'] = df['Longitude'].astype(float)
+
+    # Filter the dataframe to only include destinations within North America
+    df = df[(df['Latitude'].between(SOUTH, NORTH)) & (df['Longitude'].between(WEST, EAST))]
+
     for index, row in df.iterrows():
         destination = Destination.objects.get_or_create(
             name=row['Airport'],
