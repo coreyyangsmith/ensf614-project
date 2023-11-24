@@ -32,7 +32,7 @@ const NavigationButton = (props) => {
 				sx={{ marginRight: "16px" }}
 			>
 				<Link to={props.path} style={{ textDecoration: "none" }}>
-					<Typography variant="landing_button">{props.label}</Typography>
+					<Typography variant='landing_button'>{props.label}</Typography>
 				</Link>
 			</Button>
 		</>

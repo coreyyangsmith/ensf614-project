@@ -48,31 +48,21 @@ const FlightDeck = (props) => {
 	// Data Preprocessing
 
 	const myAircraft = state.flight.aircraft_ref
-	console.log('Selected Aircraft');
-	console.log(myAircraft);
-
 	const { seats } = useSeats();
 	const mySeats = [];
 
-
-
+	// Filter Master Seat list to only seats on selected aircraft
 	seats.filter((el) => {
 		if (el.aircraft_ref == myAircraft.id) mySeats.push(el);
 	});
-
 	var maxCols = 0;
 	var maxRows = 0;
-	console.log("MY AIRCRAFT");
-	console.log(props.flight)
-	console.log(state.flight)
 
+	// create array of seats
 	mySeats.forEach((seat) => {
 		if (seat.row_position + 1 > maxRows) maxRows = seat.row_position + 1;
 		if (seat.column_position + 1 > maxCols) maxCols = seat.column_position + 1;
 	});
-	console.log('Generate for the Following Seats'); // 0-indexed
-	console.log('# Cols: ', maxCols);
-	console.log('# Rows: ', maxRows);
 
 	if (myAircraft != undefined) var columnLayout = myAircraft.seat_columns;
 
@@ -114,6 +104,12 @@ const FlightDeck = (props) => {
 		return seatMap;
 	}
 
+	/**
+	 * mapSeatsToSeatMap: Maps the Seats to the SeatMap Array
+	 * @param {*} seats: Array of Seats on Selected Flight
+	 * @param {*} seatMap: SeatMap 2D Array
+	 * @returns: Seat Map (2D Array) with Aisle and Seats
+	 */
 	function mapSeatsToSeatMap(seats, seatMap) {
 		seats.forEach((seat) => {
 			if (
@@ -154,8 +150,6 @@ const FlightDeck = (props) => {
 		const newSeatMap = [];
 		const numRows = seatMap.length;
 
-		console.log(numRows);
-
 		for (var i = 0; i < numRows; i++) {
 			var relCol = 0;
 			var colArray = [];
@@ -172,11 +166,10 @@ const FlightDeck = (props) => {
 
 			newSeatMap.push(colArray);
 		}
-		console.log('new seat map');
-
 		return newSeatMap;
 	}
 
+	// If Valid Column Layout on Airplane, pre-process data
 	var seatMap = [];
 	if (columnLayout != undefined) {
 		seatMap = generateSeatMap(maxRows, columnLayout);
@@ -188,14 +181,12 @@ const FlightDeck = (props) => {
 		return (
 			<Grid container>
 				{rows.map((seat) => {
-					if (seat != 0) return <Seat seat={seat}/>;
+					if (seat != 0) return <Seat seat={seat} setSelectedSeat={props.setSelectedSeat}/>;
 					if (seat == 0) return <Aisle />;
 				})}
 			</Grid>
 		);
 	});
-
-	console.log(seatMap);
 
 	if (seatMap.length > 0) {
 		return (

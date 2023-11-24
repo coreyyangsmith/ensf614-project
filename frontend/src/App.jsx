@@ -27,6 +27,7 @@ import { Route, Routes } from 'react-router-dom';
 import BrowseFlights from './pages/BrowseFlights/BrowseFlights.jsx';
 import PaymentPage from './pages/PaymentComponent/PaymentPage.jsx';
 import PassengerListPage from './pages/PassengerList/PassengerList.jsx';
+import SeatSelection from './pages/SeatMap/SeatSelection.jsx';
 
 export const AuthContext = React.createContext();
 
@@ -124,7 +125,7 @@ function App() {
 					/>
 					<Route
 						path="/flights/:id"
-						element={<FlightDeck/>}
+						element={<SeatSelection />}
 					/>					
 				</Routes>
 			</ThemeProvider>
