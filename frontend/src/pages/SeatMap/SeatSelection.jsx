@@ -26,12 +26,13 @@ import FlightDeck from './FlightDeck';
 import SeatSelectionForm from './SeatSelectionForm';
 
 // React Router Dom Import
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const SeatSelection = (props) => {
 	const [selectedSeat, setSelectedSeat] = useState();
+	let { state } = useLocation();
 
 	return (
 		<Grid
@@ -59,23 +60,19 @@ const SeatSelection = (props) => {
 			<Grid
 				container
 				item
-				xs={4}
+				xs={7}
 				sx={{ direction: 'flex', justifyContent: 'center' }}
 			>
-				<FlightDeck flight={props.flight} setSelectedSeat={setSelectedSeat}/>
+				<FlightDeck flight={state.flight} setSelectedSeat={setSelectedSeat}/>
 			</Grid>
+
 			<Grid
 				container
 				item
-				xs={2}
-			/>
-			<Grid
-				container
-				item
-				xs={4}
+				xs={3}
 				sx={{ direction: 'flex', justifyContent: 'center' }}
 			>
-				<SeatSelectionForm selectedSeat={selectedSeat}/>
+				<SeatSelectionForm selectedSeat={selectedSeat} flight={props.flight}/>
 			</Grid>
 
 			<Grid
