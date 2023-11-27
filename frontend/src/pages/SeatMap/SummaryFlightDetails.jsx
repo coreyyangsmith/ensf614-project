@@ -16,9 +16,15 @@
 //-------------------------------------------------------//
 
 // React Import
-import { Divider, Grid, Paper, Typography } from '@mui/material';
 import React from 'react';
+
+// MUI Imports
+import { Divider, Grid, Paper, Typography } from '@mui/material';
+
+// React Router Dom
 import { useLocation } from 'react-router-dom';
+
+// My Components
 import DetailLineItem from './DetailLineItem';
 import TitleLineItem from './TitleLineItem';
 
@@ -27,29 +33,82 @@ import TitleLineItem from './TitleLineItem';
 const SummaryFlightDetails = (props) => {
 	let { state } = useLocation();
 
+	/**
+	 * formatFlightTime: Takes in Django's DateTime String and Converts to Formatted Date and Time
+	 * @param {*} datetime
+	 * @returns Formatted Date and Time Format
+	 */
+	function formatFlightTime(datetime) {
+		let dtime = new Date(datetime);
+
+		let formattedTime = dtime.toLocaleTimeString('en-US', {
+			hour: '2-digit',
+			minute: '2-digit',
+			hour12: false,
+		});
+		let formattedDate = dtime.toLocaleDateString('en-US', {
+			month: 'long',
+			day: '2-digit',
+		});
+		return formattedDate + ' ' + formattedTime;
+	}
+
+	/**
+	 * convertDateTimeToDuration: Takes in Django's DateTime String and Converts to Duration XXh XXm Format
+	 * @param {str} dateTimeString
+	 * @returns Duration Format (str)
+	 */
+	function convertDateTimeToDuration(TimeString) {
+		let hoursString = TimeString.slice(0, 2);
+		let minutesString = TimeString.slice(3, 5);
+		if (hoursString[0] == '0') hoursString = hoursString[1];
+		let finalString = hoursString + 'h ' + minutesString + 'm';
+
+		return finalString;
+	}
+
 	return (
-		<Paper elevation={4} sx={{background: "#161616", borderRadius: "15px"}}>
+		<Paper
+			elevation={4}
+			sx={{ background: '#161616', borderRadius: '15px' }}
+		>
 			<Grid
 				container
 				direction="column"
 			>
 				<TitleLineItem title="FLIGHT DETAILS" />
-				
 
 				<Grid
 					container
 					item
 					xs={9}
-					sx={{paddingTop: "8px", marginBottom: "12px"}}
+					sx={{ paddingTop: '8px', marginBottom: '12px' }}
 				>
-					<DetailLineItem description="Flight ID" value={state.flight.id}/>
+					<DetailLineItem
+						description="Flight ID"
+						value={state.flight.id}
+					/>
 
-					<DetailLineItem description="Departure" value=""/>
-					<DetailLineItem description={state.flight.start_point.airport_code} value={state.flight.departure_time}/>
-
-					<DetailLineItem description="Arrival" value=""/>
-					<DetailLineItem description={state.flight.end_point.airport_code} value={state.flight.arrival_time}/>
-					<DetailLineItem description="Flight Duration" value={state.flight.est_duration}/>
+					<DetailLineItem
+						description="Departure"
+						value=""
+					/>
+					<DetailLineItem
+						description={state.flight.start_point.airport_code}
+						value={formatFlightTime(state.flight.departure_time)}
+					/>
+					<DetailLineItem
+						description="Arrival"
+						value=""
+					/>
+					<DetailLineItem
+						description={state.flight.end_point.airport_code}
+						value={formatFlightTime(state.flight.arrival_time)}
+					/>
+					<DetailLineItem
+						description="Flight Duration"
+						value={convertDateTimeToDuration(state.flight.est_duration)}
+					/>
 				</Grid>
 			</Grid>
 		</Paper>

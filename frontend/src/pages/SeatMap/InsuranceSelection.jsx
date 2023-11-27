@@ -50,7 +50,7 @@ const InsuranceSelection = (props) => {
 					xs={9}
 					sx={{paddingTop: "8px", marginBottom: "12px"}}
 				>
-					<FormGroup sx={{ paddingLeft: '8px' }}>
+					<FormGroup sx={{ paddingLeft: '16px' }}>
 						<FormControlLabel
 							control={
 								<Checkbox

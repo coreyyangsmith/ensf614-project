@@ -70,8 +70,8 @@ const SummarySeatDetails = (props) => {
         xs={9}
 		sx={{paddingTop: "8px", marginBottom: "12px"}}
       >
-        <DetailLineItem description="LOCATION" value={getSeatName(props.seat)}/>
-        <DetailLineItem description="TYPE" value={getSeatType(props.seat)}/>
+        <DetailLineItem description="Seat Type" value={getSeatType(props.seat)}/>
+        <DetailLineItem description="Location" value={getSeatName(props.seat)}/>
 
       </Grid>
     </Grid>
