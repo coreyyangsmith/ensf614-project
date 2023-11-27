@@ -16,9 +16,11 @@
 //-------------------------------------------------------//
 
 // React Import
-import { Grid, Paper, Typography } from '@mui/material';
+import { Divider, Grid, Paper, Typography } from '@mui/material';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import DetailLineItem from './DetailLineItem';
+import TitleLineItem from './TitleLineItem';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -26,35 +28,28 @@ const SummaryFlightDetails = (props) => {
 	let { state } = useLocation();
 
 	return (
-		<Paper elevation={2}>
+		<Paper elevation={4} sx={{background: "#161616", borderRadius: "15px"}}>
 			<Grid
 				container
 				direction="column"
 			>
-				<Grid
-					container
-					item
-					xs={3}
-					sx={{ border: '1px solid white' }}
-				>
-					<Typography sx={{ display: 'flex', justifyContent: 'center' }}>
-						Flight Details
-					</Typography>
-				</Grid>
+				<TitleLineItem title="FLIGHT DETAILS" />
+				
 
 				<Grid
 					container
 					item
 					xs={9}
+					sx={{paddingTop: "8px", marginBottom: "12px"}}
 				>
-					<Typography>Flight Id:{state.flight.id}</Typography>
-					<Typography>
-						{state.flight.start_point.airport_code} to{' '}
-						{state.flight.end_point.airport_code}
-					</Typography>
-					<Typography>Departure:{state.flight.departure_time}</Typography>
-					<Typography>Flight Duration:{state.flight.est_duration}</Typography>
-					<Typography>Arrival:{state.flight.arrival_time}</Typography>
+					<DetailLineItem description="Flight ID" value={state.flight.id}/>
+
+					<DetailLineItem description="Departure" value=""/>
+					<DetailLineItem description={state.flight.start_point.airport_code} value={state.flight.departure_time}/>
+
+					<DetailLineItem description="Arrival" value=""/>
+					<DetailLineItem description={state.flight.end_point.airport_code} value={state.flight.arrival_time}/>
+					<DetailLineItem description="Flight Duration" value={state.flight.est_duration}/>
 				</Grid>
 			</Grid>
 		</Paper>

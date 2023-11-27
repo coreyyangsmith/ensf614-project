@@ -18,6 +18,8 @@
 // React Import
 import { Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
+import TitleLineItem from './TitleLineItem';
+import DetailLineItem from './DetailLineItem';
 
 
 //  MAIN FUNCTION
@@ -54,29 +56,23 @@ const SummarySeatDetails = (props) => {
 
 
   return (
-    <Paper elevation={2}>
+    <Paper elevation={4} sx={{background: "#161616", borderRadius: "15px"}}>
     <Grid
       container
       direction="column"
     >
-      <Grid
-        container
-        item
-        xs={3}
-        sx={{border:"1px solid white"}}
-      >
-        <Typography sx={{ display: 'flex', justifyContent: 'center' }}>
-          Seat Details
-        </Typography>
-      </Grid>
+      <TitleLineItem title="SEAT DETAILS" />
+
 
       <Grid
         container
         item
         xs={9}
+		sx={{paddingTop: "8px", marginBottom: "12px"}}
       >
-        <Typography>Location: {getSeatName(props.seat)}</Typography>
-        <Typography>Type: {getSeatType(props.seat)}</Typography>
+        <DetailLineItem description="LOCATION" value={getSeatName(props.seat)}/>
+        <DetailLineItem description="TYPE" value={getSeatType(props.seat)}/>
+
       </Grid>
     </Grid>
   </Paper>

@@ -44,6 +44,7 @@ const SubtotalLineItem = (props) => {
 		<Grid
 			container
 			direction="row"
+			sx={{marginTop: "4px"}}
 		>
 			<Grid xs={3}>
 				<Typography>{props.name}</Typography>

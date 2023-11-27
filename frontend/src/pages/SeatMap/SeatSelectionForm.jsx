@@ -32,7 +32,6 @@ import SummarySubtotal from './SummarySubtotal';
 const BoxSX = {
 	height: '100%',
 	width: '100%',
-	border: '1px solid blue',
 	display: 'flex',
 	justifyContent: 'center',
 	alignItems: 'flex-start',

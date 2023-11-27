@@ -24,17 +24,17 @@ import { Button, Divider, Grid, Paper, Stack, Typography } from '@mui/material';
 // React Router Dom
 import { useLocation } from 'react-router-dom';
 import SubtotalLineItem from './SubtotalLineItem';
-import SubtotalCalculation from './SubtotalCalculation'
-import TaxCalculation from './TaxCalculation'
+import SubtotalCalculation from './SubtotalCalculation';
+import TaxCalculation from './TaxCalculation';
+import TitleLineItem from './TitleLineItem';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const SummarySubtotal = (props) => {
 	let { state } = useLocation();
 
-	const [subtotal, setSubtotal] = useState(0)
-	const [total, setTotal] = useState(0)
-	console.log(total)
+	const [subtotal, setSubtotal] = useState(0);
+	const [total, setTotal] = useState(0);
 
 	/**
 	 * getPriceFromFlight
@@ -60,26 +60,21 @@ const SummarySubtotal = (props) => {
 	}
 
 	return (
-		<Paper elevation={2}>
+		<Paper
+			elevation={4}
+			sx={{ background: '#161616', borderRadius: '15px' }}
+		>
 			<Grid
 				container
 				direction="column"
 			>
-				<Grid
-					container
-					item
-					xs={3}
-					sx={{ border: '1px solid white' }}
-				>
-					<Typography sx={{ display: 'flex', justifyContent: 'center' }}>
-						Subtotal
-					</Typography>
-				</Grid>
+				<TitleLineItem title="SUBTOTAL" />
 
 				<Grid
 					container
 					item
 					xs={9}
+					sx={{ paddingTop: '8px', marginBottom: '12px' }}
 				>
 					<Stack
 						direction="column"
@@ -105,8 +100,16 @@ const SummarySubtotal = (props) => {
 
 						<Divider />
 
-						<SubtotalCalculation flightCost={getPriceFromFlight(state.flight)} seatCost={getSeatCost(props.seat)} insurance={props.insurance} setSubtotal={setSubtotal}/>
-						<TaxCalculation subtotal={subtotal} setTotal={setTotal}/>
+						<SubtotalCalculation
+							flightCost={getPriceFromFlight(state.flight)}
+							seatCost={getSeatCost(props.seat)}
+							insurance={props.insurance}
+							setSubtotal={setSubtotal}
+						/>
+						<TaxCalculation
+							subtotal={subtotal}
+							setTotal={setTotal}
+						/>
 						<Divider />
 						<Stack
 							direction="row"

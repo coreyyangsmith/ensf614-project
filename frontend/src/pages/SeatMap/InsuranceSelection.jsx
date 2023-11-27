@@ -16,50 +16,57 @@
 //-------------------------------------------------------//
 
 // React Import
-import { Checkbox, FormControlLabel, FormGroup, Grid, Paper, Typography } from '@mui/material'
-import React from 'react'
-
+import {
+	Checkbox,
+	FormControlLabel,
+	FormGroup,
+	Grid,
+	Paper,
+	Typography,
+} from '@mui/material';
+import React from 'react';
+import TitleLineItem from './TitleLineItem';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 const InsuranceSelection = (props) => {
-
-  const handleChange = (event) => {
-    props.setInsurance(event.target.checked)
-  }
-  return (
-		<Paper elevation={2}>
+	const handleChange = (event) => {
+		props.setInsurance(event.target.checked);
+	};
+	return (
+		<Paper
+			elevation={4}
+			sx={{background: "#161616", borderRadius: "15px"}}
+		>
 			<Grid
 				container
 				direction="column"
 			>
-				<Grid
-					container
-					item
-					xs={3}
-          sx={{border:"1px solid white"}}
-				>
-					<Typography sx={{ display: 'flex', justifyContent: 'center' }}>
-						Flight Insurance
-					</Typography>
-				</Grid>
+				<TitleLineItem title="FLIGHT INSURANCE" />
 
 				<Grid
 					container
 					item
 					xs={9}
+					sx={{paddingTop: "8px", marginBottom: "12px"}}
 				>
-          <FormGroup sx={{paddingLeft:"8px"}}>
-          <FormControlLabel control={<Checkbox onChange={handleChange} checked={props.insurance} />} label="Flight Insurance"/>
-
-          </FormGroup>
-
+					<FormGroup sx={{ paddingLeft: '8px' }}>
+						<FormControlLabel
+							control={
+								<Checkbox
+									onChange={handleChange}
+									checked={props.insurance}
+								/>
+							}
+							label="Flight Insurance"
+						/>
+					</FormGroup>
 				</Grid>
 			</Grid>
 		</Paper>
-  )
-}
+	);
+};
 
 //  EXPORTS
 //-------------------------------------------------------//
-export default InsuranceSelection
+export default InsuranceSelection;
