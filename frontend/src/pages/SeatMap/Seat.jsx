@@ -19,14 +19,16 @@
 import { Button, Stack, Typography } from '@mui/material';
 import React from 'react';
 
+// React Router Dom
+import { useLocation } from 'react-router-dom';
+
+import { useSeatsAvailable } from '../../hooks/useSeatsAvailable';
+
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
 const Seat = (props) => {
-	// type
-	// cost
-	// row position
-	// column position
+	let { state } = useLocation();
 
 	/**
 	 *
@@ -60,8 +62,7 @@ const Seat = (props) => {
 	function handleChange() {
 		props.setSelectedSeat(props.seat);
 	}
-
-	if (props.seat.available) {
+	if (useSeatsAvailable(props.seat.id, state.flight.id).seatAvailable) {
 		return (
 			<Button
 				size="small"

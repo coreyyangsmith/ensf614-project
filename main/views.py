@@ -119,9 +119,9 @@ def passengers_by_flight(request, flight_id):
     if request.method == 'GET':
         print(request)
         try:
-            data = Passenger.objects.filter(flight_id=flight_id)
-            serializer = PassengerSerializer(data, context={'request': request}, many=True)
-        except Passenger.DoesNotExist:
+            data = Ticket.objects.filter(flight_ref=flight_id)
+            serializer = TicketSerializer(data, context={'request': request}, many=True)
+        except Ticket.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         return Response(serializer.data)
