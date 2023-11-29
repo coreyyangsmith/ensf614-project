@@ -46,4 +46,7 @@ urlpatterns = [
     re_path(r'^api/register/$', views.register, name='register'),
     re_path(r'^api/login/$', views.login, name='login'),
     re_path(r'^api/logout/$', views.logout, name='logout'),
+
+    #Process payments
+    re_path(r'^api/process-payment/$', views.process_payment, name='process_payment'),
 ]

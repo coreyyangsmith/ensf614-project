@@ -29,6 +29,9 @@ import BrowseFlights from './pages/BrowseFlights/BrowseFlights.jsx';
 import PaymentPage from './pages/PaymentComponent/PaymentPage.jsx';
 import PassengerListPage from './pages/PassengerList/PassengerList.jsx';
 import SeatSelection from './pages/SeatMap/SeatSelection.jsx';
+import PassengerListView from './pages/PassengerList/PassengerListView.jsx';
+import CancelFlightView from './pages/CancelFlight/CancelFlightView.jsx';
+import AdminView from './pages/Admin/AdminView.jsx';
 
 export const AuthContext = React.createContext();
 
@@ -96,45 +99,52 @@ function App() {
 
 	return (
 		<>
-		<AuthContext.Provider value={{ user, setUser }}>
-			<ThemeProvider theme={darkTheme}>
-				<CssBaseline />
-				<Routes>
-					<Route
-						path=""
-						element={<Landing />}
-					/>
-					<Route
-						path="/seatmap"
-						element={<FlightDeck />}
-					/>
-					<Route
-						path="/login"
-						element={<Login />}
-					/>
-					<Route
-						path="/register"
-						element={<Register />}
-					/>
-					<Route
-						path="/flightlist"
-						element={<BrowseFlights />}
-					/>
-					<Route
-						path="/payment"
-						element={<PaymentPage />}
-					/>
-					<Route
-						path="/passenger-list"
-						element={<PassengerListPage />}
-					/>
-					<Route
-						path="/flights/:id"
-						element={<SeatSelection />}
-					/>					
-				</Routes>
-			</ThemeProvider>
-		</AuthContext.Provider>
+			<AuthContext.Provider value={{ user, setUser }}>
+				<ThemeProvider theme={darkTheme}>
+					<CssBaseline />
+					<Routes>
+						<Route // default landing page
+							path=""
+							element={<Landing />}
+						/>
+
+						<Route // login page, displayed in navbar
+							path="/login"
+							element={<Login />}
+						/>
+						<Route // signup page, displayed in navbar
+							path="/register"
+							element={<Register />}
+						/>
+						<Route // signup page, displayed in navbar
+							path="/cancel"
+							element={<CancelFlightView />}
+						/>						
+						<Route // admin page
+							path="/admin"
+							element={<AdminView />}
+						/>
+						<Route // for flight attendant, displayed in nav bar
+							path="/passengerlist"
+							element={<PassengerListView />}
+						/>
+
+						<Route // display flight info (and crew info) from selected flight, for admin panel
+							path="/flightlist"
+							element={<BrowseFlights />}
+						/>
+
+						<Route // for sear selection by flight id, routed after selected flight
+							path="/flights/:id"
+							element={<SeatSelection />}
+						/>
+						<Route // for payment, routed after seat selection
+							path="/payment"
+							element={<PaymentPage />}
+						/>
+					</Routes>
+				</ThemeProvider>
+			</AuthContext.Provider>
 		</>
 	);
 }
@@ -142,4 +152,3 @@ function App() {
 //  EXPORTS
 //-------------------------------------------------------//
 export default App;
-

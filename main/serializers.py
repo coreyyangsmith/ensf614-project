@@ -70,10 +70,11 @@ class FlightCrewSerializer(serializers.ModelSerializer):
         model = FlightCrew
         fields = '__all__'    
 
-class PassengerSerializer(serializers.ModelSerializer):
+class TicketSerializer(serializers.ModelSerializer):
+    flight_ref = FlightSerializer()
+    seat_ref = SeatSerializer()
     class Meta:
-        flight_id = FlightSerializer()
-        model = Passenger
+        model = Ticket
         fields = '__all__'
 
 # Add these serializers for user registration and login - Atif

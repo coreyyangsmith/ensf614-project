@@ -50,19 +50,6 @@ def process_string(input_str):
 
     return result
 
-def random_availability():
-    '''
-    random_availability
-    
-    Args:
-        None
-
-    Returns:
-        result (boolean): Randomly selected boolean value
-    '''
-    AVAILABILITY_CHANCE = 0.75
-    return random.random() < AVAILABILITY_CHANCE
-
 def run():
     count = 0
 
@@ -85,7 +72,6 @@ def run():
                     type = "BUS"
                     multiplier = 2
 
-                
 
                 seat = Seat.objects.get_or_create(
                     type = type,
@@ -93,7 +79,6 @@ def run():
                     multiplier = multiplier,
                     row_position = i,
                     column_position = j,
-                    available = random_availability(),
                     aircraft_ref = Aircraft.objects.get(pk = aircraft.pk)
                 )    
                 count += 1    

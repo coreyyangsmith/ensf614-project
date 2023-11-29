@@ -181,7 +181,7 @@ const FlightDeck = (props) => {
 		return (
 			<Grid container>
 				{rows.map((seat) => {
-					if (seat != 0) return <Seat seat={seat} setSelectedSeat={props.setSelectedSeat}/>;
+					if (seat != 0) return <Seat flight={state.flight} seat={seat} setSelectedSeat={props.setSelectedSeat}/>;
 					if (seat == 0) return <Aisle />;
 				})}
 			</Grid>

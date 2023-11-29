@@ -1,6 +1,6 @@
 //-------------------------------------------------------//
-//  File Name: useFlights.js
-//  Description: Data Fetching Hook to obtain "Flight" model from the local database
+//  File Name: useSeatsByAircraft.js
+//  Description: Data Fetching Hook to obtain "Seats" model based on Selected Aircraft
 //
 //  Requirements:
 //      - /api/posts (axios)
@@ -9,7 +9,7 @@
 //      - List of Aircrafts
 //
 // Created By: Corey Yang-Smith
-// Date: November 18th, 2023
+// Date: November 23rd, 2023
 //-------------------------------------------------------//
 
 //  IMPORTS
@@ -24,15 +24,25 @@ import { getRequest } from '../api/posts';
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
-export const usePassenegersByFlight = (id) => {
-	const [passengersByFlight, setPassengersByFlight] = useState([]);
+export const useSeatsByAircraft = (id) => {
+	const [seatsByAircraft, setSeatsByAircraft] = useState([]);
+	var mySeats = [];
+	var selectedAircraft = [];
 
 	const fetchData = async () => {
 		try {
-			const response = await getRequest('flights/' + id, '');
-			if (response && response.data) {
-				setPassengersByFlight(response.data);
-			}
+			const aircrafts = (await getRequest('aircrafts/', '')).data;
+
+			aircrafts.filter((el) => {
+				if (el.id == id) selectedAircraft.push(el)
+			});
+
+			const seats = await (await getRequest('seats/', '')).data;
+			seats.filter((el) => {
+				if (el.aircraft_ref == selectedAircraft[0].id) mySeats.push(el);
+			});
+
+			setSeatsByAircraft(mySeats);
 		} catch (err) {
 			if (err.response) {
 				//Not in 200 Response Range
@@ -49,5 +59,5 @@ export const usePassenegersByFlight = (id) => {
 		fetchData();
 	}, []);
 
-	return { passengersByFlight, setPassengersByFlight };
+	return { seatsByAircraft, setSeatsByAircraft };
 };
