@@ -78,7 +78,8 @@ const AdminView = () => {
 			<Grid
 				container
 				item
-				xs={5}
+				xs={8}
+				sx={{border: "1px solid white", width: "100%"}}
 			>
 				<ViewFlightsByDate />
 			</Grid>
@@ -86,7 +87,8 @@ const AdminView = () => {
 			<Grid
 				container
 				item
-				xs={6}
+				xs={3}
+				sx={{border: "1px solid white"}}
 			>
 				<ViewCrewsByFlight />
 			</Grid>

@@ -29,6 +29,7 @@ import { NUM_DAYS } from '../../utils/config.js';
 import { Button, Grid, Stack, Typography } from '@mui/material';
 import { useFlightsByDate } from '../../hooks/useFlightsByDate.js';
 import { useFlights } from '../../hooks/useFlights.js';
+import FlightListHeader from './FlightListHeader.jsx';
 
 const ViewFlightsByDate = () => {
 	const [selectedDate, setSelectedDate] = useState('');
@@ -51,46 +52,54 @@ const ViewFlightsByDate = () => {
 				direction="row"
 				container
                 key={flight.id}
+				sx={{border: "1px solid white", width: "100%"}}
+				
 			>
 				<Grid
 					item
-					xs={2}
+					xs={1}
+					sx={{border: "1px solid white", width: "100%"}}
 				>
-					<Typography>id: {flight.id}</Typography>
+					<Typography>{flight.id}</Typography>
+				</Grid>
+
+				<Grid
+					item
+					xs={1}
+					sx={{border: "1px solid white", width: "100%"}}
+				>
+					<Typography>{flight.date}</Typography>
+				</Grid>
+				<Grid
+					item
+					xs={3}
+					sx={{border: "1px solid white", width: "100%"}}
+				>
+					<Typography>{flight.start_point.name}</Typography>
+				</Grid>
+
+				<Grid
+					item
+					xs={3}
+					sx={{border: "1px solid white", width: "100%"}}
+				>
+					<Typography>{flight.end_point.name}</Typography>
 				</Grid>
 
 				<Grid
 					item
 					xs={2}
+					sx={{border: "1px solid white", width: "100%"}}
 				>
-					<Typography>date: {flight.date}</Typography>
-				</Grid>
-				<Grid
-					item
-					xs={2}
-				>
-					<Typography>departure: {flight.start_point.name}</Typography>
+					<Typography>{parseFloat(flight.distance).toFixed(2)}</Typography>
 				</Grid>
 
 				<Grid
 					item
 					xs={2}
+					sx={{border: "1px solid white", width: "100%"}}
 				>
-					<Typography>arrival: {flight.end_point.name}</Typography>
-				</Grid>
-
-				<Grid
-					item
-					xs={2}
-				>
-					<Typography>distance: {parseFloat(flight.distance).toFixed(2)}</Typography>
-				</Grid>
-
-				<Grid
-					item
-					xs={2}
-				>
-					<Typography>duration: {flight.est_duration}</Typography>
+					<Typography>{flight.est_duration}</Typography>
 				</Grid>                                
 			</Grid>
 		);
@@ -130,6 +139,8 @@ const ViewFlightsByDate = () => {
 				direction="column"
 				spacing={0.5}
 			>
+				{(flightList.length > 0) && <FlightListHeader />}
+                
 				{flightList}
 			</Stack>
 		</>
