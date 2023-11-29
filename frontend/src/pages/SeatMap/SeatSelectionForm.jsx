@@ -63,7 +63,6 @@ const SeatSelectionForm = (props) => {
 						insurance={insurance}
 					/>
 
-					<Button variant="outlined">Purchase Seat</Button>
 				</Stack>
 			</Box>
 		);

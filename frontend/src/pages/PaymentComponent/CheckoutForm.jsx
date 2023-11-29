@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { Container, Typography, Button, Grid, Box, TextField } from '@mui/material';
+import { Container, Typography, Button, Grid, Box, TextField, Paper, Stack } from '@mui/material';
 import { styled, useTheme } from '@mui/system';
+import axios from 'axios';
 
 const StyledCardElementContainer = styled(Box)(({ theme }) => ({
     padding: theme.spacing(2),
@@ -19,6 +21,18 @@ const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const theme = useTheme();
+    const [userInfo, setUserInfo] = useState({ name: '', email: '' });
+    const navigate = useNavigate();
+
+    const { state } = useLocation();
+    const flightDetails = state?.flight;
+    const seatDetails = state?.seat;
+    const insurance = state?.insurance;
+    const total = state?.total;
+
+    const handleBack = () => {
+        navigate(-1);
+    };
 
     const CARD_ELEMENT_OPTIONS = {
         style: {
@@ -33,6 +47,10 @@ const CheckoutForm = () => {
                 color: theme.palette.error.main,
             },
         },
+    };
+
+    const handleInputChange = (event) => {
+        setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
 
     const handleSubmit = async (event) => {
@@ -52,7 +70,28 @@ const CheckoutForm = () => {
             console.log('[error]', error);
         } else {
             console.log('[PaymentMethod]', paymentMethod);
-            // Process the paymentMethod.id on your server
+            const paymentData = {
+                flightDetails,
+                seatDetails,
+                insurance,
+                total,
+                userInfo,
+                paymentMethodId: paymentMethod.id,
+            };
+
+            axios.post('http://localhost:8000/process-payment/', paymentData)
+                .then(response => {
+                    console.log('Payment processed: ', response.data);
+                    if (response.status === 200) {
+                        setIsPaymentSuccessful(true);
+                        setPaymentError('');
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error processing payment: ', error);
+                    setIsPaymentSuccessful(false);
+                });
         }
     };
 
@@ -61,21 +100,64 @@ const CheckoutForm = () => {
             <Typography variant="h4" gutterBottom>
                 Payment Form
             </Typography>
-            <StyledCardElementContainer>
-                <CardElement options={CARD_ELEMENT_OPTIONS} />
-            </StyledCardElementContainer>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Button variant="outlined" fullWidth>
-                        Back
-                    </Button>
+            {flightDetails && (
+                <Paper elevation={3} sx={{ padding: 2, marginBottom: 2 }}>
+                    <Typography variant="h6">Flight Summary:</Typography>
+                    <Stack direction="column" spacing={1}>
+                        <Typography>Flight ID: {flightDetails.id}</Typography>
+                        <Typography>Departure: {flightDetails.departure} at {flightDetails.departureTime}</Typography>
+                        <Typography>Arrival: {flightDetails.arrival} at {flightDetails.arrivalTime}</Typography>
+                        <Typography>Seat Type: {seatDetails?.type}</Typography>
+                        <Typography>Seat: {seatDetails?.number}</Typography>
+                        <Typography>Flight Insurance: {insurance ? 'Yes' : 'No'}</Typography>
+                        <Typography>Total: ${total}</Typography>
+                    </Stack>
+                </Paper>
+            )}
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    label="Name"
+                    name="name"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={userInfo.name}
+                    onChange={handleInputChange}
+                    sx={{
+                        backgroundColor: '#000000',
+                        borderRadius: 1,
+                    }}
+                />
+                <TextField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={userInfo.email}
+                    onChange={handleInputChange}
+                    sx={{
+                        backgroundColor: '#000000',
+                        borderRadius: 1,
+                    }}
+                />
+                <StyledCardElementContainer>
+                    <CardElement options={CARD_ELEMENT_OPTIONS} />
+                </StyledCardElementContainer>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Button variant="outlined" fullWidth onClick={handleBack}>
+                            Back
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button type="submit" variant="contained" color="primary" fullWidth disabled={!stripe}>
+                            Pay
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <Button type="submit" variant="contained" color="primary" fullWidth disabled={!stripe}>
-                        Pay
-                    </Button>
-                </Grid>
-            </Grid>
+            </form>
         </Container>
     );
 };

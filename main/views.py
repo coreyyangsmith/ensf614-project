@@ -38,6 +38,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 # Json
 import json
 
+#Import Stripe for payment
+import stripe
+stripe.api_key = 'sk_test_51OC8jgCQlBoyLNaW1dkWgLSmMYQEhVKLokKDp4hAJiUNIoZfPKNwBIFWyCZipJvE8Z21RilFobKzzBVrCohOuNNE00DoiyHW4z'
+
 #   VIEWS
 #-------------------------------------------------------#
 def MainView(request):
@@ -181,3 +185,17 @@ def logout(request):
         return Response(status=status.HTTP_205_RESET_CONTENT)
     except Exception as e:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def process_payment(request):
+    data = request.data
+    try:
+        payment_intent = stripe.PaymentIntent.create(
+            amount=int(data['amount']),
+            currency='usd',
+            payment_method_types=['card'],
+        )
+
+        return Response({"clientSecret": payment_intent['client_secret']}, status=status.HTTP_200_OK)
+    except stripe.error.StripeError as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
