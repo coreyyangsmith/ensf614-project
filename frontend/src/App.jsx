@@ -22,6 +22,7 @@ import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import React, { useState } from 'react';
 import Landing from './pages/Landing/Landing.jsx';
 import Login from './pages/Login/Login.jsx';
+import Register from './pages/Register/Register.jsx';
 import FlightDeck from './pages/SeatMap/FlightDeck.jsx';
 import { Route, Routes } from 'react-router-dom';
 import BrowseFlights from './pages/BrowseFlights/BrowseFlights.jsx';
@@ -110,6 +111,10 @@ function App() {
 					<Route
 						path="/login"
 						element={<Login />}
+					/>
+					<Route
+						path="/register"
+						element={<Register />}
 					/>
 					<Route
 						path="/flightlist"
