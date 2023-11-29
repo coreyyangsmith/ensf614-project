@@ -4,6 +4,7 @@ import CheckoutForm from './CheckoutForm.jsx';
 import stripePromise from './stripe.jsx';
 
 const PaymentPage = () => {
+
     return (
         <Elements stripe={stripePromise}>
             <CheckoutForm />

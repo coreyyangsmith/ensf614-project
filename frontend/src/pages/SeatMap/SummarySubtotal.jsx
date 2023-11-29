@@ -23,6 +23,7 @@ import { Button, Divider, Grid, Paper, Stack, Typography } from '@mui/material';
 
 // React Router Dom
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SubtotalLineItem from './SubtotalLineItem';
 import SubtotalCalculation from './SubtotalCalculation';
 import TaxCalculation from './TaxCalculation';
@@ -58,6 +59,12 @@ const SummarySubtotal = (props) => {
 		var cost = seat.amount * seat.multiplier;
 		return cost;
 	}
+
+	const navigate = useNavigate();
+
+	const handlePayment = () => {
+		navigate('/payment', { state: { flight: state.flight, seat: props.seat, insurance: props.insurance, total: total } });
+	};
 
 	return (
 		<Paper
@@ -124,6 +131,13 @@ const SummarySubtotal = (props) => {
 						</Stack>
 					</Stack>
 				</Grid>
+				<Button onClick={handlePayment} sx={{
+					fontSize: 'larger',
+					padding: '10px 20px',
+					border: '2px solid',
+					borderColor: 'primary.main',
+					borderRadius: '4px',
+				}}>Proceed to Payment</Button>
 			</Grid>
 		</Paper>
 	);
