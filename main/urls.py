@@ -34,10 +34,9 @@ urlpatterns = [
     re_path(r'^api/flights/$', views.flights_list),    
     re_path(r'^api/seats/$', views.seats_list),        
     re_path(r'^api/aircrafts/$', views.aircrafts_list),      
-    re_path(r'^api/flightcrews/$', views.flightcrews_list), 
 
     # Specialized APIs
-    re_path(r'^api/crewsbyflight/$', views.crews_by_flight),
+    re_path(r'^api/crewsbyflight/(\d+)$', views.crews_by_flight),
     re_path(r'^api/flights/(\d+)$', views.passengers_by_flight),
 
     # Query APIs

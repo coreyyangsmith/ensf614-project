@@ -47,7 +47,8 @@ class DestinationSerializer(serializers.ModelSerializer):
 class AircraftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aircraft  
-        fields = '__all__'             
+        fields = '__all__'            
+
 
 class FlightSerializer(serializers.ModelSerializer):
     start_point = DestinationSerializer()
@@ -68,7 +69,7 @@ class FlightCrewSerializer(serializers.ModelSerializer):
     flight_id = FlightSerializer()
     class Meta:
         model = FlightCrew
-        fields = '__all__'    
+        fields = '__all__'      
 
 class TicketSerializer(serializers.ModelSerializer):
     flight_ref = FlightSerializer()

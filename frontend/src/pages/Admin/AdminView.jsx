@@ -24,6 +24,7 @@ import { Button, Grid, Stack, Typography } from '@mui/material';
 // React Router Dom
 import { Link } from 'react-router-dom';
 import ViewFlightsByDate from './ViewFlightsByDate';
+import ViewCrewsByFlight from './ViewCrewsByFlight';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -35,17 +36,20 @@ const AdminView = () => {
 		<Grid
 			container
 			direction="row"
-            sx={{ background: '#121212' }}
-            spacing={2}
+			sx={{ background: '#121212' }}
+			spacing={2}
 		>
 			<Grid
 				container
 				item
-				xs={2}
-                sx={{padding: "15px"}}
-				
+				xs={1}
+				sx={{ paddingLeft: '16px', paddingTop: '16px' }}
 			>
-				<Stack direction="column" spacing={2}>
+				<Stack
+					direction="column"
+					spacing={2}
+					sx={{ paddingLeft: '16px', paddingTop: '16px' }}
+				>
 					<Button
 						variant="outlined"
 						sx={{ height: '50px' }}
@@ -57,7 +61,10 @@ const AdminView = () => {
 							<Typography color="primary">Return</Typography>
 						</Link>
 					</Button>
-					<Button variant='outlined' sx={{ height: "50px" }}>
+					<Button
+						variant="outlined"
+						sx={{ height: '50px' }}
+					>
 						<Link
 							to="http://127.0.0.1:8000/admin/"
 							style={{ textDecoration: 'none' }}
@@ -79,9 +86,9 @@ const AdminView = () => {
 			<Grid
 				container
 				item
-				xs={5}
+				xs={6}
 			>
-				<Typography>List Crews by Flight ID</Typography>
+				<ViewCrewsByFlight />
 			</Grid>
 		</Grid>
 	);

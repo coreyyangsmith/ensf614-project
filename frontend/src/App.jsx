@@ -25,7 +25,7 @@ import Login from './pages/Login/Login.jsx';
 import Register from './pages/Register/Register.jsx';
 import FlightDeck from './pages/SeatMap/FlightDeck.jsx';
 import { Route, Routes } from 'react-router-dom';
-import BrowseFlights from './pages/BrowseFlights/BrowseFlights.jsx';
+import BrowseFlights from './pages/Admin/ViewCrewsByFlight.jsx';
 import PaymentPage from './pages/PaymentComponent/PaymentPage.jsx';
 import PassengerListPage from './pages/PassengerList/PassengerList.jsx';
 import SeatSelection from './pages/SeatMap/SeatSelection.jsx';

@@ -97,27 +97,22 @@ def aircrafts_list(request):
         serializer = AircraftSerializer(data, context={'request': request}, many=True)
         return Response(serializer.data)             
     
-@api_view(['GET'])
-def flightcrews_list(request):
-    if request.method == 'GET':
-        data = FlightCrew.objects.all()
-        #print(data)
-        serializer = FlightCrewSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)                 
     
 @api_view(['GET'])
-def crews_by_flight(request):
+def crews_by_flight(request, flight_id):
     if request.method == 'GET':
-        flight_id = request.GET.get('flight_id','')
-        data = FlightCrew.objects.filter(flight_id=flight_id)
-        #print(data)
-        serializer = FlightCrewSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)    
+        try:
+            data = FlightCrew.objects.filter(flight_id=flight_id)
+            print(data)
+            serializer = FlightCrewSerializer(data, context={'request': request}, many=True)
+        except Flight.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def passengers_by_flight(request, flight_id):
     if request.method == 'GET':
-        print(request)
         try:
             data = Ticket.objects.filter(flight_ref=flight_id)
             serializer = TicketSerializer(data, context={'request': request}, many=True)

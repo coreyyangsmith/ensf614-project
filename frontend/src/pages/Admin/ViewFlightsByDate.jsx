@@ -50,6 +50,7 @@ const ViewFlightsByDate = () => {
 			<Grid
 				direction="row"
 				container
+                key={flight.id}
 			>
 				<Grid
 					item
@@ -100,9 +101,9 @@ const ViewFlightsByDate = () => {
 			<Stack
 				direction="column"
 				spacing={2}
-				sx={{ border: '1px solid white', width: '100%', padding: '16px' }}
+				sx={{width: '100%', padding: '16px' }}
 			>
-				<div>ViewFlightsByDate</div>
+				<Typography>View Flights by Selected Date</Typography>
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
 					<DatePicker
 						label="Select Flight Date"

@@ -68,9 +68,10 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True #disables CORS as we're running in localhost for the time being
 
-CORS_ORIGIN_WHITELIST = [ #Alternatively, whitelist our ip/port that React will be hosted on to interact with the api
-     'http://localhost:3000', 'https://js.stripe.com'
-]
+# CORS_ORIGIN_WHITELIST = [ #Alternatively, whitelist our ip/port that React will be hosted on to interact with the api
+#      'http://localhost:3000', 
+#      'https://js.stripe.com'
+# ]
 
 ROOT_URLCONF = "airline.urls"
 

@@ -51,6 +51,16 @@ export function getPassengersByFlight(flightId) {
 		});
 }
 
+export function getCrewsByFlight(flightId) {
+	return axiosClient
+		.get(`/crewsbyflight/${flightId}`)
+		.then((response) => response.data)
+		.catch((error) => {
+			console.error('Error fetching passengers:', error);
+			throw error;
+		});
+}
+
 export function queryFlights(info) {
 	return axiosClient
 		.get(`/queryflights`, {
