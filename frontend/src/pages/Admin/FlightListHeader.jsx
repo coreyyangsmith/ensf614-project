@@ -24,47 +24,47 @@ const FlightListHeader = () => {
 		<Grid
 			direction="row"
 			container
-			sx={{border: "1px solid white", width: "100%"}}
+			sx={{width: "100%"}}
 		>
 			<Grid
 				item
-				xs={1}
+				xs={.5}
 			>
-				<Typography>ID</Typography>
+				<Typography variant="table_heading" sx={{display: 'flex', justifyContent: 'center', borderBottom: "1px solid white"}}>ID</Typography>
+			</Grid>
+
+			<Grid
+				item
+				xs={1.5}
+			>
+				<Typography variant="table_heading" sx={{display: 'flex', justifyContent: 'center', borderBottom: "1px solid white"}}>Date</Typography>
+			</Grid>
+			<Grid
+				item
+				xs={4}
+			>
+				<Typography variant="table_heading" sx={{display: 'flex', justifyContent: 'flex-start', borderBottom: "1px solid white"}}>Departure</Typography>
+			</Grid>
+
+			<Grid
+				item
+				xs={4}
+			>
+				<Typography variant="table_heading" sx={{display: 'flex', justifyContent: 'flex-start', borderBottom: "1px solid white"}}>Arrival</Typography>
 			</Grid>
 
 			<Grid
 				item
 				xs={1}
 			>
-				<Typography>Date</Typography>
-			</Grid>
-			<Grid
-				item
-				xs={3}
-			>
-				<Typography>Departure</Typography>
+				<Typography variant="table_heading" sx={{display: 'flex', justifyContent: 'center', borderBottom: "1px solid white"}}>Dist. (km)</Typography>
 			</Grid>
 
 			<Grid
 				item
-				xs={3}
+				xs={1}
 			>
-				<Typography>Arrival</Typography>
-			</Grid>
-
-			<Grid
-				item
-				xs={2}
-			>
-				<Typography>Distance (km)</Typography>
-			</Grid>
-
-			<Grid
-				item
-				xs={2}
-			>
-				<Typography>Est. Duration</Typography>
+				<Typography variant="table_heading" sx={{display: 'flex', justifyContent: 'center', borderBottom: "1px solid white"}}>Est. Dur.</Typography>
 			</Grid>
 		</Grid>
 	);

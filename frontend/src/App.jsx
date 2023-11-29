@@ -91,6 +91,20 @@ const darkTheme = createTheme({
 			fontFamily: 'Plus Jakarta Sans',
 			color: '#000000',
 		},
+		table_heading: {
+			lineHeight: 1.6,
+			fontSize: 18,
+			fontWeight: 500,
+			fontFamily: 'Plus Jakarta Sans',
+			color: '#FFFFFF',
+		},		
+		table_content: {
+			lineHeight: 1.6,
+			fontSize: 12,
+			fontWeight: 300,
+			fontFamily: 'Plus Jakarta Sans',
+			color: '#000000',
+		},			
 	},
 });
 

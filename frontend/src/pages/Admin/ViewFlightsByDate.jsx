@@ -51,56 +51,75 @@ const ViewFlightsByDate = () => {
 			<Grid
 				direction="row"
 				container
-                key={flight.id}
-				sx={{border: "1px solid white", width: "100%"}}
-				
+				key={flight.id}
+				sx={{ width: '100%' }}
 			>
 				<Grid
 					item
-					xs={1}
-					sx={{border: "1px solid white", width: "100%"}}
+					xs={0.5}
+					sx={{ width: '100%' }}
 				>
-					<Typography>{flight.id}</Typography>
+					<Typography
+						variant="table_body"
+						sx={{ display: 'flex', justifyContent: 'center' }}
+					>
+						{flight.id}
+					</Typography>
+				</Grid>
+
+				<Grid
+					item
+					xs={1.5}
+					sx={{ width: '100%' }}
+				>
+					<Typography
+						variant="table_body"
+						sx={{ display: 'flex', justifyContent: 'center' }}
+					>
+						{flight.date}
+					</Typography>
+				</Grid>
+				<Grid
+					item
+					xs={4}
+					sx={{ width: '100%' }}
+				>
+					<Typography variant="table_body">{flight.start_point.airport_code} | {flight.start_point.name} </Typography>
+				</Grid>
+
+				<Grid
+					item
+					xs={4}
+					sx={{ width: '100%' }}
+				>
+					<Typography variant="table_body">{flight.end_point.airport_code} | {flight.end_point.name}</Typography>
 				</Grid>
 
 				<Grid
 					item
 					xs={1}
-					sx={{border: "1px solid white", width: "100%"}}
+					sx={{ width: '100%' }}
 				>
-					<Typography>{flight.date}</Typography>
-				</Grid>
-				<Grid
-					item
-					xs={3}
-					sx={{border: "1px solid white", width: "100%"}}
-				>
-					<Typography>{flight.start_point.name}</Typography>
+					<Typography
+						variant="table_body"
+						sx={{ display: 'flex', justifyContent: 'center' }}
+					>
+						{parseFloat(flight.distance).toFixed(0)}
+					</Typography>
 				</Grid>
 
 				<Grid
 					item
-					xs={3}
-					sx={{border: "1px solid white", width: "100%"}}
+					xs={1}
+					sx={{ width: '100%' }}
 				>
-					<Typography>{flight.end_point.name}</Typography>
+					<Typography
+						variant="table_body"
+						sx={{ display: 'flex', justifyContent: 'center' }}
+					>
+						{flight.est_duration}
+					</Typography>
 				</Grid>
-
-				<Grid
-					item
-					xs={2}
-					sx={{border: "1px solid white", width: "100%"}}
-				>
-					<Typography>{parseFloat(flight.distance).toFixed(2)}</Typography>
-				</Grid>
-
-				<Grid
-					item
-					xs={2}
-					sx={{border: "1px solid white", width: "100%"}}
-				>
-					<Typography>{flight.est_duration}</Typography>
-				</Grid>                                
 			</Grid>
 		);
 	});
@@ -110,7 +129,7 @@ const ViewFlightsByDate = () => {
 			<Stack
 				direction="column"
 				spacing={2}
-				sx={{width: '100%', padding: '16px' }}
+				sx={{ width: '100%', padding: '16px' }}
 			>
 				<Typography>View Flights by Selected Date</Typography>
 				<LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -138,9 +157,10 @@ const ViewFlightsByDate = () => {
 			<Stack
 				direction="column"
 				spacing={0.5}
+				sx={{ width: '100%', padding: '16px' }}
 			>
-				{(flightList.length > 0) && <FlightListHeader />}
-                
+				{flightList.length > 0 && <FlightListHeader />}
+
 				{flightList}
 			</Stack>
 		</>
