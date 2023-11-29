@@ -44,7 +44,6 @@ const PassengerList = (props) => {
 			setLoading(true);
 			getPassengersByFlight(props.selectedFlight)
 				.then((data) => {
-					console.log(data)
 					setTickets(data);
 					setLoading(false);
 				})

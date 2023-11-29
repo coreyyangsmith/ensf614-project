@@ -95,6 +95,7 @@ const NavBar = () => {
 					>
 						<NavigationButton label="Admin" path="/admin" color="primary" />
 						<NavigationButton label="Passenger List" path="/passengerlist" color="primary" />
+						<NavigationButton label="Cancel Flight" path="/cancel" color="primary" />
 						<NavigationButton label="Login" path="/login" color="primary" />
 						<NavigationButton label="Signup" path="/register" color="c2a" />
 

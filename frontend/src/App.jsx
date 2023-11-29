@@ -30,6 +30,7 @@ import PaymentPage from './pages/PaymentComponent/PaymentPage.jsx';
 import PassengerListPage from './pages/PassengerList/PassengerList.jsx';
 import SeatSelection from './pages/SeatMap/SeatSelection.jsx';
 import PassengerListView from './pages/PassengerList/PassengerListView.jsx';
+import CancelFlightView from './pages/CancelFlight/CancelFlightView.jsx';
 
 export const AuthContext = React.createContext();
 
@@ -114,6 +115,10 @@ function App() {
 							path="/register"
 							element={<Register />}
 						/>
+						<Route // signup page, displayed in navbar
+							path="/cancel"
+							element={<CancelFlightView />}
+						/>						
 						<Route // admin page
 							path="/admin"
 							element={<Register />}
