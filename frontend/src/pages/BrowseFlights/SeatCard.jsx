@@ -1,13 +1,14 @@
 import { Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useSeatsByAircraft } from '../../hooks/useSeatsByFlight';
+import { useSeatsByAircraft } from '../../hooks/useSeatsByAircraft.js';
 import NavigatinButtonFlight from '../../components/NavigationButtonFlight.jsx'
 
 // get seats from flight
 
 const SeatCard = (props) => {
 	const { seatsByAircraft } = useSeatsByAircraft(props.flight.aircraft_ref.id);
+	const { ticketsByFlight } = use(props.flight.id);
 
 	const seatsAvailable = useRef(0);
 	const [seatsTaken, setSeatsTaken] = useState(0);

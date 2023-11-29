@@ -16,74 +16,58 @@ import {
 	CircularProgress,
 } from '@mui/material';
 
-import { usePassenegersByFlight } from '../../hooks/usePassenegersByFlight.js';
-
-const PassengerListPage = () => {
-	//const { passengersByFlight } = usePassenegersByFlight(); // use the useFlights hook
-	const { flights } = useFlights(); // use the useFlights hook
-	const [selectedFlight, setSelectedFlight] = useState('');
-	const [passengers, setPassengers] = useState([]);
+const PassengerList = (props) => {
+	const [tickets, setTickets] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState('');
 
-	console.log('Passengers By Flight');
-	console.log(flights);
+
+	/**
+	 * getSeatName
+	 * @param {*} row int: row number
+	 * @param {*} col int: column number
+	 * @returns 
+	 */
+	function getSeatName(seat) {
+		var seatName = ""
+		const col = seat.column_position;
+		const row = seat.row_position;
+
+		seatName = (row + 1).toString()
+		seatName += String.fromCharCode(97 + col).toUpperCase()
+
+		return seatName
+	}	
 
 	useEffect(() => {
-	    if (selectedFlight) {
-	        setLoading(true);
-	        getPassengersByFlight(selectedFlight)
-	            .then(data => {
-	                setPassengers(data);
-	                setLoading(false);
-	            })
-	            .catch(error => {
-	                console.error('Error:', error);
-	                setError('Error fetching passengers');
-	                setLoading(false);
-	            });
-	    } else {
-	        setPassengers([]);
-	    }
-	}, [selectedFlight]);
+		if (props.selectedFlight) {
+			setLoading(true);
+			getPassengersByFlight(props.selectedFlight)
+				.then((data) => {
+					console.log(data)
+					setTickets(data);
+					setLoading(false);
+				})
+				.catch((error) => {
+					console.error('Error:', error);
+					setError('Error fetching passengers');
+					setLoading(false);
+				});
+		} else {
+			setTickets([]);
+		}
+	}, [props.selectedFlight]);
 
-	// // Fetch the passengers for the selected flight
-	// useEffect(() => {
-	//     if (selectedFlight) {
-	//         axios.get(`${process.env.REACT_APP_API_URL}/api/flights/${selectedFlight}/passengers/`)
-	//             .then(response => setPassengers(response.data))
-	//             .catch(error => console.error('Error fetching passengers:', error));
-	//     } else {
-	//         setPassengers([]);
-	//     }
-	// }, [selectedFlight]);
-
-	const displayFlights = flights.map((flight, index) => {
+	const displayPassengers = tickets.map((ticket, index) => {
 		return (
-			<MenuItem
-				key={flight.id}
-				value={flight.id}
-			>
-				{flight.start_point.airport_code} to {flight.end_point.airport_code}
-			</MenuItem>
+			<ListItem key={ticket.id}>
+				<ListItemText
+					primary={`${ticket.name}` + " (" + `${getSeatName(ticket.seat_ref)}`+ ")"}
+				/>
+			</ListItem>
 		);
 	});
 
-    const displayPassengers = passengers.map((passenger, index) => {
-        return (
-            <ListItem key={passenger.id}>
-            <ListItemText
-                primary={`${passenger.first_name} ${passenger.last_name}`}
-            />
-        </ListItem>
-
-        )
-    })
-
-
-	const handleFlightChange = (event) => {
-		setSelectedFlight(event.target.value);
-	};
 
 	return (
 		<Container style={{ background: '#000000' }}>
@@ -93,20 +77,7 @@ const PassengerListPage = () => {
 			>
 				Passenger List
 			</Typography>
-			<FormControl
-				fullWidth
-				margin="normal"
-			>
-				<InputLabel id="select-flight-label">Select Flight</InputLabel>
-				<Select
-					labelId="select-flight-label"
-					value={selectedFlight}
-					label="Select Flight"
-					onChange={(e) => {
-						handleFlightChange(e);
-					}}
-				>{displayFlights}</Select>
-			</FormControl>
+
 			{loading && (
 				<div
 					style={{
@@ -119,19 +90,17 @@ const PassengerListPage = () => {
 				</div>
 			)}
 			{error && <Typography color="error">{error}</Typography>}
-			{!loading && !error && passengers.length === 0 && (
+			{!loading && !error && tickets.length === 0 && (
 				<Typography>No passengers found for the selected flight.</Typography>
 			)}
 			<Paper
 				elevation={3}
 				style={{ marginTop: 16, marginBottom: 16 }}
 			>
-				<List>
-                {displayPassengers}
-				</List>
+				<List>{displayPassengers}</List>
 			</Paper>
 		</Container>
 	);
 };
 
-export default PassengerListPage;
+export default PassengerList;

@@ -16,7 +16,7 @@
 #   IMPORTS
 #-------------------------------------------------------#
 from main.models import Flight, Aircraft, Destination, Crew, FlightCrew
-from scripts.seeding.config import NUM_FLIGHTS_PER_DAY, NUM_DAYS
+from scripts.seeding.config import NUM_DAYS
 import pandas as pd
 from datetime import date, timedelta, time, datetime
 import random;
@@ -68,29 +68,47 @@ def getRandomStartTime(date):
 
     return timestamp
 
+def getRandomLayover(datetime):
+    starting_datetime = datetime
+    randomMinute = random.randint(0, 59)
+    time_change = timedelta(minutes=randomMinute)
+    ending_datetime = starting_datetime + time_change
+    return ending_datetime
+
 def getArrivalTime(datetime, duration):
     starting_datetime = datetime
     time_change = timedelta(hours=duration.hour, minutes=duration.minute) 
     ending_datetime = starting_datetime + time_change
     return ending_datetime
 
+def getTimeCutoff():
+    now = date.today()
+    max_delta = timedelta(days=NUM_DAYS)
+    cutoff = now + max_delta
+    return cutoff
+
+def getDate(datetime):
+    date = datetime.date()
+    return date
+
 def run():
     count = 0
 
-    for single_date in (date.today() + timedelta(n) for n in range(NUM_DAYS)):
-        # print("Generating Flights for: ", single_date)
+    aircrafts = Aircraft.objects.all()
 
-        # Generate Test Flights | YYC --> LAX
-        start = Destination.objects.get(airport_code = "YYC")
-        end = Destination.objects.get(airport_code = "LAX")
-        distance = 1942
+    for aircraft in aircrafts:
+        # initial flight is random start and end date
+        initial_time = date.today()
+        start = Destination.objects.order_by('?').first()
+        end = Destination.objects.order_by('?').first()
+
+        departure_time = getRandomStartTime(initial_time)
+        distance = getDistance(start, end)
         est_duration = getTime(distance)
-
-        departure_time = getRandomStartTime(single_date)
         arrival_time = getArrivalTime(departure_time, est_duration)
-
+        
         flight = Flight.objects.get_or_create(
-            date = single_date,
+            date = initial_time,
             departure_time = departure_time,
             arrival_time = arrival_time,
             start_point = start,
@@ -98,43 +116,30 @@ def run():
             distance = distance,
             est_duration = est_duration,
 
-            aircraft_ref = Aircraft.objects.order_by('?').first(),
+            aircraft_ref = Aircraft.objects.filter(pk=aircraft.pk)[0]
         )
         count += 1
 
-        for i in range(NUM_FLIGHTS_PER_DAY):
-            start = Destination.objects.order_by('?').first()
+        # subsequent flights will be linked from the end destination, and will begin after a random layover time
+        while (departure_time.date() < getTimeCutoff()):
+            start = end
             end = Destination.objects.order_by('?').first()
+            departure_time = getRandomLayover(arrival_time)
             distance = getDistance(start, end)
             est_duration = getTime(distance)
-
-            departure_time = getRandomStartTime(single_date)
             arrival_time = getArrivalTime(departure_time, est_duration)
-                    
 
             flight = Flight.objects.get_or_create(
-                date = single_date,
+                date = getDate(departure_time),
                 departure_time = departure_time,
                 arrival_time = arrival_time,
                 start_point = start,
                 end_point = end,
                 distance = distance,
                 est_duration = est_duration,
-                aircraft_ref = Aircraft.objects.order_by('?').first(),
-            )    
-            count += 1    
+
+                aircraft_ref = Aircraft.objects.filter(pk=aircraft.pk)[0]
+            )
+            count += 1
 
     print("'Flight' model successfully loaded (",count,")")
-
-        
-
-'''
-Alternative Logic for Generating Flights
-... Flight could be a function of Aircrafts
-
-For Each Aircraft:
-    Initial aircraft selects random start destination and random end destination
-    Afterwards, end destination is the next start destination
-    Add random amount of 'layover time' at each location, then create new flight and select another end destination
-    Repeat until the departure time exceeds the maximum planned flight
-'''

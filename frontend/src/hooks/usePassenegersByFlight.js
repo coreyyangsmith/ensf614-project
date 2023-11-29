@@ -31,7 +31,7 @@ export const usePassenegersByFlight = (id) => {
 		try {
 			const response = await getRequest('flights/' + id, '');
 			if (response && response.data) {
-				setFlights(response.data);
+				setPassengersByFlight(response.data);
 			}
 		} catch (err) {
 			if (err.response) {

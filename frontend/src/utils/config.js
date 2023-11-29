@@ -1,2 +1,2 @@
 // Flights
-export const NUM_DAYS = 30;
+export const NUM_DAYS = 7;
