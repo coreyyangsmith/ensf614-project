@@ -45,7 +45,8 @@ const toolbarSX = {
 //-------------------------------------------------------//
 
 const NavBar = () => {
-	const { user } = useContext(AuthContext);
+	// const { user } = useContext(AuthContext);
+	let username = localStorage.getItem('username');
 	return (
 		<AppBar
 			position="sticky"
@@ -83,7 +84,7 @@ const NavBar = () => {
 						direction="row"
 						justifyContent="center"
 						alignItems="center"
-					>{user && <div>Hi, {user.username}</div>}</Grid>
+					>{username && <div>Hi, {username}</div>}</Grid>
 					
 					<Grid
 						container

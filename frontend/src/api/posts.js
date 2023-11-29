@@ -71,7 +71,8 @@ export function queryFlights(info) {
 		// store the tokens in local storage
 		localStorage.setItem('access_token', response.data.access);
 		localStorage.setItem('refresh_token', response.data.refresh);
-  
+		localStorage.setItem('username', credentials.username);
+
 		// set the default Authorization header
 		axiosClient.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
   
@@ -79,6 +80,26 @@ export function queryFlights(info) {
 	  })
 	  .catch((error) => {
 		console.error('Error during login:', error);
+		throw error;
+	  });
+  }
+  
+  export function registerUser(credentials) {
+	return axiosClient
+	  .post('/register/', credentials)
+	  .then((response) => {
+		// store the tokens in local storage
+		localStorage.setItem('access_token', response.data.access);
+		localStorage.setItem('refresh_token', response.data.refresh);
+		localStorage.setItem('username', credentials.username);
+		
+		// set the default Authorization header
+		axiosClient.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+  
+		return response.data;
+	  })
+	  .catch((error) => {
+		console.error('Error during registration:', error);
 		throw error;
 	  });
   }
