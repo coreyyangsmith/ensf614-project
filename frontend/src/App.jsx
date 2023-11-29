@@ -31,6 +31,7 @@ import PassengerListPage from './pages/PassengerList/PassengerList.jsx';
 import SeatSelection from './pages/SeatMap/SeatSelection.jsx';
 import PassengerListView from './pages/PassengerList/PassengerListView.jsx';
 import CancelFlightView from './pages/CancelFlight/CancelFlightView.jsx';
+import AdminView from './pages/Admin/AdminView.jsx';
 
 export const AuthContext = React.createContext();
 
@@ -121,7 +122,7 @@ function App() {
 						/>						
 						<Route // admin page
 							path="/admin"
-							element={<Register />}
+							element={<AdminView />}
 						/>
 						<Route // for flight attendant, displayed in nav bar
 							path="/passengerlist"

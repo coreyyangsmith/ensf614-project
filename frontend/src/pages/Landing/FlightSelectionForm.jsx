@@ -47,12 +47,12 @@ import { useForm, Controller } from 'react-hook-form';
 import PassengerButtonGroup from './PassengerButtonGroup';
 import FlightSelectionButton from './FlightSelectionButton';
 import SeatSelectionRadio from './SeatSelectionRadio';
+import { queryFlights } from '../../api/posts';
+import { NUM_DAYS } from "../../utils/config.js"
 
 // Day JS
 import dayjs from 'dayjs';
-import { queryFlights } from '../../api/posts';
 
-import { NUM_DAYS } from "../../utils/config.js"
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
