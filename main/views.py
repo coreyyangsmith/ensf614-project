@@ -42,6 +42,9 @@ import json
 import stripe
 stripe.api_key = 'sk_test_51OC8jgCQlBoyLNaW1dkWgLSmMYQEhVKLokKDp4hAJiUNIoZfPKNwBIFWyCZipJvE8Z21RilFobKzzBVrCohOuNNE00DoiyHW4z'
 
+import mailchimp_marketing as MailchimpMarketing
+from mailchimp_marketing.api_client import ApiClientError
+
 #   VIEWS
 #-------------------------------------------------------#
 def MainView(request):
@@ -185,12 +188,44 @@ def logout(request):
 def process_payment(request):
     data = request.data
     try:
+        # Create a Stripe PaymentIntent
         payment_intent = stripe.PaymentIntent.create(
             amount=int(data['amount']),
             currency='usd',
             payment_method_types=['card'],
         )
 
+        # Assuming payment is successful, send an email
+        # Replace the below details with actual data as needed
+        user_email = data.get('user_email', '')  # Make sure to send this from the frontend
+        flight_details = data.get('flight_details', '')  # Extract flight details from the request
+
+        try:
+            send_confirmation_email(user_email, flight_details)
+        except ApiClientError as e:
+            # Log the error (sending email failed)
+            print(f"Mailchimp error: {str(e)}")
+
         return Response({"clientSecret": payment_intent['client_secret']}, status=status.HTTP_200_OK)
+
     except stripe.error.StripeError as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+def send_confirmation_email(email, flight_details):
+    mailchimp = MailchimpMarketing.Client()
+    mailchimp.set_config({
+        "api_key": "c1a49180918fcbdd0d919c333a2f9fe9-us21",
+        "server": "us21"
+    })
+
+    email_content = f"Flight Details: {flight_details}"
+
+    message = {
+        "from_email": "your-email@example.com",
+        "subject": "Your Flight Details",
+        "text": email_content,
+        "to": [{"email": email}]
+    }
+
+    response = mailchimp.messages.send(message=message)
+    print("Email sent: ", response)
