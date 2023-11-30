@@ -188,22 +188,30 @@ def logout(request):
 def process_payment(request):
     data = request.data
     try:
-        # Create a Stripe PaymentIntent
         payment_intent = stripe.PaymentIntent.create(
             amount=int(data['amount']),
             currency='usd',
             payment_method_types=['card'],
         )
 
-        # Assuming payment is successful, send an email
-        # Replace the below details with actual data as needed
-        user_email = data.get('user_email', '')  # Make sure to send this from the frontend
-        flight_details = data.get('flight_details', '')  # Extract flight details from the request
+        flight_id = data.get('flight_id')
+        seat_id = data.get('seat_id')
+        name = data.get('name')
+        email = data.get('user_email', '')
+
+        flight = Flight.objects.get(id=flight_id)
+        seat = Seat.objects.get(id=seat_id)
+
+        ticket = Ticket.objects.create(
+            flight_ref=flight,
+            seat_ref=seat,
+            name=name,
+            email=email
+        )
 
         try:
-            send_confirmation_email(user_email, flight_details)
+            send_confirmation_email(email, flight_id)
         except ApiClientError as e:
-            # Log the error (sending email failed)
             print(f"Mailchimp error: {str(e)}")
 
         return Response({"clientSecret": payment_intent['client_secret']}, status=status.HTTP_200_OK)
