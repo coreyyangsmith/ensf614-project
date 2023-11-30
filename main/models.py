@@ -2,21 +2,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
 from django.contrib.auth.models import User
-# Create your models here.
+from django.conf import settings
 
 
-# Notes:
-# ID's (PK) are implicitly defined in Django, and so we don't need to include explicit definition
-# Other Datatypes (String, Char, Numbers, etc) are known as "Fields" inside of django models (Fields == Attributes)
-# To defined an attribute visit the documentation for more info
-# https://docs.djangoproject.com/en/4.2/ref/models/fields/
 
-# For Foreign Keys, we can generally use models.ForeignKey, however for more complex relationships (One to Many, Many to Many)
-# We need to create an intermediate "Junction Table" ie a Relationship (like creating the "registration" table from the 607 A3)
-
-USER_TYPE = {}
-
-class Aircraft(models.Model): # Todo
+class Aircraft(models.Model):
 
     class AircraftStatus(models.TextChoices):
         AVAILABLE = "AVL", _('Available')
@@ -42,7 +32,7 @@ class Aircraft(models.Model): # Todo
 class AircraftAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at','updated_at',)
 
-class Seat(models.Model): # Todo
+class Seat(models.Model):
     class SeatType(models.TextChoices):
         ORDINARY = "ORD", _('Ordinary')
         COMFORT = "CMF", _('Comfort')
@@ -65,7 +55,7 @@ class Seat(models.Model): # Todo
 class SeatAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at','updated_at',)
 
-class Destination(models.Model): # Complete
+class Destination(models.Model):
     name = models.CharField(max_length=100)
     airport_code = models.CharField(max_length=3)
     latitude = models.DecimalField(max_digits=10, decimal_places=7) # eg. +/- 123.4567
@@ -80,7 +70,7 @@ class Destination(models.Model): # Complete
 class DestinationAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at','updated_at',)
 
-class Crew(models.Model): # Complete
+class Crew(models.Model): 
     class CrewStatus(models.TextChoices):
         AVAILABLE = "AVL", _('Available')
         REGISTERED = "REG", _('Registered')
@@ -165,8 +155,21 @@ class TicketAdmin(admin.ModelAdmin):
     readonly_fields = ('flight_ref', 'seat_ref', 'created_at','updated_at',)            
 
 
-# Junction Tables
+class Promotion(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, blank=False)
+    code = models.CharField(max_length=20)
+    discount_percentage = models.DecimalField(max_digits=3, decimal_places=2, default=1.00)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)   
+
+    def __str__(self):
+        return str(self.user.id) + "-" + self.code + " (" + str(self.discount_percentage) + ")"
+
+class PromotionAdmin(admin.ModelAdmin):
+    readonly_fields = ('user', 'created_at','updated_at',)    
+
+# Junction Tables
 class FlightCrew(models.Model):
     flight_id = models.ForeignKey(Flight, on_delete=models.CASCADE)
     crew_id = models.ForeignKey(Crew, on_delete=models.CASCADE)

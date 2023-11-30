@@ -4,6 +4,7 @@ django.setup()
 from django.contrib.auth.models import User
 from faker import Faker
 from scripts.seeding.config import USERS_TO_GENERATE
+from main.models import Promotion
 
 '''
 load_users.py
@@ -33,6 +34,14 @@ def run():
                                             is_superuser=True)[0]
     test_user.set_password(test_password);
     test_user.save()
+
+
+    test_promo = Promotion.objects.get_or_create(
+        user = test_user,
+        code = "TEST",
+    )
+
+
 
     # Generate Random (blank) Users
     faker = Faker()
