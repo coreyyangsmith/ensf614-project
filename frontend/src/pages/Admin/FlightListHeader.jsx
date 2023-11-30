@@ -25,6 +25,7 @@ const FlightListHeader = () => {
 			direction="row"
 			container
 			sx={{width: "100%"}}
+			spacing={0.5}
 		>
 			<Grid
 				item

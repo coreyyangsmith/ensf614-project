@@ -53,6 +53,7 @@ const ViewFlightsByDate = () => {
 				container
 				key={flight.id}
 				sx={{ width: '100%' }}
+				spacing={0.5}
 			>
 				<Grid
 					item

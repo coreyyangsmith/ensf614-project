@@ -113,6 +113,29 @@ def crews_by_flight(request, flight_id):
 
         return Response(serializer.data)
 
+
+@api_view(['GET', 'DELETE'])
+def tickets_detail(request, payload):
+    if request.method == "GET":
+        try:
+            ticket = Ticket.objects.filter(id=payload)
+            serializer = TicketSerializer(ticket, context={'request': request}, many=True)
+        except Ticket.DoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data)
+
+    elif request.method == 'DELETE':
+        ticket_id = payload
+        try:
+            ticket = Ticket.objects.filter(id=ticket_id)
+            serializer = TicketSerializer(ticket, context={'request': request}, many=True)
+            ticket.delete()
+        except Ticket.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        return Response(serializer.data)
+
+
 @api_view(['GET'])
 def passengers_by_flight(request, flight_id):
     if request.method == 'GET':
