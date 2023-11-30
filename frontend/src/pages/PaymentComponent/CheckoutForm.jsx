@@ -79,7 +79,7 @@ const CheckoutForm = () => {
                 paymentMethodId: paymentMethod.id,
             };
 
-            axios.post('http://localhost:8000/process-payment/', paymentData)
+            axios.post('127.0.0.1:8000/api/process-payment/', paymentData)
                 .then(response => {
                     console.log('Payment processed: ', response.data);
                     handleSubmit;
