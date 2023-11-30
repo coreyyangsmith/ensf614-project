@@ -40,7 +40,6 @@ export const useSeatsAvailable = (seat_id, flight_id) => {
 					console.log("seat taken")
 					setSeatAvailable(false)
 				}
-
 			})
 
 

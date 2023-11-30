@@ -62,7 +62,7 @@ const Seat = (props) => {
 	function handleChange() {
 		props.setSelectedSeat(props.seat);
 	}
-	if (useSeatsAvailable(props.seat.id, state.flight.id).seatAvailable) {
+	if (props.seat.available) {
 		return (
 			<Button
 				size="small"

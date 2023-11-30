@@ -1,5 +1,5 @@
 //-------------------------------------------------------//
-//  File Name: useSeatsByAircraft.js
+//  File Name: useTicketsByFlight.js
 //  Description: Data Fetching Hook to obtain "Seats" model based on Selected Aircraft
 //
 //  Requirements:
@@ -9,7 +9,7 @@
 //      - List of Aircrafts
 //
 // Created By: Corey Yang-Smith
-// Date: November 23rd, 2023
+// Date: November 30th, 2023
 //-------------------------------------------------------//
 
 //  IMPORTS
@@ -24,25 +24,15 @@ import { getRequest } from '../api/posts';
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
-export const useSeatsByAircraft = (id) => {
-	const [seatsByAircraft, setSeatsByAircraft] = useState([]);
-	var mySeats = [];
-	var selectedAircraft = [];
+export const useTicketsByFlight = (id) => {
+	const [ticketsByFlight, setTicketsByFlight] = useState([]);
 
 	const fetchData = async () => {
 		try {
-			const aircrafts = (await getRequest('aircrafts/', '')).data;
-
-			aircrafts.filter((el) => {
-				if (el.id == id) selectedAircraft.push(el)
-			});
-
-			const seats = await (await getRequest('seats/', '')).data;
-			seats.filter((el) => {
-				if (el.aircraft_ref == selectedAircraft[0].id) mySeats.push(el);
-			});
-
-			setSeatsByAircraft(mySeats);
+			const response = await getRequest('ticketsbyflight/' + id, '');
+			if (response && response.data) {
+				setTicketsByFlight(response.data);
+			}
 		} catch (err) {
 			if (err.response) {
 				//Not in 200 Response Range
@@ -59,5 +49,5 @@ export const useSeatsByAircraft = (id) => {
 		fetchData();
 	}, []);
 
-	return { seatsByAircraft, setSeatsByAircraft };
+	return { ticketsByFlight, setTicketsByFlight };
 };

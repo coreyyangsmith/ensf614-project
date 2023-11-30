@@ -148,6 +148,34 @@ def passengers_by_flight(request, flight_id):
         return Response(serializer.data)
     
 @api_view(['GET'])
+def ticketsbyflight_list(request, payload):
+    if request.method == 'GET':
+        flight_id = payload
+        try:
+            flight = Flight.objects.filter(pk=payload)[0]
+            data = Ticket.objects.filter(flight_ref=flight)
+            serializer = TicketSerializer(data, context={'request': request}, many=True)
+        except Ticket.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        return Response(serializer.data)
+    
+@api_view(['GET'])
+def aircraft_seat_list(request, payload):
+    if request.method == 'GET':
+        aircraft_id = payload
+        try:
+            aircraft = Aircraft.objects.filter(pk=aircraft_id)[0]
+            data = Seat.objects.filter(aircraft_ref=aircraft)
+            serializer = SeatSerializer(data, context={'request': request}, many=True)
+        except Ticket.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        return Response(serializer.data)
+
+
+    
+@api_view(['GET'])
 def query_flights(request):
     print("Initial Query")
     if request.method == 'GET':

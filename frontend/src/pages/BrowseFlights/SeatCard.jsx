@@ -6,20 +6,19 @@ import {
 	Stack,
 	Typography,
 } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useSeatsByAircraft } from '../../hooks/useSeatsByAircraft.js';
-import { getPassengersByFlight } from '../../api/posts';
 
 import NavigatinButtonFlight from '../../components/NavigationButtonFlight.jsx';
-
+import { useTicketsByFlight } from '../../hooks/useTicketsByFlight.js';
 
 const SeatCard = (props) => {
 	const { seatsByAircraft } = useSeatsByAircraft(props.flight.aircraft_ref.id);
+	const { ticketsByFlight } = useTicketsByFlight(props.flight.id);
+	const totalSeats = useRef(0);
+	const seatsTaken = useRef(0);
 
-	const tickets = useRef([]);
-	const seatsAvailable = useRef(0);
-	const [seatsTaken, setSeatsTaken] = useState(0);
 
 	// Generic helper function that can be used for the three operations:
 	function operation(list1, list2, isUnion) {
@@ -45,38 +44,11 @@ const SeatCard = (props) => {
 	}
 
 	useEffect(() => {
-		var seatsAvailableList = [];
-		var seatsTakenList = [];
-
-		var takenSeats = [];
-
-		// Get Tickets By Flight
-		if (props.flight) {
-			getPassengersByFlight(props.flight.id)
-				.then((data) => {
-					tickets.current = data;
-				})
-				.catch((error) => {
-					console.error('Error:', error);
-				});
-		} else {
-			tickets.current = []
+		if (ticketsByFlight && seatsByAircraft) {
+			totalSeats.current = seatsByAircraft.length;
+			seatsTaken.current = ticketsByFlight.length;
 		}
-
-		// Find Seats Taken on Flight
-		tickets.current.forEach((ticket) => {
-			takenSeats.push(ticket.seat_ref);
-		});
-
-		let both = inBoth(takenSeats, seatsByAircraft, true);
-
-		const sAvailable = seatsByAircraft.length;
-		const sTaken = both.length;
-
-		seatsAvailable.current = sAvailable;
-		setSeatsTaken(sTaken);
-
-	}, [tickets.current]);
+	}, [ticketsByFlight, seatsByAircraft]);
 
 	return (
 		<Card sx={{ width: '100%', background: '#121212', borderRadius: '15px' }}>
@@ -92,7 +64,7 @@ const SeatCard = (props) => {
 			>
 				<Typography>Seats Available</Typography>
 				<Typography variant="h4">
-					{seatsAvailable.current}/{seatsTaken + seatsAvailable.current}
+					{seatsTaken.current}/{totalSeats.current}
 				</Typography>
 				<NavigatinButtonFlight
 					label="Find Seat"

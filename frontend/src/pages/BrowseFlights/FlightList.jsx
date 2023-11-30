@@ -13,12 +13,12 @@ const FlightList = (props) => {
 
 	const displayFlights = flightList.map((flight, index) => {
 		return (
-			<>
 				<Grid
 					container
 					sx={{ width: '100%', }}
 					direction="row"
 					spacing={1}
+					key={flight.id}
 				>
 					<Grid
 						container
@@ -54,7 +54,6 @@ const FlightList = (props) => {
 						xs={1}
 					/>
 				</Grid>
-			</>
 		);
 	});
 

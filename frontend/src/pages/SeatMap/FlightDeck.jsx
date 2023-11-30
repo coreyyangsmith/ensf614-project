@@ -26,6 +26,8 @@ import { useSeats } from '../../hooks/useSeats.js';
 import { Grid, Paper, Typography } from '@mui/material';
 import Aisle from './Aisle.jsx';
 import { useLocation } from 'react-router-dom';
+import { useTicketsByFlight } from '../../hooks/useTicketsByFlight.js';
+import { useSeatsByAircraft } from '../../hooks/useSeatsByAircraft.js';
 
 // Styles
 const frostedGlassSX = {
@@ -46,24 +48,23 @@ const FlightDeck = (props) => {
 
 	// Given Plane, get needed properties
 	// Data Preprocessing
-
-	const myAircraft = state.flight.aircraft_ref
-	const { seats } = useSeats();
+	const myAircraft = state.flight.aircraft_ref;
+	const { seatsByAircraft } = useSeatsByAircraft(state.flight.aircraft_ref.id);
+	const { ticketsByFlight } = useTicketsByFlight(state.flight.id);
 	const mySeats = [];
 
-	// Filter Master Seat list to only seats on selected aircraft
-	seats.filter((el) => {
-		if (el.aircraft_ref == myAircraft.id) mySeats.push(el);
-	});
+	console.log(seatsByAircraft);
+
+	// Get Max Rows & Columns
 	var maxCols = 0;
 	var maxRows = 0;
-
-	// create array of seats
-	mySeats.forEach((seat) => {
+	seatsByAircraft.forEach((seat) => {
 		if (seat.row_position + 1 > maxRows) maxRows = seat.row_position + 1;
 		if (seat.column_position + 1 > maxCols) maxCols = seat.column_position + 1;
 	});
 
+	console.log('max rows: ', maxRows);
+	console.log('max cols: ', maxCols);
 	if (myAircraft != undefined) var columnLayout = myAircraft.seat_columns;
 
 	/**
@@ -89,7 +90,6 @@ const FlightDeck = (props) => {
 
 	/**
 	 * generateSeatMap
-	 * @param {*} mySeats Objects: Array of all seats assigned to the selected airCraft
 	 * @param {*} maxRows Int: max number of rows to generate
 	 * @param {*} columnLayout String: airplane column layout defined as eg. "3-3-3"
 	 * @returns 2-D Array of Seats, populated with "1" for Seat, and "0" for Aisle
@@ -138,12 +138,12 @@ const FlightDeck = (props) => {
 		return seatMap;
 	}
 
-    /**
-     * addAislesToSeatMap
-     * @param {*} seatMap 2D Array: Mapped Aircraft Seats
-     * @param {*} columnLayout String:
-     * @returns 2D Array: Contains Seat Objects and "0" (Placeholders) for Aisle
-     */
+	/**
+	 * addAislesToSeatMap
+	 * @param {*} seatMap 2D Array: Mapped Aircraft Seats
+	 * @param {*} columnLayout String:
+	 * @returns 2D Array: Contains Seat Objects and "0" (Placeholders) for Aisle
+	 */
 	function addAislesToSeatMap(seatMap, columnLayout) {
 		const seatLayout = columnLayout.split('-');
 
@@ -169,19 +169,54 @@ const FlightDeck = (props) => {
 		return newSeatMap;
 	}
 
+	/**
+	 * getSeatAvailability
+	 * @param {*} seatMap
+	 * @param {*} ticketsByFlight
+	 * @returns SeatMap: Returns Seatmap with additional attribute 'available'
+	 */
+	function getSeatAvailability(seatMap, ticketsByFlight) {
+		seatMap.forEach((row) => {
+			row.forEach((seat) => {
+				if (typeof seat === 'object') {
+					seat.available = true
+					ticketsByFlight.forEach((ticket) => {
+						if (seat.id == ticket.seat_ref.id) {
+							seat.available = false;
+							return;
+						}
+					})
+				}
+			});
+		});
+		return seatMap;
+	}
+
 	// If Valid Column Layout on Airplane, pre-process data
 	var seatMap = [];
 	if (columnLayout != undefined) {
 		seatMap = generateSeatMap(maxRows, columnLayout);
-		seatMap = mapSeatsToSeatMap(mySeats, seatMap);
+		seatMap = mapSeatsToSeatMap(seatsByAircraft, seatMap);
 		seatMap = addAislesToSeatMap(seatMap, columnLayout);
+		console.log('seatMap');
+		console.log(seatMap);
+		seatMap = getSeatAvailability(seatMap, ticketsByFlight);
+		console.log('seatMap with Tickets');
+		console.log(seatMap);
 	}
 
 	const populateSeats = seatMap.map((rows) => {
 		return (
 			<Grid container>
 				{rows.map((seat) => {
-					if (seat != 0) return <Seat flight={state.flight} seat={seat} setSelectedSeat={props.setSelectedSeat}/>;
+					if (seat != 0)
+						return (
+							<Seat
+								flight={state.flight}
+								seat={seat}
+								setSelectedSeat={props.setSelectedSeat}
+							/>
+						);
 					if (seat == 0) return <Aisle />;
 				})}
 			</Grid>
@@ -189,11 +224,7 @@ const FlightDeck = (props) => {
 	});
 
 	if (seatMap.length > 0) {
-		return (
-			<Paper sx={{ frostedGlassSX }}>
-                {populateSeats}
-			</Paper>
-		);
+		return <Paper sx={{ frostedGlassSX }}>{populateSeats}</Paper>;
 	} else {
 		return <p>loading...</p>;
 	}
