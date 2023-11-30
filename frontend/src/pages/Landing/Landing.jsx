@@ -39,6 +39,7 @@ import FlightList from '../BrowseFlights/FlightList';
 export const Context = React.createContext();
 
 const Landing = () => {
+	
 	const { destinations } = useDestinations();
 	const { user } = useContext(AuthContext); // Access user from AuthContext
 

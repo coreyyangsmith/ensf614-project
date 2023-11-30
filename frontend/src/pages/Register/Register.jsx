@@ -3,9 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
@@ -18,7 +15,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { registerUser } from '../../api/posts';
 import { useState, useContext } from 'react'; // Add useContext here
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 
 
@@ -71,6 +68,21 @@ export default function SignUp() {
         justifyContent: 'center', // This will vertically center the login form
       }}
     >
+      <Box
+            sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                mt: 3,
+                ml: 3,
+            }}
+        >
+            <Button variant="outlined" sx={{ fontSize: '16.5px' }}>
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                    <Typography color="primary">Return</Typography>
+                </Link>
+            </Button>
+        </Box>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -182,12 +194,6 @@ export default function SignUp() {
                   }}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
             </Grid>
             <Button
               type="submit"

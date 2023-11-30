@@ -26,12 +26,13 @@ import { useContext } from 'react';
 import { AuthContext } from '../App';
 // React Router Import
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // MUI Import
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Grid } from '@mui/material/';
 import NavigationButton from './NavigationButton';
-
+import { logoutUser } from '../api/posts';
 
 //  STYLES
 //-------------------------------------------------------//
@@ -45,12 +46,24 @@ const toolbarSX = {
 //-------------------------------------------------------//
 
 const NavBar = () => {
-	// const { user } = useContext(AuthContext);
-	let username = localStorage.getItem('username');
+	const { user, setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        console.log('Handle Logout function is being called');
+        try {
+            await logoutUser();
+            setUser(null); // clear user from context
+            navigate('/');
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
+	// let username = localStorage.getItem('username');
 	return (
 		<AppBar
 			position="sticky"
-			elevation={0}
+			elevation={1}
 			style={{ background: "black" }}
 			sx={{ width: "100vw" }}
 		>
@@ -66,7 +79,7 @@ const NavBar = () => {
 					<Grid
 						container
 						item
-						xs={5}
+						xs={2}
 						direction="row"
 						justifyContent="flex-start"
 						alignItems="center"
@@ -80,16 +93,17 @@ const NavBar = () => {
 					<Grid
 						container
 						item
-						xs={2}
+						xs={4}
 						direction="row"
 						justifyContent="center"
 						alignItems="center"
-					>{username && <div>Hi, {username}</div>}</Grid>
+					>{user ? <div>Welcome, {user.username}!</div> : null}
+					</Grid>
 					
 					<Grid
 						container
 						item
-						xs={5}
+						xs={6}
 						direction="row"
 						justifyContent="flex-end"
 						alignItems="center"
@@ -97,8 +111,24 @@ const NavBar = () => {
 						<NavigationButton label="Admin" path="/admin" color="primary" />
 						<NavigationButton label="Passenger List" path="/passengerlist" color="primary" />
 						<NavigationButton label="Cancel Flight" path="/cancel" color="primary" />
-						<NavigationButton label="Login" path="/login" color="primary" />
-						<NavigationButton label="Signup" path="/register" color="c2a" />
+						{user ? (
+							<Button 
+								variant="contained" 
+								color="c2a" 
+								size="small"
+								sx={{ marginRight: "16px" }}
+								onClick={handleLogout}
+							>
+								<Link to="/" style={{ textDecoration: "none" }}>
+									<Typography variant='landing_button'>Logout</Typography>
+								</Link>
+							</Button>
+						) : (
+							<>
+								<NavigationButton label="Login" path="/login" color="primary" />
+								<NavigationButton label="Signup" path="/register" color="c2a" />
+							</>
+						)}
 
 					</Grid>
 				</Grid>

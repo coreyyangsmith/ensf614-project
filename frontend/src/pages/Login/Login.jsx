@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
@@ -21,7 +20,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { loginUser } from '../../api/posts';
 import { useState, useContext } from 'react'; // Add useContext here
 import { AuthContext } from '../../App';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -64,6 +63,21 @@ export default function Login() {
         justifyContent: 'center', // This will vertically center the login form
       }}
     >
+      <Box
+            sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                mt: 3,
+                ml: 3,
+            }}
+        >
+            <Button variant="outlined" sx={{ fontSize: '16.5px' }}>
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                    <Typography color="primary">Return</Typography>
+                </Link>
+            </Button>
+        </Box>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

@@ -114,6 +114,28 @@ export function registerUser(credentials) {
 		});
 }
 
+export function logoutUser() {
+	console.log('Logout User function is being called');
+    const refreshToken = localStorage.getItem('refresh_token');
+    return axiosClient
+        .post('/logout/', { refresh: refreshToken })
+        .then((response) => {
+            // remove the tokens from local storage
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('username');
+
+            // remove the default Authorization header
+            delete axiosClient.defaults.headers['Authorization'];
+
+            return response.data;
+        })
+        .catch((error) => {
+            console.error('Error during logout:', error);
+            throw error;
+        });
+}
+
 export function saveStripeInfo(data = {}) {
 	return axiosClient
 		.post('/payments/save-stripe-info/', data)
