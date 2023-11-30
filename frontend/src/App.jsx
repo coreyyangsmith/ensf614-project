@@ -32,6 +32,8 @@ import SeatSelection from './pages/SeatMap/SeatSelection.jsx';
 import PassengerListView from './pages/PassengerList/PassengerListView.jsx';
 import CancelFlightView from './pages/CancelFlight/CancelFlightView.jsx';
 import AdminView from './pages/Admin/AdminView.jsx';
+import PaymentSuccess from './pages/PaymentComponent/PaymentSucess';
+
 
 export const AuthContext = React.createContext();
 
@@ -97,14 +99,14 @@ const darkTheme = createTheme({
 			fontWeight: 500,
 			fontFamily: 'Plus Jakarta Sans',
 			color: '#FFFFFF',
-		},		
+		},
 		table_content: {
 			lineHeight: 1.6,
 			fontSize: 12,
 			fontWeight: 300,
 			fontFamily: 'Plus Jakarta Sans',
 			color: '#000000',
-		},			
+		},
 	},
 });
 
@@ -133,7 +135,7 @@ function App() {
 						<Route // signup page, displayed in navbar
 							path="/cancel"
 							element={<CancelFlightView />}
-						/>						
+						/>
 						<Route // admin page
 							path="/admin"
 							element={<AdminView />}
@@ -155,6 +157,10 @@ function App() {
 						<Route // for payment, routed after seat selection
 							path="/payment"
 							element={<PaymentPage />}
+						/>
+						<Route
+							path="/payment-success"
+							element={<PaymentSuccess />}
 						/>
 					</Routes>
 				</ThemeProvider>

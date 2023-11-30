@@ -64,8 +64,8 @@ export function getCrewsByFlight(flightId) {
 export function queryFlights(info) {
 	return axiosClient
 		.get(`/queryflights`, {
-			params: {info: info},
-            data: {},
+			params: { info: info },
+			data: {},
 		})
 		.then((response) => response.data)
 		.catch((error) => {
@@ -74,43 +74,53 @@ export function queryFlights(info) {
 		});
 }
 
-  export function loginUser(credentials) {
+export function loginUser(credentials) {
 	return axiosClient
-	  .post('/login/', credentials)
-	  .then((response) => {
-		// store the tokens in local storage
-		localStorage.setItem('access_token', response.data.access);
-		localStorage.setItem('refresh_token', response.data.refresh);
-		localStorage.setItem('username', credentials.username);
+		.post('/login/', credentials)
+		.then((response) => {
+			// store the tokens in local storage
+			localStorage.setItem('access_token', response.data.access);
+			localStorage.setItem('refresh_token', response.data.refresh);
+			localStorage.setItem('username', credentials.username);
 
-		// set the default Authorization header
-		axiosClient.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
-  
-		return response.data;
-	  })
-	  .catch((error) => {
-		console.error('Error during login:', error);
-		throw error;
-	  });
-  }
-  
-  export function registerUser(credentials) {
+			// set the default Authorization header
+			axiosClient.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+
+			return response.data;
+		})
+		.catch((error) => {
+			console.error('Error during login:', error);
+			throw error;
+		});
+}
+
+export function registerUser(credentials) {
 	return axiosClient
-	  .post('/register/', credentials)
-	  .then((response) => {
-		// store the tokens in local storage
-		localStorage.setItem('access_token', response.data.access);
-		localStorage.setItem('refresh_token', response.data.refresh);
-		localStorage.setItem('username', credentials.username);
-		
-		// set the default Authorization header
-		axiosClient.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
-  
-		return response.data;
-	  })
-	  .catch((error) => {
-		console.error('Error during registration:', error);
-		throw error;
-	  });
-  }
-  
+		.post('/register/', credentials)
+		.then((response) => {
+			// store the tokens in local storage
+			localStorage.setItem('access_token', response.data.access);
+			localStorage.setItem('refresh_token', response.data.refresh);
+			localStorage.setItem('username', credentials.username);
+
+			// set the default Authorization header
+			axiosClient.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+
+			return response.data;
+		})
+		.catch((error) => {
+			console.error('Error during registration:', error);
+			throw error;
+		});
+}
+
+export function saveStripeInfo(data = {}) {
+	return axiosClient
+		.post('/payments/save-stripe-info/', data)
+		.then((response) => response.data)
+		.catch((error) => {
+			console.error('Error saving Stripe info:', error);
+			throw error;
+		});
+}
+

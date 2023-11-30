@@ -82,11 +82,12 @@ const CheckoutForm = () => {
             axios.post('http://localhost:8000/process-payment/', paymentData)
                 .then(response => {
                     console.log('Payment processed: ', response.data);
+                    handleSubmit;
                     if (response.status === 200) {
                         setIsPaymentSuccessful(true);
                         setPaymentError('');
+                        navigate('/payment-success');
                     }
-
                 })
                 .catch(error => {
                     console.error('Error processing payment: ', error);
