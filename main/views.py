@@ -280,7 +280,7 @@ def send_confirmation_email(email, flight_details):
     email_content = f"Flight Details: {flight_details}"
 
     message = {
-        "from_email": "your-email@example.com",
+        "from_email": "yajur.vashisht@ucalgary.ca",
         "subject": "Your Flight Details",
         "text": email_content,
         "to": [{"email": email}]
