@@ -28,6 +28,8 @@ import SubtotalLineItem from './SubtotalLineItem';
 import SubtotalCalculation from './SubtotalCalculation';
 import TaxCalculation from './TaxCalculation';
 import TitleLineItem from './TitleLineItem';
+import DiscountCalculation from './DiscountCalculation';
+import DiscountTotalCalculation from './DiscountTotalCalculation';
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
@@ -35,6 +37,7 @@ const SummarySubtotal = (props) => {
 	let { state } = useLocation();
 
 	const [subtotal, setSubtotal] = useState(0);
+	const [discountedTotal, setDiscountedTotal] = useState(0);
 	const [total, setTotal] = useState(0);
 
 	/**
@@ -63,7 +66,14 @@ const SummarySubtotal = (props) => {
 	const navigate = useNavigate();
 
 	const handlePayment = () => {
-		navigate('/payment', { state: { flight: state.flight, seat: props.seat, insurance: props.insurance, total: total } });
+		navigate('/payment', {
+			state: {
+				flight: state.flight,
+				seat: props.seat,
+				insurance: props.insurance,
+				total: total,
+			},
+		});
 	};
 
 	return (
@@ -106,7 +116,6 @@ const SummarySubtotal = (props) => {
 						)}
 
 						<Divider />
-						<p>{props.discountAmount}</p>
 
 						<SubtotalCalculation
 							flightCost={getPriceFromFlight(state.flight)}
@@ -115,9 +124,21 @@ const SummarySubtotal = (props) => {
 							setSubtotal={setSubtotal}
 						/>
 
-
+						{props.discount && (
+							<DiscountCalculation discountAmount={props.discountAmount} />
+						)}
+						{props.discount && (
+							<DiscountTotalCalculation
+								subtotal={subtotal}
+								discountAmount={props.discountAmount}
+								discountedTotal={discountedTotal}
+								setDiscountedTotal={setDiscountedTotal}
+							/>
+						)}
 						<TaxCalculation
 							subtotal={subtotal}
+							discountedTotal={discountedTotal}
+							discount={props.discount}
 							setTotal={setTotal}
 						/>
 						<Divider />
@@ -134,13 +155,18 @@ const SummarySubtotal = (props) => {
 						</Stack>
 					</Stack>
 				</Grid>
-				<Button onClick={handlePayment} sx={{
-					fontSize: 'larger',
-					padding: '10px 20px',
-					border: '2px solid',
-					borderColor: 'primary.main',
-					borderRadius: '4px',
-				}}>Proceed to Payment</Button>
+				<Button
+					onClick={handlePayment}
+					sx={{
+						fontSize: 'larger',
+						padding: '10px 20px',
+						border: '2px solid',
+						borderColor: 'primary.main',
+						borderRadius: '4px',
+					}}
+				>
+					Proceed to Payment
+				</Button>
 			</Grid>
 		</Paper>
 	);

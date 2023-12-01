@@ -42,6 +42,7 @@ const BoxSX = {
 //-------------------------------------------------------//
 const SeatSelectionForm = (props) => {
 	const [insurance, setInsurance] = useState(false);
+
 	const [discount, setDiscount] = useState(false);
 	const [discountAmount, setDiscountAmount] = useState(0);
 
