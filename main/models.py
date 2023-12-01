@@ -154,7 +154,7 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 class Promotion(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, blank=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, blank=False, null=True)
     code = models.CharField(max_length=20)
     discount_percentage = models.DecimalField(max_digits=3, decimal_places=2, default=1.00)
 
@@ -162,7 +162,7 @@ class Promotion(models.Model):
     updated_at = models.DateTimeField(auto_now=True)   
 
     def __str__(self):
-        return str(self.user.id) + "-" + self.code + " (" + str(self.discount_percentage) + ")"
+        return self.code + " (" + str(self.discount_percentage) + ")"
 
 class PromotionAdmin(admin.ModelAdmin):
     readonly_fields = ('user', 'created_at','updated_at',)    

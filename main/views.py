@@ -56,6 +56,10 @@ import os
 load_dotenv()
 APP_PASSWORD = os.getenv('APP_PASSWORD')
 
+# Random Code
+import random
+import string
+
 
 #   VIEWS
 #-------------------------------------------------------#
@@ -148,6 +152,26 @@ def tickets_detail(request, payload):
 
         return Response(serializer.data)
 
+@api_view(['GET', 'DELETE'])
+def promos_detail(request, payload):
+    if request.method == "GET":
+        try:
+            promo = Promotion.objects.filter(code=payload)
+            serializer = PromotionSerializer(promo, context={'request': request}, many=True)
+        except Promotion.DoesNotExist: 
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data)
+
+    elif request.method == 'DELETE':
+        promo_id = payload
+        try:
+            promo = Promotion.objects.filter(code=promo_id)
+            serializer = PromotionSerializer(promo, context={'request': request}, many=True)
+            promo.delete()
+        except Promotion.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def passengers_by_flight(request, flight_id):
@@ -218,6 +242,13 @@ def register(request):
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
+
+        # Create Promo for New User
+        promo = Promotion.objects.get_or_create(
+            user = user,
+            code = generate_random_promo_code()
+        )
+
         refresh = RefreshToken.for_user(user)
         res = {
             'refresh': str(refresh),
@@ -407,6 +438,12 @@ def send_transaction_email(user_info, flight_details, seat_details, ticket_info,
             print("Transaction Confirmation Email - Successfully Sent")
     except Exception as e:
         print("Error: ", e)
+
+def generate_random_promo_code(length=20):
+    characters = string.ascii_letters + string.digits
+    random_string = ''.join(random.choice(characters) for _ in range(length))
+    return random_string
+
 
 def send_confirmation_email(user_info, flight_details, seat_details, ticket_info):
     try:

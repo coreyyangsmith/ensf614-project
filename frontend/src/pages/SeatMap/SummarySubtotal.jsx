@@ -106,6 +106,7 @@ const SummarySubtotal = (props) => {
 						)}
 
 						<Divider />
+						<p>{props.discountAmount}</p>
 
 						<SubtotalCalculation
 							flightCost={getPriceFromFlight(state.flight)}
@@ -113,6 +114,8 @@ const SummarySubtotal = (props) => {
 							insurance={props.insurance}
 							setSubtotal={setSubtotal}
 						/>
+
+
 						<TaxCalculation
 							subtotal={subtotal}
 							setTotal={setTotal}
