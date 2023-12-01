@@ -42,8 +42,20 @@ import json
 import stripe
 stripe.api_key = 'sk_test_51OC8jgCQlBoyLNaW1dkWgLSmMYQEhVKLokKDp4hAJiUNIoZfPKNwBIFWyCZipJvE8Z21RilFobKzzBVrCohOuNNE00DoiyHW4z'
 
-import mailchimp_marketing as MailchimpMarketing
+import mailchimp_marketing as MailchimpTransactional
 from mailchimp_marketing.api_client import ApiClientError
+
+# Sending Emails
+from email.message import EmailMessage
+import ssl
+import smtplib
+
+# Load Environment Variables
+from dotenv import load_dotenv
+import os
+load_dotenv()
+APP_PASSWORD = os.getenv('APP_PASSWORD')
+
 
 #   VIEWS
 #-------------------------------------------------------#
@@ -129,6 +141,7 @@ def tickets_detail(request, payload):
         try:
             ticket = Ticket.objects.filter(id=ticket_id)
             serializer = TicketSerializer(ticket, context={'request': request}, many=True)
+            send_cancellation_email(ticket_info=ticket)
             ticket.delete()
         except Ticket.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -238,17 +251,25 @@ def logout(request):
 @api_view(['POST'])
 def process_payment(request):
     data = request.data
+    print("#---------#")
+    print(data)
+    print("#---------#")
+    print(data['total'])
+    print("#---------#")
     try:
         payment_intent = stripe.PaymentIntent.create(
-            amount=int(data['amount']),
+            amount=int(float(data['total']) * 100),
             currency='usd',
             payment_method_types=['card'],
         )
+        flight_details = data['flightDetails']
+        seat_details = data['seatDetails']
+        user_info = data['userInfo']
 
-        flight_id = data.get('flight_id')
-        seat_id = data.get('seat_id')
-        name = data.get('name')
-        email = data.get('user_email', '')
+        flight_id = data['flightDetails']['id']
+        seat_id = data['seatDetails']['id']
+        name = data['userInfo']['name']
+        email = data['userInfo']['email']
 
         flight = Flight.objects.get(id=flight_id)
         seat = Seat.objects.get(id=seat_id)
@@ -261,7 +282,8 @@ def process_payment(request):
         )
 
         try:
-            send_confirmation_email(email, flight_id)
+            send_confirmation_email(user_info=user_info, flight_details=flight_details, seat_details=seat_details, ticket_info=ticket)
+            send_transaction_email(user_info=user_info, flight_details=flight_details, seat_details=seat_details, ticket_info=ticket, total=data['total'])
         except ApiClientError as e:
             print(f"Mailchimp error: {str(e)}")
 
@@ -269,22 +291,225 @@ def process_payment(request):
 
     except stripe.error.StripeError as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
 
-def send_confirmation_email(email, flight_details):
-    mailchimp = MailchimpMarketing.Client()
-    mailchimp.set_config({
-        "api_key": "c1a49180918fcbdd0d919c333a2f9fe9-us21",
-        "server": "us21"
-    })
+def process_seat_location(row, column):
+    column = chr(ord('@')+column)
+    string = str(row) + column
+    return string
 
-    email_content = f"Flight Details: {flight_details}"
 
-    message = {
-        "from_email": "yajur.vashisht@ucalgary.ca",
-        "subject": "Your Flight Details",
-        "text": email_content,
-        "to": [{"email": email}]
-    }
+def process_datetime_to_time(datetime):
+    string = str(datetime)
+    date = string[0:10]
+    time = string[-8:]
+    value = date + " @ " + time
+    return value
 
-    response = mailchimp.messages.send(message=message)
-    print("Email sent: ", response)
+
+def send_cancellation_email(ticket_info):
+    print("----- ticket info -----")
+    ticket_info = ticket_info[0]
+    print("----- ticket info -----")
+    # Ticket Info
+    field_object = ticket_info._meta.get_field('id')
+    t_id = field_object.value_from_object(ticket_info)  
+
+    field_object = ticket_info._meta.get_field('name')
+    u_name = field_object.value_from_object(ticket_info)  
+
+    field_object = ticket_info._meta.get_field('email')
+    u_email = field_object.value_from_object(ticket_info)          
+
+    field_object = ticket_info._meta.get_field('flight_ref')  
+    f_id = field_object.value_from_object(ticket_info)
+
+    try:
+        email_sender = 'yangsmith.corey@gmail.com'
+        email_password = APP_PASSWORD
+        email_receiver = u_email
+
+
+
+        subject = "Flight " + str(f_id) + " Cancellation"
+        body = f'''
+            ---- CANCELLATION CONFIRMATION ----
+            Ticket ID: {t_id}
+            Flight ID: {f_id}
+
+            ----------------------------------
+            We will not give you a refund!
+            FLIGHT.LY TEAM
+            '''
+
+        em = EmailMessage()
+        em['From'] = email_sender
+        em['To'] = email_receiver
+        em['Subject'] = subject
+        em.set_content(body)
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+            smtp.login(email_sender, email_password)
+            smtp.sendmail(email_sender, email_receiver, em.as_string())
+            print("Cancellation Email - Successfully Sent")
+    except Exception as e:
+        print("Error: ", e)    
+
+    pass
+
+
+def send_transaction_email(user_info, flight_details, seat_details, ticket_info, total):
+    try:
+        email_sender = 'yangsmith.corey@gmail.com'
+        email_password = APP_PASSWORD
+        email_receiver = user_info['email']
+
+        # Transaction Info
+        t_total = "$" + str(total)
+
+        # Flight Info
+        f_id = str(flight_details['id'])        
+
+        # Ticket Info
+        field_object = ticket_info._meta.get_field('id')
+        t_id = field_object.value_from_object(ticket_info)
+
+        # Seat Info
+        s_id = str(seat_details['id'])
+
+        subject = "Flight " + f_id + " Confirmation | " + "PAID"
+        body = f'''
+            ---- TRANSACTION CONFIRMATION ----
+            Ticket ID: {t_id}
+            Flight ID: {f_id}
+            Seat ID: {s_id}
+
+            Total Amount Paid:
+            {t_total}
+
+            ----------------------------------
+
+            Enjoy your flight!
+            FLIGHT.LY TEAM
+            '''
+        
+        em = EmailMessage()
+        em['From'] = email_sender
+        em['To'] = email_receiver
+        em['Subject'] = subject
+        em.set_content(body)
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+            smtp.login(email_sender, email_password)
+            smtp.sendmail(email_sender, email_receiver, em.as_string())
+            print("Transaction Confirmation Email - Successfully Sent")
+    except Exception as e:
+        print("Error: ", e)
+
+def send_confirmation_email(user_info, flight_details, seat_details, ticket_info):
+    try:
+        email_sender = 'yangsmith.corey@gmail.com'
+        email_password = APP_PASSWORD
+        email_receiver = user_info['email']
+
+        # Flight Info
+        f_id = str(flight_details['id'])
+        f_dur = str(flight_details['est_duration'])
+        f_dis = str(int(flight_details['distance']))
+
+        f_s_code = flight_details['start_point']['airport_code']
+        f_s_airport = flight_details['start_point']['name']
+        f_s_time = process_datetime_to_time(flight_details['departure_time'])
+
+        f_e_airport = flight_details['end_point']['name']
+        f_e_code = flight_details['end_point']['airport_code']
+        f_e_airport = flight_details['end_point']['name']
+        f_e_time = process_datetime_to_time(flight_details['arrival_time'])
+
+        # Ticket Info
+        field_object = ticket_info._meta.get_field('id')
+        t_id = field_object.value_from_object(ticket_info)
+
+        # Seat Info
+        s_id = str(seat_details['id'])
+        s_type = seat_details['type']
+        s_location = process_seat_location(seat_details['row_position'], seat_details['column_position'])
+
+        subject = "Flight " + f_id + " Confirmation | " + f_s_code + " to " + f_e_code
+        body = f'''
+            ---- TICKET INFORMATION ----
+            Ticket ID: {t_id}
+            To cancel a ticket, please visit http://localhost:5173/cancel and enter your ticket ID.
+
+            ---- FLIGHT DETAILS ----
+            Flight ID: {f_id}
+            {f_s_code} to {f_e_code}
+            Estimated Flight Duration: {f_dur}
+            Total Distance Travelled: {f_dis}km
+
+            ---- DEPARTURE INFORMATION ----
+            Departing from: {f_s_airport} ({f_s_code})
+            Departure Time: {f_s_time}
+
+            ---- ARRIVAL INFORMATION ----
+            Arriving from: {f_e_airport} ({f_e_code})
+            Arrival Time: {f_e_time}            
+            
+            ---- SEAT DETAILS ----
+            Seat ID: {s_id}
+            Seat Type: {s_type}
+            Seat Location: {s_location}
+
+            ----------------------------------
+            
+            Enjoy your flight!
+            FLIGHT.LY TEAM
+            '''
+        
+        em = EmailMessage()
+        em['From'] = email_sender
+        em['To'] = email_receiver
+        em['Subject'] = subject
+        em.set_content(body)
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+            smtp.login(email_sender, email_password)
+            smtp.sendmail(email_sender, email_receiver, em.as_string())
+            print("Flight Details Confirmation Email - Successfully Sent")
+    except Exception as e:
+        print("Error: ", e)
+
+
+    #     mailchimp = MailchimpTransactional.Client()
+    #     mailchimp.set_config({
+    #         "api_key": 'md-YpFrXnaqFAMb_zQf8SfXtQ',
+    #     })
+    #     print(mailchimp)
+    #     response = mailchimp.users.ping()
+    #     print('API called successfully: {}'.format(response))
+    # except ApiClientError as error:
+    #     print('An exception occurred: {}'.format(error.text))
+
+
+    # client.set_config({
+    #     "api_key": "c1a49180918fcbdd0d919c333a2f9fe9-us21",
+    #     "server": "us21"
+    # })
+
+    # email_content = f"Flight Details: {flight_details}"
+
+    # message = {
+    #     "from_email": "yajur.vashisht@ucalgary.ca",
+    #     "subject": "Your Flight Details",
+    #     "text": email_content,
+    #     "to": [{"email": email}]
+    # }
+    # try:
+    #     response = client.messages.send(message=message)
+    #     print("Email sent: ", response)
+    # except ApiClientError as error:
+    #     print(f"Error: {error}")
+    
