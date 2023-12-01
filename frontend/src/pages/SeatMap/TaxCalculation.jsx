@@ -32,8 +32,16 @@ const TaxCalculation = (props) => {
 
     function getTax() {
         var tax = (props.subtotal * 0.05).toFixed(2);
-		var total = (parseFloat(props.subtotal) + parseFloat(tax)).toFixed(2)
-		props.setTotal(total)
+
+		if (props.discount) {
+			var total = (parseFloat(props.discountedTotal) + parseFloat(tax)).toFixed(2)
+			props.setTotal(total)
+
+		}
+		else {
+			var total = (parseFloat(props.subtotal) + parseFloat(tax)).toFixed(2)
+			props.setTotal(total)
+		}
         return tax
     }
 

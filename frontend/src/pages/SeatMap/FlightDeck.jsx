@@ -51,9 +51,6 @@ const FlightDeck = (props) => {
 	const myAircraft = state.flight.aircraft_ref;
 	const { seatsByAircraft } = useSeatsByAircraft(state.flight.aircraft_ref.id);
 	const { ticketsByFlight } = useTicketsByFlight(state.flight.id);
-	const mySeats = [];
-
-	console.log(seatsByAircraft);
 
 	// Get Max Rows & Columns
 	var maxCols = 0;
@@ -63,8 +60,6 @@ const FlightDeck = (props) => {
 		if (seat.column_position + 1 > maxCols) maxCols = seat.column_position + 1;
 	});
 
-	console.log('max rows: ', maxRows);
-	console.log('max cols: ', maxCols);
 	if (myAircraft != undefined) var columnLayout = myAircraft.seat_columns;
 
 	/**
@@ -198,11 +193,7 @@ const FlightDeck = (props) => {
 		seatMap = generateSeatMap(maxRows, columnLayout);
 		seatMap = mapSeatsToSeatMap(seatsByAircraft, seatMap);
 		seatMap = addAislesToSeatMap(seatMap, columnLayout);
-		console.log('seatMap');
-		console.log(seatMap);
 		seatMap = getSeatAvailability(seatMap, ticketsByFlight);
-		console.log('seatMap with Tickets');
-		console.log(seatMap);
 	}
 
 	const populateSeats = seatMap.map((rows) => {

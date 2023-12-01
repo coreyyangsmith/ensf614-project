@@ -26,6 +26,7 @@ import SummaryFlightDetails from './SummaryFlightDetails';
 import SummarySeatDetails from './SummarySeatDetails';
 import InsuranceSelection from './InsuranceSelection';
 import SummarySubtotal from './SummarySubtotal';
+import PromotionSelection from './PromotionSelection';
 
 //  STYLES
 //-------------------------------------------------------//
@@ -42,6 +43,9 @@ const BoxSX = {
 const SeatSelectionForm = (props) => {
 	const [insurance, setInsurance] = useState(false);
 
+	const [discount, setDiscount] = useState(false);
+	const [discountAmount, setDiscountAmount] = useState(0);
+
 	// Once Active!
 	if (props.selectedSeat !== undefined) {
 		return (
@@ -57,12 +61,17 @@ const SeatSelectionForm = (props) => {
 						setInsurance={setInsurance}
 						insurance={insurance}
 					/>
+					<PromotionSelection
+						setDiscount={setDiscount}
+						setDiscountAmount={setDiscountAmount}
+					/>
 					<SummarySubtotal
 						flight={props.flight}
 						seat={props.selectedSeat}
 						insurance={insurance}
+						discount={discount}
+						discountAmount={discountAmount}
 					/>
-
 				</Stack>
 			</Box>
 		);

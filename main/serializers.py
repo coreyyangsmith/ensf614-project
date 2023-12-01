@@ -78,6 +78,11 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = '__all__'
 
+class PromotionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Promotion
+        fields = '__all__'        
+
 # Add these serializers for user registration and login - Atif
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

@@ -29,6 +29,10 @@ const CheckoutForm = () => {
     const seatDetails = state?.seat;
     const insurance = state?.insurance;
     const total = state?.total;
+    const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false)
+    const [paymentError, setPaymentError] = useState('')
+
+    
 
     const handleBack = () => {
         navigate(-1);
@@ -79,7 +83,7 @@ const CheckoutForm = () => {
                 paymentMethodId: paymentMethod.id,
             };
 
-            axios.post('127.0.0.1:8000/api/process-payment/', paymentData)
+            axios.post('http://127.0.0.1:8000/api/process-payment/', paymentData)
                 .then(response => {
                     console.log('Payment processed: ', response.data);
                     handleSubmit;
