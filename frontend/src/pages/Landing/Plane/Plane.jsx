@@ -15,7 +15,6 @@ import {
 	PLANE_ELEVATION,
 	PLANE_SCALE,
 	angleBetweenPoints,
-	angleBetweenPoints2
 } from '../../../utils/SceneUtilities.js';
 
 // My Context
@@ -29,7 +28,7 @@ export default function Plane(props) {
 
 	const scroll = useScroll();
 
-	const angleBetwewen = angleBetweenPoints2(
+	const angleBetwewen = angleBetweenPoints(
 		fromObj.latitude,
 		fromObj.longitude,
 		toObj.latitude,
@@ -77,7 +76,7 @@ export default function Plane(props) {
 			ref.current.rotation,
 			{
 				x: (Math.PI / 180) * 90,
-				y: -((Math.PI / 180) * (angleBetwewen - 45)) % Math.PI,
+				y: ((Math.PI / 180) * (angleBetwewen)) % Math.PI,
 				z: (Math.PI / 180) * 0,
 				duration: 1,
 				ease: 'none',

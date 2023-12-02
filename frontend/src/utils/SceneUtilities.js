@@ -40,14 +40,15 @@ export function angleBetweenPoints(lat1, lon1, lat2, lon2) {
     lat2 = toRadians(lat2);
     lon2 = toRadians(lon2);
 
-    // Calculate the angle using the arctangent function
-    var angle = Math.atan2(Math.sin(dLon) * Math.cos(lat2), Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon));
-    angle = toDegrees(angle);
+    const y = Math.sin(dLon) * Math.cos(lat2)
+    const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon)
 
-    // Ensure the angle is in the range [0, 360)
-    angle = (angle + 360) % 360;
+    var brng = Math.atan2(y, x)
 
-    return angle;
+    brng = toDegrees(brng)
+    brng = (brng + 360) % 360;
+    brng = 360 - brng
+    return brng
 }
 
 export function angleBetweenPoints2(lat1, lon1, lat2, lon2) {
