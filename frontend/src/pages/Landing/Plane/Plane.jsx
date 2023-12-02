@@ -76,7 +76,7 @@ export default function Plane(props) {
 			ref.current.rotation,
 			{
 				x: (Math.PI / 180) * 90,
-				y: ((Math.PI / 180) * (angleBetwewen)) % Math.PI,
+				y: ((Math.PI / 180) * (angleBetwewen)),
 				z: (Math.PI / 180) * 0,
 				duration: 1,
 				ease: 'none',

@@ -1,4 +1,4 @@
-//-------------------------------------------------------//
+	//-------------------------------------------------------//
 //  File Name: EarthAnimatedController.jsx
 //  Description: Animation Controller for Earth Animated
 //
@@ -58,7 +58,6 @@ const EarthAnimatedController = (props) => {
 
 	useLayoutEffect(() => {
 		const obj = scene.getObjectByName('Earth');
-		console.log(scene);
 
 		props.tl.current.to(
 			obj.position,
