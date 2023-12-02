@@ -1,11 +1,4 @@
-import {
-	Button,
-	Card,
-	CardContent,
-	Grid,
-	Stack,
-	Typography,
-} from '@mui/material';
+import { Card, Stack, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useSeatsByAircraft } from '../../hooks/useSeatsByAircraft.js';

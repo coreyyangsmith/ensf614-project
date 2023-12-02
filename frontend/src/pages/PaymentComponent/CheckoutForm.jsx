@@ -4,6 +4,7 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Container, Typography, Button, Grid, Box, TextField, Paper, Stack } from '@mui/material';
 import { styled, useTheme } from '@mui/system';
 import axios from 'axios';
+import { getSeatName, getSeatType } from '../../utils/SeatUtilities';
 
 const StyledCardElementContainer = styled(Box)(({ theme }) => ({
     padding: theme.spacing(2),
@@ -32,7 +33,8 @@ const CheckoutForm = () => {
     const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false)
     const [paymentError, setPaymentError] = useState('')
 
-    
+    console.log(flightDetails)
+    console.log(seatDetails)    
 
     const handleBack = () => {
         navigate(-1);
@@ -110,10 +112,10 @@ const CheckoutForm = () => {
                     <Typography variant="h6">Flight Summary:</Typography>
                     <Stack direction="column" spacing={1}>
                         <Typography>Flight ID: {flightDetails.id}</Typography>
-                        <Typography>Departure: {flightDetails.departure} at {flightDetails.departureTime}</Typography>
-                        <Typography>Arrival: {flightDetails.arrival} at {flightDetails.arrivalTime}</Typography>
-                        <Typography>Seat Type: {seatDetails?.type}</Typography>
-                        <Typography>Seat: {seatDetails?.number}</Typography>
+                        <Typography>Departure: {flightDetails.start_point.name} at {flightDetails.departure_time}</Typography>
+                        <Typography>Arrival: {flightDetails.end_point.name} at {flightDetails.arrival_time}</Typography>
+                        <Typography>Seat Type: {getSeatType(seatDetails)}</Typography>
+                        <Typography>Seat: {getSeatName(seatDetails)}</Typography>
                         <Typography>Flight Insurance: {insurance ? 'Yes' : 'No'}</Typography>
                         <Typography>Total: ${total}</Typography>
                     </Stack>

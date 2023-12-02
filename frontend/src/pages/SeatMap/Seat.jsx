@@ -22,42 +22,13 @@ import React from 'react';
 // React Router Dom
 import { useLocation } from 'react-router-dom';
 
-import { useSeatsAvailable } from '../../hooks/useSeatsAvailable';
+import { getSeatCost, getSeatName } from "../../utils/SeatUtilities.js"
 
 //  MAIN FUNCTION
 //-------------------------------------------------------//
 
 const Seat = (props) => {
 	let { state } = useLocation();
-
-	/**
-	 *
-	 * @param {*} row int: row number
-	 * @param {*} col int: column number
-	 * @returns
-	 */
-	function getSeatName(seat) {
-		var seatName = '';
-		const col = seat.column_position;
-		const row = seat.row_position;
-
-		seatName = (row + 1).toString();
-		seatName += String.fromCharCode(97 + col).toUpperCase();
-
-		return seatName;
-	}
-
-	/**
-	 * getSeatCost
-	 * @param {*} seat  Seat : Seat Object
-	 * @returns String : Seat Cost
-	 */
-	function getSeatCost(seat) {
-		var cost = seat.amount * seat.multiplier;
-		var cost = '$' + cost;
-
-		return cost;
-	}
 
 	function handleChange() {
 		props.setSelectedSeat(props.seat);
