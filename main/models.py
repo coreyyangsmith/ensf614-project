@@ -162,7 +162,7 @@ class Promotion(models.Model):
     updated_at = models.DateTimeField(auto_now=True)   
 
     def __str__(self):
-        return self.code + " (" + str(self.discount_percentage) + ")"
+        return self.code
 
 class PromotionAdmin(admin.ModelAdmin):
     readonly_fields = ('user', 'created_at','updated_at',)    

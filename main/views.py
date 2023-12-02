@@ -256,11 +256,19 @@ def register(request):
             code = generate_random_promo_code()
         )
 
+
         refresh = RefreshToken.for_user(user)
         res = {
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }
+
+        try:
+            send_signup_email(user_info=request.data, promo_info=promo)
+        except ApiClientError as e:
+            print(f"Mailchimp error: {str(e)}")
+
+
         return Response(res, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -403,6 +411,44 @@ def get_user_groups(request):
     group_names = [group.name for group in request.user.groups.all()]
     return JsonResponse({'groups': group_names}, safe=False)
 
+def send_signup_email(user_info, promo_info):
+    try:
+        email_sender = 'yangsmith.corey@gmail.com'
+        email_password = APP_PASSWORD
+        email_receiver = user_info['email']
+
+        # User Info
+        u_name = user_info['first_name']
+
+        # Promo Info
+        p_code = promo_info[0]
+
+        subject = "Welcome " + u_name + "! | FLIGHT.LY"
+        body = f'''
+            Hello User & Welcome to our service.
+
+            As a registed member, please enjoy this promo code that can be applied on checkout for one free flight.
+            CODE: {p_code}
+
+            ----------------------------------
+
+            FLIGHT.LY TEAM
+            '''
+        
+        em = EmailMessage()
+        em['From'] = email_sender
+        em['To'] = email_receiver
+        em['Subject'] = subject
+        em.set_content(body)
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+            smtp.login(email_sender, email_password)
+            smtp.sendmail(email_sender, email_receiver, em.as_string())
+            print("Signup Confirmation Email - Successfully Sent")
+    except Exception as e:
+        print("Error: ", e)
+
 
 def send_transaction_email(user_info, flight_details, seat_details, ticket_info, total):
     try:
@@ -532,35 +578,3 @@ def send_confirmation_email(user_info, flight_details, seat_details, ticket_info
             print("Flight Details Confirmation Email - Successfully Sent")
     except Exception as e:
         print("Error: ", e)
-
-
-    #     mailchimp = MailchimpTransactional.Client()
-    #     mailchimp.set_config({
-    #         "api_key": 'md-YpFrXnaqFAMb_zQf8SfXtQ',
-    #     })
-    #     print(mailchimp)
-    #     response = mailchimp.users.ping()
-    #     print('API called successfully: {}'.format(response))
-    # except ApiClientError as error:
-    #     print('An exception occurred: {}'.format(error.text))
-
-
-    # client.set_config({
-    #     "api_key": "c1a49180918fcbdd0d919c333a2f9fe9-us21",
-    #     "server": "us21"
-    # })
-
-    # email_content = f"Flight Details: {flight_details}"
-
-    # message = {
-    #     "from_email": "yajur.vashisht@ucalgary.ca",
-    #     "subject": "Your Flight Details",
-    #     "text": email_content,
-    #     "to": [{"email": email}]
-    # }
-    # try:
-    #     response = client.messages.send(message=message)
-    #     print("Email sent: ", response)
-    # except ApiClientError as error:
-    #     print(f"Error: {error}")
-    
