@@ -17,7 +17,7 @@
 
 // React Import
 import React from 'react';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 
 // Routing
 // import StyledLink from '../../components/StyledLink';
@@ -32,7 +32,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { Grid } from '@mui/material/';
 import NavigationButton from './NavigationButton';
-import { logoutUser } from '../api/posts';
+import { logoutUser, getUserGroups } from '../api/posts';
 
 //  STYLES
 //-------------------------------------------------------//
@@ -46,8 +46,14 @@ const toolbarSX = {
 //-------------------------------------------------------//
 
 const NavBar = () => {
-	const { user, setUser } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [userGroups, setUserGroups] = useState([]);
+
+    useEffect(() => {
+		const groups = JSON.parse(localStorage.getItem('groups'));
+		setUserGroups(groups);
+	}, []);
 
     const handleLogout = async () => {
         console.log('Handle Logout function is being called');
@@ -108,29 +114,32 @@ const NavBar = () => {
 						justifyContent="flex-end"
 						alignItems="center"
 					>
-						<NavigationButton label="Admin" path="/admin" color="primary" />
-						<NavigationButton label="Passenger List" path="/passengerlist" color="primary" />
-						<NavigationButton label="Cancel Flight" path="/cancel" color="primary" />
 						{user ? (
-							<Button 
-								variant="contained" 
-								color="c2a" 
-								size="small"
-								sx={{ marginRight: "16px" }}
-								onClick={handleLogout}
-							>
-								<Link to="/" style={{ textDecoration: "none" }}>
-									<Typography variant='landing_button'>Logout</Typography>
-								</Link>
-							</Button>
+							<>
+								{userGroups.includes('sysadmin') && <NavigationButton label="Admin" path="/admin" color="primary" />}
+								{userGroups.includes('Flight Attendant') && <NavigationButton label="Passenger List" path="/passengerlist" color="primary" />}
+								<NavigationButton label="Cancel Flight" path="/cancel" color="primary" />
+								<Button 
+									variant="contained" 
+									color="c2a" 
+									size="small"
+									sx={{ marginRight: "16px" }}
+									onClick={handleLogout}
+								>
+									<Link to="/" style={{ textDecoration: "none" }}>
+										<Typography variant='landing_button'>Logout</Typography>
+									</Link>
+								</Button>
+							</>
 						) : (
 							<>
+								<NavigationButton label="Cancel Flight" path="/cancel" color="primary" />
 								<NavigationButton label="Login" path="/login" color="primary" />
 								<NavigationButton label="Signup" path="/register" color="c2a" />
 							</>
 						)}
-
 					</Grid>
+
 				</Grid>
 			</Toolbar>
 		</AppBar>

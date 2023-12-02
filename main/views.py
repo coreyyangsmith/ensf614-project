@@ -18,6 +18,9 @@
 #-------------------------------------------------------#
 # Django Imports
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
 # Project imports
 from .models import *
@@ -243,6 +246,10 @@ def register(request):
     if serializer.is_valid():
         user = serializer.save()
 
+        # Add the user to the "normal user" group
+        group = Group.objects.get(name='normal user')
+        user.groups.add(group)
+
         # Create Promo for New User
         promo = Promotion.objects.get_or_create(
             user = user,
@@ -266,6 +273,7 @@ def login(request):
     res = {
         'refresh': str(refresh),
         'access': str(refresh.access_token),
+        'groups': [group.name for group in user.groups.all()],  # Add the user's groups to the response
     }
     return Response(res, status=status.HTTP_200_OK)
 
@@ -388,6 +396,12 @@ def send_cancellation_email(ticket_info):
         print("Error: ", e)    
 
     pass
+
+
+@login_required
+def get_user_groups(request):
+    group_names = [group.name for group in request.user.groups.all()]
+    return JsonResponse({'groups': group_names}, safe=False)
 
 
 def send_transaction_email(user_info, flight_details, seat_details, ticket_info, total):

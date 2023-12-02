@@ -81,7 +81,8 @@ export function loginUser(credentials) {
 			// store the tokens in local storage
 			localStorage.setItem('access_token', response.data.access);
 			localStorage.setItem('refresh_token', response.data.refresh);
-			localStorage.setItem('username', credentials.username);
+			// localStorage.setItem('username', credentials.username);
+			localStorage.setItem('groups', JSON.stringify(response.data.groups));  // Store the user's groups in local storage
 
 			// set the default Authorization header
 			axiosClient.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
@@ -144,5 +145,15 @@ export function saveStripeInfo(data = {}) {
 			console.error('Error saving Stripe info:', error);
 			throw error;
 		});
+}
+
+
+export function getUserGroups() {
+    return axios.get('/api/get_user_groups/')
+        .then(response => response.data.groups)
+        .catch(error => {
+            console.error('Error fetching user groups:', error);
+            throw error;
+        });
 }
 
