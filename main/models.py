@@ -54,7 +54,7 @@ class SeatAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at','updated_at',)
 
 class Destination(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     airport_code = models.CharField(max_length=3)
     latitude = models.DecimalField(max_digits=10, decimal_places=7) # eg. +/- 123.4567
     longitude = models.DecimalField(max_digits=10, decimal_places=7) # eg. +/- 123.4567
