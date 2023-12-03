@@ -140,7 +140,7 @@ class FlightController \{\
 \}\
 \
 class ReservationController \{\
-    +-CreateReservation()\
+    +CreateReservation()\
     -CancelReservation()\
 \}\
 \
@@ -174,6 +174,12 @@ Flight "*" o-- "1" Airline\
 Flight "*" *-- "*" Crew\
 Payment "1" *-- "1" PaymentService\
 Reservation "*" -- "1" NotificationService\
+Flight -- Database\
+Airport -- Database\
+Airline -- Database\
+User -- Database\
+Payment -- Database\
+Reservation -- Database\
 \
 @enduml\
 }

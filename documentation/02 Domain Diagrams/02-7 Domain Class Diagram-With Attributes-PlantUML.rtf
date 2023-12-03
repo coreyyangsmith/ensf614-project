@@ -7,7 +7,7 @@
 
 \f0\fs24 \cf0 @startuml\
 \
-' Classes\
+' -- Domain Classes --\
 class User \{\
     -UserID: int\
     -Name: String\
@@ -73,14 +73,12 @@ class Airport \{\
     +AirportCode: String\
     +Name: String\
     +Location: String\
-    +UpdateInfo()\
 \}\
 \
 class Airline \{\
     +Name: String\
-    +Headquarters: String\
-    +AddFlight()\
-    +UpdateInfo()\
+    -AddFlight()\
+    -UpdateInfo()\
 \}\
 \
 class Crew \{\
@@ -118,7 +116,8 @@ class Database \{\
     -ExecuteQuery()\
 \}\
 \
-' Relationships\
+' -- Relationships --\
+\
 User <|-- Admin\
 User <|-- FlightAttendent \
 User "1" o-- "*" Reservation\
@@ -131,6 +130,12 @@ Flight "*" o-- "1" Airline\
 Flight "*" *-- "*" Crew\
 Payment "1" *-- "1" PaymentService\
 Reservation "*" -- "1" NotificationService\
+Flight -- Database\
+Airport -- Database\
+Airline -- Database\
+User -- Database\
+Payment -- Database\
+Reservation -- Database\
 \
 @enduml\
 }
